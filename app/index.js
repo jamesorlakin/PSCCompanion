@@ -1,3 +1,5 @@
+// Checks if setup or not, and renders the corresponding component.
+
 import React, { Component } from 'react';
 import {
   AppRegistry,
@@ -21,7 +23,8 @@ export default class PSCCompanion extends Component {
     var self = this;
     AsyncStorage.getItem('tokens').then(function (data) {
       console.log(data);
-      self.setState({setup: true})
+      // If it exists we get a string back.
+      self.setState({setup: (typeof data == String)})
     }).done()
   }
 
