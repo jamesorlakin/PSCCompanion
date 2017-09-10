@@ -22,14 +22,13 @@ export default class PSCCompanion extends Component {
   componentDidMount() {
     var self = this;
     AsyncStorage.getItem('tokens').then(function (data) {
-      console.log(data);
       // If it exists we get a string back.
-      self.setState({setup: (typeof data == String)})
+      self.setState({setup: (typeof data == "string")})
     }).done()
   }
 
   render() {
-    if (this.state.setup === '?') return (<Text>Hello</Text>)
+    if (this.state.setup === '?') return (<Text>Checking token status...</Text>)
     if (this.state.setup) return (<IndexHost />)
     return (<LoginScreen />)
   }
