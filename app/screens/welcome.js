@@ -15,7 +15,7 @@ export default class WelcomeScreen extends Component {
   render() {
     return (
       <View style={styles.container}>
-        <Text>I'm the WelcomeScreen component</Text>
+        <Text>Welcome to PSC Companion!</Text>
       </View>
     );
   }

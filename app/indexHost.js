@@ -11,10 +11,12 @@ import { StackNavigator, DrawerNavigator } from 'react-navigation';
 
 import WelcomeScreen from './screens/welcome.js'
 import DebugScreen from './screens/debug.js'
+import FreeRoomScreen from './screens/freeroom.js'
 
 const DrawerHost = DrawerNavigator({
         welcome: {screen: WelcomeScreen},
-        debug: {screen: DebugScreen}
+        debug: {screen: DebugScreen},
+        freeroom: {screen: FreeRoomScreen}
       })
 
 
