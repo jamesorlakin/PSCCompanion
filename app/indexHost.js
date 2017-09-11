@@ -12,11 +12,13 @@ import { StackNavigator, DrawerNavigator } from 'react-navigation';
 import WelcomeScreen from './screens/welcome.js'
 import DebugScreen from './screens/debug.js'
 import FreeRoomScreen from './screens/freeroom.js'
+import UserTimetableScreen from './screens/userTimetable.js'
 
 const DrawerHost = DrawerNavigator({
         welcome: {screen: WelcomeScreen},
         debug: {screen: DebugScreen},
-        freeroom: {screen: FreeRoomScreen}
+        freeroom: {screen: FreeRoomScreen},
+        userTimetable: {screen: UserTimetableScreen}
       })
 
 

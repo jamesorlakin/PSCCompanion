@@ -5,12 +5,22 @@ export default async function api(path, params) {
   var tokens = await AsyncStorage.getItem('tokens');
   tokens = JSON.parse(tokens);
 
-  if (new Date(tokens.expireTime).getTime() / 1000 < Date.now() / 1000) {
-    console.log("Token expired.");
+  if (new Date(tokens.expireTime).getTime() < Date.now()) {
+    console.log("API: Token expired.");
     tokens = await refreshToken();
   } else {
-    console.log("The token shouldn't need refreshing");
+    console.log("API: The token shouldn't need refreshing");
   }
+
+  // Do we have params?
+  if (typeof params == "object") {
+    for (var i = 0; i < params.length; i++) {
+      console.log(params[i]);
+      path = path + (i === 0 ? "?" : "&") + params[i].key + "=" + params[i].value;
+    }
+  }
+
+  console.log("API: Using path - " + path);
 
   var data = await fetch("https://data.psc.ac.uk/api/" + path, {
     headers: {
@@ -18,7 +28,10 @@ export default async function api(path, params) {
     }
   })
 
-  return await data.json();
+  var result = await data.json();
+  console.log("API result: ");
+  console.log(result);
+  return result;
 }
 
 async function refreshToken() {
