@@ -17,7 +17,7 @@ export default class LoginScreen extends Component {
   }
 
   handleLoad(e) {
-    console.log(e.url)
+    console.log("Login WebView: " + e.url)
     if (e.url.indexOf('code=') > -1) {
       var self = this;
       this.setState({exchanging: true})
@@ -43,7 +43,7 @@ export default class LoginScreen extends Component {
   }
 
   render() {
-        if (this.state.done) return (<IndexHost />)
+    if (this.state.done) return (<IndexHost />)
     if (this.state.exchanging) return (<Text style={styles.welcome}>Exchanging, hang fire.</Text>)
     return (
       <View style={styles.container}>
