@@ -4,7 +4,8 @@ import React, { Component } from 'react';
 import {
   View,
   Text,
-  ScrollView,
+  FlatList,
+  ActivityIndicator,
   StyleSheet,
 } from 'react-native';
 
@@ -23,24 +24,32 @@ export default class FreeRoomScreen extends Component {
   componentDidMount() {
     var self = this;
     api('find/freeroom').then(function (rooms) {
+      for (var i = 0; i < rooms.length; i++) {
+        rooms[i].key = rooms[i].Name
+      }
+      rooms = rooms.filter(function (item) {
+        if (item.Site === "AHED") return false;
+        return true;
+      })
       self.setState({rooms: rooms});
+    }).catch(function (error) {
+      self.setState({
+        rooms: [{Name: "Error - " + error}]
+      })
     })
   }
 
   render() {
     if (this.state.rooms === false) return (
       <View style={styles.container}>
-        <Text>Awaiting asynchronous fetch. In other words, hang fire as this will take a moment.</Text>
+        <ActivityIndicator />
       </View>
     );
 
     return (
       <View style={styles.container}>
-        <ScrollView>
-          {this.state.rooms.map(function (item) {
-            return (<Text key={item.Name}>{item.Name}</Text>)
-          })}
-        </ScrollView>
+        <Text style={styles.title}>Rooms currently timetabled to be free:</Text>
+        <FlatList data={this.state.rooms} renderItem={roomComponent} />
       </View>
     );
   }
@@ -49,5 +58,21 @@ export default class FreeRoomScreen extends Component {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+    margin: 8
   },
+  bold: {
+    fontWeight: 'bold'
+  },
+  title: {
+    fontSize: 15
+  }
 });
+
+function roomComponent(data) {
+  return (
+    <View>
+      <Text style={styles.bold}>{data.item.Name}</Text>
+      <Text>{data.item.Building} - {data.item.Description}</Text>
+    </View>
+  )
+}
