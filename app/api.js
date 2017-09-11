@@ -8,6 +8,8 @@ export default async function api(path, params) {
   if (new Date(tokens.expireTime).getTime() / 1000 < Date.now() / 1000) {
     console.log("Token expired.");
     tokens = await refreshToken();
+  } else {
+    console.log("The token shouldn't need refreshing");
   }
 
   var data = await fetch("https://data.psc.ac.uk/api/" + path, {
@@ -25,6 +27,7 @@ async function refreshToken() {
 
   var newTokens = await fetch("https://data.psc.ac.uk/oauth/v2/token", {
       method: "POST",
+      headers: {'Content-Type':'application/x-www-form-urlencoded'},
       body: "client_id=59_5np1cw1pak8w4gss080sgkgg8sc8s4kgkgg04go0k448scckog&" +
         "client_secret=17xzzmhevw1wkcgk8000sc0kgkwossw8k8g0soo08wgg40004s&" +
         "grant_type=refresh_token&" +
