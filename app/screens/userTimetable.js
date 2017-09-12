@@ -4,6 +4,7 @@ import {
   Text,
   FlatList,
   ActivityIndicator,
+  Picker,
   StyleSheet,
 } from 'react-native';
 
@@ -20,8 +21,9 @@ export default class UserTimetableScreen extends Component {
     this.state = {
       loaded: false,
       data: null,
-      day: new Date()
+      day: moment().startOf('day')
     }
+    this.switchDay = this.switchDay.bind(this);
   }
 
   loadTimetable() {
@@ -38,6 +40,11 @@ export default class UserTimetableScreen extends Component {
     })
   }
 
+  switchDay(day, index) {
+    this.setState({loaded: false, day: day});
+    this.loadTimetable();
+  }
+
   componentDidMount() {
     this.loadTimetable()
   }
@@ -45,7 +52,14 @@ export default class UserTimetableScreen extends Component {
   render() {
     if (this.state.loaded) return (
       <View style={styles.container}>
-        <Text style={styles.title}>Today's timetable:</Text>
+        <Picker onValueChange={this.switchDay}>
+          <Picker.Item label="Today" value={moment().startOf('day')} />
+          <Picker.Item label="Tomorrow" value={moment().startOf('day').add(1, "days")} />
+          <Picker.Item label="The day after tomorrow" value={moment().startOf('day').add(2, "days")} />
+          <Picker.Item label="The day after the day after tomorrow" value={moment().startOf('day').add(3, "days")} />
+          <Picker.Item label="The day after the day after the day after tomorrow" value={moment().startOf('day').add(4, "days")} />
+        </Picker>
+
         <FlatList data={this.state.data.timetable} renderItem={eventElement} />
       </View>
     )
@@ -61,6 +75,7 @@ export default class UserTimetableScreen extends Component {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+    margin: 8
   },
   bold: {
     fontWeight: 'bold'
@@ -69,7 +84,7 @@ const styles = StyleSheet.create({
     fontStyle: 'italic'
   },
   title: {
-    fontSize: 15
+    fontSize: 17
   }
 });
 
@@ -84,7 +99,7 @@ function eventElement(data) {
   return (
     <View>
       <Text style={styles.bold}>{data.item.Title}</Text>
-      <Text>{moment.unix(data.item.Start).format('LT')} - {data.item.Room}</Text>
+      <Text>{moment.unix(data.item.Start).format('LT')} - {moment.unix(data.item.End).format('LT')} : {data.item.Room}</Text>
     </View>
   )
 }
