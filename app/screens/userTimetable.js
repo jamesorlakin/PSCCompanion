@@ -2,13 +2,13 @@ import React, { Component } from 'react';
 import {
   View,
   Text,
-  FlatList,
   ActivityIndicator,
   Picker,
   StyleSheet,
 } from 'react-native';
 
-import api from '../api.js'
+import api from '../api.js';
+import Timetable from '../timetableComponent.js';
 import moment from 'moment';
 
 export default class UserTimetableScreen extends Component {
@@ -30,19 +30,18 @@ export default class UserTimetableScreen extends Component {
     var self = this;
     api('timetable', [
       {key: "includeBlanks", value: "true"},
-      {key: "start", value: moment(this.state.day).startOf('day').unix()},
-      {key: "end", value: moment(this.state.day).endOf('day').unix()}
+      {key: "start", value: moment(this.state.day).startOf('day').startOf('week').unix()},
+      {key: "end", value: moment(this.state.day).endOf('day').endOf('week').unix()}
     ]).then(function (data) {
-      for (var i = 0; i < data.timetable.length; i++) {
-        data.timetable[i].key = data.timetable[i].Start
-      }
       self.setState({loaded: true, data: data})
     })
   }
 
   switchDay(day, index) {
-    this.setState({loaded: false, day: day});
-    this.loadTimetable();
+    var self = this;
+    this.setState({loaded: false, day: day}, function () {
+        self.loadTimetable();
+    });
   }
 
   componentDidMount() {
@@ -50,25 +49,12 @@ export default class UserTimetableScreen extends Component {
   }
 
   render() {
-    if (this.state.loaded) return (
-      <View style={styles.container}>
-        <Picker onValueChange={this.switchDay}>
-          <Picker.Item label="Today" value={moment().startOf('day')} />
-          <Picker.Item label="Tomorrow" value={moment().startOf('day').add(1, "days")} />
-          <Picker.Item label="The day after tomorrow" value={moment().startOf('day').add(2, "days")} />
-          <Picker.Item label="The day after the day after tomorrow" value={moment().startOf('day').add(3, "days")} />
-          <Picker.Item label="The day after the day after the day after tomorrow" value={moment().startOf('day').add(4, "days")} />
-        </Picker>
-
-        <FlatList data={this.state.data.timetable} renderItem={eventElement} />
-      </View>
-    )
-
     return (
       <View style={styles.container}>
-        <ActivityIndicator />
+        {(this.state.loaded ? <Timetable data={this.state.data} /> : <ActivityIndicator />)}
       </View>
     )
+
   }
 }
 
@@ -77,29 +63,4 @@ const styles = StyleSheet.create({
     flex: 1,
     margin: 8
   },
-  bold: {
-    fontWeight: 'bold'
-  },
-  italic: {
-    fontStyle: 'italic'
-  },
-  title: {
-    fontSize: 17
-  }
 });
-
-function eventElement(data) {
-  if (data.item.Type === "studyperiod") return (
-    <View>
-      <Text style={styles.italic}>Free</Text>
-      <Text>{moment.unix(data.item.Start).format('LT')}</Text>
-    </View>
-  )
-
-  return (
-    <View>
-      <Text style={styles.bold}>{data.item.Title}</Text>
-      <Text>{moment.unix(data.item.Start).format('LT')} - {moment.unix(data.item.End).format('LT')} : {data.item.Room}</Text>
-    </View>
-  )
-}
