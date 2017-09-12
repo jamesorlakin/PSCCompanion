@@ -25,7 +25,7 @@ export default class WelcomeScreen extends Component {
     var self = this;
     AsyncStorage.getItem('user').then(function (data) {
       if (typeof data === "string") self.setState({loaded: true, data: JSON.parse(data)})
-      if (Math.floor(Math.random()*10) == 0) api('user').then(function (userInfo) {
+      if (Math.floor(Math.random()*10) == 0 || typeof data !== "string") api('user').then(function (userInfo) {
         userInfo.fetchedTime = new Date();
         self.setState({loaded: true, data: userInfo});
         AsyncStorage.setItem('user', JSON.stringify(userInfo));
@@ -35,9 +35,15 @@ export default class WelcomeScreen extends Component {
 
   render() {
     if (this.state.loaded) {
+      var rows = [];
+      var data = this.state.data;
+      Object.keys(data).forEach(function (key) {
+        rows.push(<Text key={key}>{key} - {data[key].toString()}</Text>)
+      })
+
       return (
         <View style={styles.container}>
-          <Text>{JSON.stringify(this.state.data)}</Text>
+          {rows}
         </View>
       )
     }
