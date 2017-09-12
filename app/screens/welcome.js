@@ -25,7 +25,7 @@ export default class WelcomeScreen extends Component {
     var self = this;
     AsyncStorage.getItem('user').then(function (data) {
       if (typeof data === "string") self.setState({loaded: true, data: JSON.parse(data)})
-      api('user').then(function (userInfo) {
+      if (Math.floor(Math.random()*10) == 0) api('user').then(function (userInfo) {
         userInfo.fetchedTime = new Date();
         self.setState({loaded: true, data: userInfo});
         AsyncStorage.setItem('user', JSON.stringify(userInfo));
