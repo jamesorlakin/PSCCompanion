@@ -13,7 +13,10 @@ export default class LoginScreen extends Component {
 
   constructor() {
     super();
-    this.state = {exchanging: false, done: false};
+    this.state = {
+      exchanging: false,
+      done: false
+    };
   }
 
   handleLoad(e) {
@@ -44,7 +47,7 @@ export default class LoginScreen extends Component {
 
   render() {
     if (this.state.done) return (<IndexHost />)
-    if (this.state.exchanging) return (<Text style={styles.welcome}>Exchanging, hang fire.</Text>)
+    if (this.state.exchanging) return (<Text style={styles.welcome}>Exchanging tokens with PSC, hang fire.</Text>)
     return (
       <View style={styles.container}>
         <Text style={styles.welcome}>Please login using your college credentials:</Text>

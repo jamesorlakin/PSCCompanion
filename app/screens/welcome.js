@@ -43,6 +43,7 @@ export default class WelcomeScreen extends Component {
 
       return (
         <View style={styles.container}>
+          <Text style={{fontSize: 18}}>Welcome to PSC Companion, {this.state.data.Name}.</Text>
           {rows}
         </View>
       )
