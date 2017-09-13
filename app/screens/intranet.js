@@ -23,7 +23,8 @@ export default class IntranetScreen extends Component {
   componentDidMount() {
     var self = this;
     AsyncStorage.getItem('credentials').then(function (data) {
-      if (typeof data === "string") var credentials = JSON.parse(data)
+      var credentials = null
+      if (typeof data === "string") credentials = JSON.parse(data)
       self.setState({shouldRender: true, credentials: credentials})
     })
   }
@@ -37,7 +38,6 @@ export default class IntranetScreen extends Component {
           "  document.getElementById('password').value = '" + this.state.credentials.password + "';" +
           "  document.getElementById('signin').click();" +
           "}";
-        console.log(injection);
       }
 
       return (

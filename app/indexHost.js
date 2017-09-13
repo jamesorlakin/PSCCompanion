@@ -17,6 +17,7 @@ import UserTimetableScreen from './screens/userTimetable.js'
 import RoomTimetableScreen from './screens/roomTimetable.js'
 import MapScreen from './screens/map.js'
 import IntranetScreen from './screens/intranet.js'
+import SettingsScreen from './screens/settings.js'
 
 const DrawerHost = DrawerNavigator({
         welcome: {screen: WelcomeScreen},
@@ -26,6 +27,7 @@ const DrawerHost = DrawerNavigator({
         roomTimetable: {screen: RoomTimetableScreen},
         map: {screen: MapScreen},
         intranet: {screen: IntranetScreen},
+        settings: {screen: SettingsScreen},
       })
 
 const MenuButton = function (props) {
