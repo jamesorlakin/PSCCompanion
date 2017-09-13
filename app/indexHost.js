@@ -10,6 +10,8 @@ import {
 
 import { StackNavigator, DrawerNavigator, NavigationActions } from 'react-navigation';
 
+import BannerAd from './adComponent.js'
+
 import WelcomeScreen from './screens/welcome.js'
 import DebugScreen from './screens/debug.js'
 import FreeRoomScreen from './screens/freeroom.js'
@@ -19,16 +21,16 @@ import MapScreen from './screens/map.js'
 import IntranetScreen from './screens/intranet.js'
 import SettingsScreen from './screens/settings.js'
 
-const DrawerHost = DrawerNavigator({
-        welcome: {screen: WelcomeScreen},
-        debug: {screen: DebugScreen},
-        freeroom: {screen: FreeRoomScreen},
-        userTimetable: {screen: UserTimetableScreen},
-        roomTimetable: {screen: RoomTimetableScreen},
-        map: {screen: MapScreen},
-        intranet: {screen: IntranetScreen},
-        settings: {screen: SettingsScreen},
-      })
+const Drawer = DrawerNavigator({
+  welcome: {screen: WelcomeScreen},
+  debug: {screen: DebugScreen},
+  freeroom: {screen: FreeRoomScreen},
+  userTimetable: {screen: UserTimetableScreen},
+  roomTimetable: {screen: RoomTimetableScreen},
+  map: {screen: MapScreen},
+  intranet: {screen: IntranetScreen},
+  settings: {screen: SettingsScreen},
+})
 
 const MenuButton = function (props) {
   return (
@@ -40,13 +42,28 @@ const MenuButton = function (props) {
   );
 }
 
-const IndexHost = StackNavigator({
-        Drawer: {screen: DrawerHost,
-        navigationOptions: ({ navigation }) => ({
-          title: 'PSC Companion',
-          headerLeft: <MenuButton navigate={navigation.navigate} />,
-        })
-      }
+const DrawerHost = StackNavigator({
+    Drawer: {screen: Drawer,
+    navigationOptions: ({ navigation }) => ({
+      title: 'PSC Companion',
+      headerLeft: <MenuButton navigate={navigation.navigate} />,
     })
+  }
+})
+
+const IndexHost = function (props) {
+  return (
+    <View style={styles.container}>
+      <DrawerHost />
+      <BannerAd />
+    </View>
+  )
+}
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1
+  },
+});
 
 module.exports = IndexHost

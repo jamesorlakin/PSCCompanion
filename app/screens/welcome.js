@@ -50,9 +50,7 @@ export default class WelcomeScreen extends Component {
     }
 
     return (
-      <View style={styles.container}>
-        <Text>Welcome to PSC Companion!</Text>
-      </View>
+      <View/>
     );
   }
 }

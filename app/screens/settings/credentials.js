@@ -39,9 +39,9 @@ export default class SettingsCredentials extends Component {
       <View style={styles.container}>
         <Text>Enter the username and password for your college account below to enable automatic intranet logon:</Text>
         <View>
-          <TextInput initialValue={this.state.credentials.username}
+          <TextInput defaultValue={this.state.credentials.username}
             onChangeText={(username) => {this.setState({newUsername: username})}} />
-          <TextInput initialValue={this.state.credentials.password}
+          <TextInput defaultValue={this.state.credentials.password}
             onChangeText={(password) => {this.setState({newPassword: password})}}
             secureTextEntry={true} />
           <Button title="Save" onPress={this.saveCredentials} />

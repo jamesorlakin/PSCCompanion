@@ -4,11 +4,11 @@ import {
   Text,
   AsyncStorage,
   StyleSheet,
-  TextInput,
-  Button,
+  ScrollView,
 } from 'react-native';
 
 import SettingsCredentials from './settings/credentials.js'
+import SettingsAdFree from './settings/adFree.js'
 
 export default class SettingsScreen extends Component {
   static navigationOptions = {
@@ -18,7 +18,10 @@ export default class SettingsScreen extends Component {
   render() {
     return (
       <View style={styles.container}>
-        <SettingsCredentials/>
+        <ScrollView>
+          <SettingsCredentials/>
+          <SettingsAdFree/>
+        </ScrollView>
       </View>
     );
   }
