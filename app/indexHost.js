@@ -35,7 +35,7 @@ const Drawer = DrawerNavigator({
 const MenuButton = function (props) {
   return (
     <View>
-      <TouchableOpacity onPress={() => {props.navigate('DrawerOpen')}}>
+      <TouchableOpacity onPress={() => {props.navigate('DrawerToggle')}}>
         <Text style={{color: 'blue', padding: 10, fontSize: 14}}>Menu</Text>
       </TouchableOpacity>
     </View>

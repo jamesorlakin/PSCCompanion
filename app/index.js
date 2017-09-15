@@ -28,7 +28,7 @@ export default class PSCCompanion extends Component {
   }
 
   render() {
-    if (this.state.setup === '?') return (<Text>Checking token status...</Text>)
+    if (this.state.setup === '?') return (<View/>)
     if (this.state.setup) return (<IndexHost />)
     return (<LoginScreen />)
   }
