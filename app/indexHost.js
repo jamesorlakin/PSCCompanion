@@ -5,10 +5,11 @@ import {
   View,
   Text,
   StyleSheet,
+  ScrollView,
   TouchableOpacity,
 } from 'react-native';
 
-import { StackNavigator, DrawerNavigator, NavigationActions } from 'react-navigation';
+import { StackNavigator, DrawerNavigator, NavigationActions, DrawerItems } from 'react-navigation';
 
 import BannerAd from './adComponent.js'
 
@@ -35,7 +36,7 @@ const Drawer = DrawerNavigator({
 const MenuButton = function (props) {
   return (
     <View>
-      <TouchableOpacity onPress={() => {props.navigate('DrawerToggle')}}>
+      <TouchableOpacity onPress={() => {props.navigate('DrawerOpen')}}>
         <Text style={{color: 'blue', padding: 10, fontSize: 14}}>Menu</Text>
       </TouchableOpacity>
     </View>
@@ -49,6 +50,8 @@ const DrawerHost = StackNavigator({
       headerLeft: <MenuButton navigate={navigation.navigate} />,
     })
   }
+}, {
+  contentComponent: props => <ScrollView><DrawerItems {...props} /></ScrollView>
 })
 
 const IndexHost = function (props) {

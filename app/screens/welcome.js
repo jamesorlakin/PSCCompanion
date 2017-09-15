@@ -3,6 +3,7 @@ import {
   View,
   Text,
   AsyncStorage,
+  ScrollView,
   StyleSheet,
 } from 'react-native';
 
@@ -42,10 +43,16 @@ export default class WelcomeScreen extends Component {
       })
 
       return (
-        <View style={styles.container}>
-          <Text style={{fontSize: 18}}>Welcome to PSC Companion, {this.state.data.Name}.</Text>
-          {rows}
-        </View>
+        <ScrollView>
+          <View style={styles.container}>
+            <Text style={{fontSize: 18}}>Welcome to PSC Companion, {this.state.data.Name}.</Text>
+            <Text style={{fontSize: 16}}>Note that this application is very new.
+              Bugs are to be expected now and again, and please report any you find
+              so that I can fix them. Don't worry, this UI isn't final. I agree it's
+              a bit ugly too...</Text>
+            {rows}
+          </View>
+        </ScrollView>
       )
     }
 

@@ -11,6 +11,12 @@ import {
 import moment from 'moment';
 
 export default class Timetable extends Component {
+  constructor(props) {
+    super(props);
+    this.doneScroll = false;
+    this.doScroll = this.doScroll.bind(this)
+  }
+
   eventElement(data) {
     if (data.item.Type === "studyperiod") return (
       <View>
@@ -26,6 +32,20 @@ export default class Timetable extends Component {
         {data.item.Staff !== "" && <Text>{data.item.Staff}</Text>}
       </View>
     )
+  }
+
+  doScroll(ref) {
+    if (this.props.week != 0) return true
+    var self = this;
+    if (!this.doneScroll) setTimeout(function () {
+      if (moment().format('d') < 6 && moment().format('d') > 0) {
+        self.doneScroll = true
+        ref.scrollTo({
+          x: moment().format('d')*(Dimensions.get('window').width*0.8),
+          animated: true
+        })
+      }
+    }, 10)
   }
 
   render() {
@@ -51,9 +71,8 @@ export default class Timetable extends Component {
 
     // No point in having a horizontal scroll for one day
     if (timetableColumns.length === 1) return timetableColumns[0];
-
     return (
-      <ScrollView horizontal={true}>
+      <ScrollView ref={this.doScroll} horizontal={true}>
         {timetableColumns}
       </ScrollView>
     );

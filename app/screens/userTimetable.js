@@ -21,25 +21,25 @@ export default class UserTimetableScreen extends Component {
     this.state = {
       loaded: false,
       data: null,
-      day: moment().startOf('day')
+      week: 0
     }
-    this.switchDay = this.switchDay.bind(this);
+    this.switchWeek = this.switchWeek.bind(this);
   }
 
   loadTimetable() {
     var self = this;
     api('timetable', [
       {key: "includeBlanks", value: "true"},
-      {key: "start", value: moment(this.state.day).startOf('day').startOf('week').unix()},
-      {key: "end", value: moment(this.state.day).endOf('day').endOf('week').unix()}
+      {key: "start", value: moment(this.state.day).startOf('day').startOf('week').add(this.state.week, 'weeks').unix()},
+      {key: "end", value: moment(this.state.day).endOf('day').endOf('week').add(this.state.week, 'weeks').unix()}
     ]).then(function (data) {
       self.setState({loaded: true, data: data})
     })
   }
 
-  switchDay(day, index) {
+  switchWeek(week, index) {
     var self = this;
-    this.setState({loaded: false, day: day}, function () {
+    this.setState({loaded: false, week: week}, function () {
         self.loadTimetable();
     });
   }
@@ -51,7 +51,12 @@ export default class UserTimetableScreen extends Component {
   render() {
     return (
       <View style={styles.container}>
-        {(this.state.loaded ? <Timetable data={this.state.data} /> : <ActivityIndicator />)}
+        <Picker selectedValue={this.state.week} mode="dropdown" onValueChange={this.switchWeek}>
+          <Picker.Item label="This week" value={0} />
+          <Picker.Item label="Next week" value={1} />
+          <Picker.Item label="Next next week" value={2} />
+        </Picker>
+        {(this.state.loaded ? <Timetable data={this.state.data} week={this.state.week} /> : <ActivityIndicator />)}
       </View>
     )
 

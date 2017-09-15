@@ -50,7 +50,8 @@ export default class LoginScreen extends Component {
     if (this.state.exchanging) return (<Text style={styles.welcome}>Exchanging tokens with PSC, hang fire.</Text>)
     return (
       <View style={styles.container}>
-        <Text style={styles.welcome}>Please login using your college credentials:</Text>
+        <Text style={styles.welcome}>Welcome to PSC Companion! Before we can
+        communicate with college, please enter your login details below:</Text>
         <WebView onNavigationStateChange={this.handleLoad.bind(this)} source={{uri: "https://data.psc.ac.uk/oauth/v2/auth?client_id=59_5np1cw1pak8w4gss080sgkgg8sc8s4kgkgg04go0k448scckog&response_type=code&redirect_uri=app://localhost"}} />
       </View>
     );
