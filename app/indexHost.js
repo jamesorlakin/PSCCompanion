@@ -31,12 +31,22 @@ const Drawer = DrawerNavigator({
   map: {screen: MapScreen},
   intranet: {screen: IntranetScreen},
   settings: {screen: SettingsScreen},
+}, {
+  contentComponent: props => (<ScrollView><DrawerItems {...props} /></ScrollView>)
 })
 
 const MenuButton = function (props) {
+  if (props.navigation.state.index === 1) return (
+      <View>
+        <TouchableOpacity onPress={() => {props.navigation.navigate('DrawerClose')}}>
+          <Text style={{color: 'red', padding: 10, fontSize: 14}}>Close</Text>
+        </TouchableOpacity>
+      </View>
+    );
+
   return (
     <View>
-      <TouchableOpacity onPress={() => {props.navigate('DrawerOpen')}}>
+      <TouchableOpacity onPress={() => {props.navigation.navigate('DrawerOpen')}}>
         <Text style={{color: 'blue', padding: 10, fontSize: 14}}>Menu</Text>
       </TouchableOpacity>
     </View>
@@ -47,11 +57,9 @@ const DrawerHost = StackNavigator({
     Drawer: {screen: Drawer,
     navigationOptions: ({ navigation }) => ({
       title: 'PSC Companion',
-      headerLeft: <MenuButton navigate={navigation.navigate} />,
+      headerLeft: <MenuButton navigation={navigation} />,
     })
   }
-}, {
-  contentComponent: props => <ScrollView><DrawerItems {...props} /></ScrollView>
 })
 
 const IndexHost = function (props) {

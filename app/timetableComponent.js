@@ -9,6 +9,7 @@ import {
 } from 'react-native';
 
 import moment from 'moment';
+var dayWidth = Dimensions.get('window').width*0.8;
 
 export default class Timetable extends Component {
   constructor(props) {
@@ -38,10 +39,10 @@ export default class Timetable extends Component {
     if (this.props.week != 0) return true
     var self = this;
     if (!this.doneScroll) setTimeout(function () {
-      if (moment().format('d') < 6 && moment().format('d') > 0) {
+      if (moment().format('d') < 5) {
         self.doneScroll = true
         ref.scrollTo({
-          x: moment().format('d')*(Dimensions.get('window').width*0.8),
+          x: (moment().format('d')-1)*(dayWidth),
           animated: true
         })
       }
@@ -62,10 +63,10 @@ export default class Timetable extends Component {
     var timetableColumns = [];
     Object.keys(dayTimetables).forEach(function (key) {
       timetableColumns.push(<FlatList
-        width={Dimensions.get('window').width*0.8}
+        width={dayWidth}
         key={key}
         data={dayTimetables[key]}
-        ListHeaderComponent={<Text style={styles.boldTitleUnderline}>{moment.unix(key).format('dddd')}</Text>}
+        ListHeaderComponent={<Text style={styles.boldTitleUnderline}>{moment.unix(key).format('dddd - Do')}</Text>}
         renderItem={self.eventElement} />)
     })
 

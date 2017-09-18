@@ -50,6 +50,7 @@ export default class IntranetScreen extends Component {
           "  document.getElementById('password').value = '" + this.state.credentials.password + "';" +
           "  document.getElementById('signin').click();" +
           "}";
+        if (this.state.credentials.username === null || this.state.credentials.password === null) injection = "";
       }
 
       return (
