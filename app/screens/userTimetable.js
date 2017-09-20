@@ -29,7 +29,7 @@ export default class UserTimetableScreen extends Component {
   loadTimetable() {
     var self = this;
     api('timetable', [
-      {key: "includeBlanks", value: "true"},
+      {key: "includeBlanks", value: "false"},
       {key: "start", value: moment(this.state.day).startOf('day').startOf('week').add(this.state.week, 'weeks').unix()},
       {key: "end", value: moment(this.state.day).endOf('day').endOf('week').add(this.state.week, 'weeks').unix()}
     ]).then(function (data) {
