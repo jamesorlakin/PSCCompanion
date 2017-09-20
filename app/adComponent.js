@@ -15,8 +15,10 @@ export default class BannerAd extends Component {
     super(props);
     this.state = {
       loaded: false,
-      adFree: false
-    };
+      adFree: false,
+      error: null
+    }
+    this.bannerError = this.bannerError.bind(this)
   }
 
   componentDidMount() {
@@ -31,17 +33,22 @@ export default class BannerAd extends Component {
     })
   }
 
+  bannerError(data) {
+    this.setState({error: data})
+  }
+
   render() {
-    if (!this.state.loaded) return (
-        <Text>Advertising</Text>
-    );
+    if (this.state.error) return (<Text>{this.state.error}</Text>)
+
+    if (!this.state.loaded) return (<View />)
 
     if (!this.state.adFree) return (
       <AdMobBanner
         bannerSize="fullBanner"
         adUnitID="ca-app-pub-7238065308394709/8039373135"
-        testDeviceID="EMULATOR" />
-    );
+        testDeviceID="EMULATOR"
+        didFailToReceiveAdWithError={this.bannerError} />
+    )
 
     return (<View/>)
   }
