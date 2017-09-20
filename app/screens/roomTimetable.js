@@ -8,7 +8,7 @@ import {
 } from 'react-native';
 
 import api from '../api.js';
-import Timetable from '../timetableComponent.js';
+import Timetable from '../timetableComponents/timetableHost.js';
 import moment from 'moment';
 
 export default class RoomTimetableScreen extends Component {

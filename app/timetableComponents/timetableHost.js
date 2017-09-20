@@ -1,3 +1,5 @@
+// Sorts data by day, and returns a horizontal scrollview containing timetableDay
+
 import React, { Component } from 'react';
 import {
   View,
@@ -9,6 +11,7 @@ import {
 } from 'react-native';
 
 import moment from 'moment';
+import TimetableDay from './timetableDay.js';
 var dayWidth = Dimensions.get('window').width*0.8;
 
 export default class Timetable extends Component {
@@ -16,23 +19,6 @@ export default class Timetable extends Component {
     super(props);
     this.doneScroll = false;
     this.doScroll = this.doScroll.bind(this)
-  }
-
-  eventElement(data) {
-    if (data.item.Type === "studyperiod") return (
-      <View>
-        <Text style={styles.italic}>Free</Text>
-        <Text>{moment.unix(data.item.Start).format('LT')}</Text>
-      </View>
-    )
-
-    return (
-      <View>
-        <Text style={styles.bold}>{data.item.Title}</Text>
-        <Text>{moment.unix(data.item.Start).format('LT')} - {moment.unix(data.item.End).format('LT')} : {data.item.Room}</Text>
-        {data.item.Staff !== "" && <Text>{data.item.Staff}</Text>}
-      </View>
-    )
   }
 
   doScroll(ref) {
@@ -62,16 +48,16 @@ export default class Timetable extends Component {
 
     var timetableColumns = [];
     Object.keys(dayTimetables).forEach(function (key) {
-      timetableColumns.push(<FlatList
-        width={dayWidth}
+      timetableColumns.push(<TimetableDay
+        dayWidth={dayWidth}
         key={key}
-        data={dayTimetables[key]}
-        ListHeaderComponent={<Text style={styles.boldTitleUnderline}>{moment.unix(key).format('dddd - Do')}</Text>}
-        renderItem={self.eventElement} />)
+        day={key}
+        data={dayTimetables[key]} />)
     })
 
     // No point in having a horizontal scroll for one day
     if (timetableColumns.length === 1) return timetableColumns[0];
+
     return (
       <ScrollView ref={this.doScroll} horizontal={true}>
         {timetableColumns}
