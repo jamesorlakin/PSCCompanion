@@ -16,13 +16,18 @@ export default class TimetableDay extends Component {
     var rows = [];
 
     for (var i = 0; i < events.length; i++) {
+      // Does the first event start at 8:30?
       if (i === 0 && moment.unix(events[i].Start)
         .isAfter(moment.unix(events[i].Start).hour(8).minute(30)))
           rows.push(<EventElement key={i} item={{Type: "free",
             Start: moment.unix(events[i].Start).hour(8).minute(30).unix(),
-            End: events[i].End}} />);
+            End: events[i].Start}} />);
 
-      if (i+1 !== events.length) {
+      // Add the event
+      rows.push(<EventElement key={events[i].Start+events[i].Type} item={events[i]} />);
+
+      // Is there a gap between the end of now and the next item?
+      if (i+1 !== events.length && i !== 0) {
         if (events[i].End !== events[i+1].Start)
           rows.push(<EventElement key={i}
             item={{Type: "free",
@@ -30,8 +35,12 @@ export default class TimetableDay extends Component {
               End: events[i+1].Start}} />);
       }
 
-      rows.push(<EventElement key={events[i].Start+events[i].Type} item={events[i]} />);
-      //events[i]
+      // Is there nothing until 16:35?
+      if (i+1 === events.length && moment.unix(events[i].End)
+        .isBefore(moment.unix(events[i].Start).hour(16).minute(35)))
+          rows.push(<EventElement key={i} item={{Type: "free",
+            Start: events[i].End,
+            End: moment.unix(events[i].Start).hour(16).minute(35).unix()}} />);
     }
 
     return (<ScrollView width={this.props.dayWidth}>
