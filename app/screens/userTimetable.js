@@ -21,7 +21,8 @@ export default class UserTimetableScreen extends Component {
     this.state = {
       loaded: false,
       data: null,
-      week: 0
+      week: 0,
+      error: null
     }
     this.switchWeek = this.switchWeek.bind(this);
   }
@@ -34,6 +35,8 @@ export default class UserTimetableScreen extends Component {
       {key: "end", value: moment(this.state.day).endOf('day').endOf('week').add(this.state.week, 'weeks').unix()}
     ]).then(function (data) {
       self.setState({loaded: true, data: data})
+    }).catch(function (error) {
+      self.setState({error: error})
     })
   }
 
@@ -52,11 +55,14 @@ export default class UserTimetableScreen extends Component {
     return (
       <View style={styles.container}>
         <Picker selectedValue={this.state.week} mode="dropdown" onValueChange={this.switchWeek}>
+          <Picker.Item label="Last week" value={-1} />
           <Picker.Item label="This week" value={0} />
           <Picker.Item label="Next week" value={1} />
           <Picker.Item label="Next next week" value={2} />
+          <Picker.Item label="Next next next week" value={3} />
         </Picker>
         {(this.state.loaded ? <Timetable data={this.state.data} week={this.state.week} /> : <ActivityIndicator />)}
+        {(this.state.error && <Text>Error: {this.state.error.toString()}</Text>)}
       </View>
     )
 

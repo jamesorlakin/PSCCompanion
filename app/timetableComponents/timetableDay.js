@@ -27,7 +27,7 @@ export default class TimetableDay extends Component {
       rows.push(<EventElement key={events[i].Start+events[i].Type} item={events[i]} />);
 
       // Is there a gap between the end of now and the next item?
-      if (i+1 !== events.length && i !== 0) {
+      if (i+1 !== events.length) {
         if (events[i].End !== events[i+1].Start)
           rows.push(<EventElement key={i}
             item={{Type: "free",

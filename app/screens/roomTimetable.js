@@ -22,7 +22,8 @@ export default class RoomTimetableScreen extends Component {
       loaded: false,
       submitted: false,
       data: null,
-      room: null
+      room: null,
+      error: null
     }
     this.switchRoom = this.switchRoom.bind(this);
     this.loadTimetable = this.loadTimetable.bind(this);
@@ -38,7 +39,7 @@ export default class RoomTimetableScreen extends Component {
     ]).then(function (data) {
       self.setState({loaded: true, data: data})
     }).catch(function (error) {
-      console.error(error);
+      self.setState({error: error})
     })
   }
 
@@ -54,11 +55,13 @@ export default class RoomTimetableScreen extends Component {
         <TextInput onSubmitEditing={this.loadTimetable}
           placeholder="e.g VY101"
           onChangeText={this.switchRoom}/>
+        <Text>{JSON.stringify(this.state.data)}</Text>
         {(this.state.loaded ?
-          (typeof this.state.data.error == "string" ?
+          (typeof this.state.data.error === "string" ?
             <Text>Error: {this.state.data.error}</Text>
             : <Timetable data={this.state.data} />)
           : (this.state.submitted && <ActivityIndicator />))}
+        {(this.state.error && <Text>Error: {this.state.error.toString()}</Text>)}
       </View>
     );
   }

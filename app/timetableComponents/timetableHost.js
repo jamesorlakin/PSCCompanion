@@ -25,7 +25,7 @@ export default class Timetable extends Component {
     if (this.props.week != 0) return true
     var self = this;
     if (!this.doneScroll) setTimeout(function () {
-      if (moment().format('d') < 5) {
+      if (moment().format('d') < 6) {
         self.doneScroll = true
         ref.scrollTo({
           x: (moment().format('d')-1)*(dayWidth),
@@ -36,6 +36,9 @@ export default class Timetable extends Component {
   }
 
   render() {
+    if (this.props.data.timetable.length === 0)
+      return (<Text>No timetable events returned.</Text>)
+
     var self = this;
     var dayTimetables = {};
 
