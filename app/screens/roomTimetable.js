@@ -55,7 +55,6 @@ export default class RoomTimetableScreen extends Component {
         <TextInput onSubmitEditing={this.loadTimetable}
           placeholder="e.g VY101"
           onChangeText={this.switchRoom}/>
-        <Text>{JSON.stringify(this.state.data)}</Text>
         {(this.state.loaded ?
           (typeof this.state.data.error === "string" ?
             <Text>Error: {this.state.data.error}</Text>
