@@ -3,7 +3,7 @@ import {
   View,
   Text,
   ActivityIndicator,
-  Picker,
+  Button,
   StyleSheet,
 } from 'react-native';
 
@@ -40,9 +40,10 @@ export default class UserTimetableScreen extends Component {
     })
   }
 
-  switchWeek(week, index) {
+  switchWeek(week) {
+    if (!this.state.loaded) return false
     var self = this;
-    this.setState({loaded: false, week: week}, function () {
+    this.setState({loaded: false, week: this.state.week+week}, function () {
         self.loadTimetable();
     });
   }
@@ -54,13 +55,17 @@ export default class UserTimetableScreen extends Component {
   render() {
     return (
       <View style={styles.container}>
-        <Picker selectedValue={this.state.week} mode="dropdown" onValueChange={this.switchWeek}>
-          <Picker.Item label="Last week" value={-1} />
-          <Picker.Item label="This week" value={0} />
-          <Picker.Item label="Next week" value={1} />
-          <Picker.Item label="Next next week" value={2} />
-          <Picker.Item label="Next next next week" value={3} />
-        </Picker>
+        <View style={{flexDirection: "row", justifyContent: "space-between"}}>
+          <Button onPress={() => {this.switchWeek(-1)}}
+            color="gray"
+            style={{width: 50}}
+            title="<" />
+          <Text>Week commencing {moment().add(this.state.week, 'weeks').format('Do MMMM')}</Text>
+          <Button onPress={() => {this.switchWeek(1)}}
+            color="gray"
+            style={{width: 50, backgroundColor: "black"}}
+            title=">" />
+        </View>
         {(this.state.loaded ? <Timetable data={this.state.data} week={this.state.week} /> : <ActivityIndicator />)}
         {(this.state.error && <Text>Error: {this.state.error.toString()}</Text>)}
       </View>

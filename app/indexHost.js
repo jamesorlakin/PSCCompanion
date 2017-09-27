@@ -14,7 +14,7 @@ import { StackNavigator, DrawerNavigator, NavigationActions, DrawerItems } from 
 import BannerAd from './adComponent.js'
 
 import WelcomeScreen from './screens/welcome.js'
-import DebugScreen from './screens/debug.js'
+//import DebugScreen from './screens/debug.js'
 import FreeRoomScreen from './screens/freeroom.js'
 import UserTimetableScreen from './screens/userTimetable.js'
 import RoomTimetableScreen from './screens/roomTimetable.js'
@@ -24,7 +24,7 @@ import SettingsScreen from './screens/settings.js'
 
 const Drawer = DrawerNavigator({
   welcome: {screen: WelcomeScreen},
-  debug: {screen: DebugScreen},
+//  debug: {screen: DebugScreen},
   freeroom: {screen: FreeRoomScreen},
   userTimetable: {screen: UserTimetableScreen},
   roomTimetable: {screen: RoomTimetableScreen},
