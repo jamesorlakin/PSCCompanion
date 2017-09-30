@@ -1,5 +1,5 @@
 // A helper utility for fetching from the API.
-import {AsyncStorage} from 'react-native';
+import { AsyncStorage } from 'react-native';
 
 export default async function api(path, params) {
   var tokens = await AsyncStorage.getItem('tokens');

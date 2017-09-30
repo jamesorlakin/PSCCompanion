@@ -3,6 +3,7 @@ import {
   View,
   Text,
   ActivityIndicator,
+  AsyncStorage,
   Button,
   StyleSheet,
 } from 'react-native';
@@ -31,10 +32,29 @@ export default class UserTimetableScreen extends Component {
     var self = this;
     api('timetable', [
       {key: "includeBlanks", value: "false"},
-      {key: "start", value: moment(this.state.day).startOf('day').startOf('week').add(this.state.week, 'weeks').unix()},
-      {key: "end", value: moment(this.state.day).endOf('day').endOf('week').add(this.state.week, 'weeks').unix()}
+      {key: "start", value: moment().startOf('day').startOf('week').add(this.state.week, 'weeks').unix()},
+      {key: "end", value: moment().endOf('day').endOf('week').add(this.state.week, 'weeks').unix()}
     ]).then(function (data) {
       self.setState({loaded: true, data: data})
+      AsyncStorage.getItem('sharedPinAndKey').then(function (asyncData) {
+        if (data !== null) {
+          var pinAndKey = JSON.parse(asyncData);
+          fetch("https://gateway.jameslakin.co.uk/psc/api/submit", {
+            method: "POST",
+            headers: {'Content-Type':'application/json'},
+            body: JSON.stringify({
+              publishKey: pinAndKey.publishKey,
+              pin: pinAndKey.pin,
+              startOfWeek: moment().startOf('day').startOf('week').add(self.state.week, 'weeks').unix(),
+              data: JSON.stringify(data)
+            })
+          }).then(function (req) {
+            req.text()
+          }).then(function (req) {
+            console.log(req);
+          })
+        }
+      })
     }).catch(function (error) {
       self.setState({error: error})
     })

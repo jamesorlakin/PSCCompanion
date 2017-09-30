@@ -58,11 +58,11 @@ export default class SettingSharedTimetable extends Component {
         <Text>You can choose to share your timetable with other users of PSC
           Companion using a randomly generated unique PIN. This feature is off
           by default, as it requires your timetable data to be stored externally
-          in a database I host.</Text>
+          in a database I host. At this moment in time you cannot "un-enroll".</Text>
         {!this.state.enrolled && <Button onPress={this.enroll} title="Enroll" />}
         <Text>{JSON.stringify(this.state.pinAndKey)}</Text>
         {this.state.enrolled &&
-          <Text style={{fontSize: 18}}>Your PIN is {this.state.pinAndKey.pin}</Text>}
+          <Text style={{fontSize: 18}}>Your PIN is {this.state.pinAndKey.pin}.</Text>}
         {this.state.enrolled && <SharedPinManager />}
       </View>
     );
@@ -126,12 +126,38 @@ class SharedPinManager extends Component {
 
         {this.state.savedPins.map(function (pin) {
           return (
-            <View key={pin} style={{flexDirection: "row", justifyContent: "space-between"}}>
-              <Text>{pin}</Text>
-              <Button title="Delet this" onPress={() => {self.removePin(pin)}} />
-            </View>
+            <PINView key={pin} pin={pin} remove={() => {self.removePin(pin)}} />
           )
         })}
+      </View>
+    );
+  }
+}
+
+class PINView extends Component {
+  constructor() {
+    super();
+    this.state = {
+      fullName: null
+    }
+  }
+
+  componentDidMount() {
+    var self = this;
+    fetch("https://gateway.jameslakin.co.uk/psc/api/lookup/" + this.props.pin).then(function (data) {
+      return data.json()
+    }).then(function (result) {
+      self.setState({fullName: result.fullName})
+    }).catch(function (error) {
+      self.setState({fullName: "No person found."})
+    })
+  }
+
+  render() {
+    return (
+      <View style={{flexDirection: "row", justifyContent: "space-between"}}>
+        <Text style={{fontSize: 16}}>{this.props.pin} - {this.state.fullName}</Text>
+        <Button title="Delet this" onPress={this.props.remove} />
       </View>
     );
   }
