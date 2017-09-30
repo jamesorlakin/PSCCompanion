@@ -4,6 +4,7 @@ import {
   Text,
   AsyncStorage,
   Button,
+  ActivityIndicator,
   TextInput,
   StyleSheet,
 } from 'react-native';
@@ -81,7 +82,9 @@ class SharedPinManager extends Component {
     super();
     this.state = {
       savedPins: [],
-      newPin: null
+      newPin: null,
+      adding: false,
+      error: null
     }
     this.removePin = this.removePin.bind(this)
     this.addPin = this.addPin.bind(this)
@@ -97,10 +100,20 @@ class SharedPinManager extends Component {
   }
 
   addPin() {
-    var pins = this.state.savedPins;
-    pins.push(this.state.newPin);
-    this.setState({savedPins: pins, newPin: null});
-    AsyncStorage.setItem('sharedSavedPins', JSON.stringify(pins));
+    var self = this;
+    self.setState({adding: true});
+    fetch("https://gateway.jameslakin.co.uk/psc/api/lookup/" + this.state.newPin).then(function (data) {
+      return data.json()
+    }).then(function (result) {
+      var pins = self.state.savedPins;
+      pins.push({pin: self.state.newPin, name: result.fullName});
+      self.setState({savedPins: pins, newPin: null});
+      AsyncStorage.setItem('sharedSavedPins', JSON.stringify(pins));
+      self.setState({adding: false});
+    }).catch(function (error) {
+      self.setState({error: "No person found for pin " + self.state.newPin});
+      self.setState({adding: false});
+    })
   }
 
   removePin(pin) {
@@ -111,7 +124,7 @@ class SharedPinManager extends Component {
   }
 
   render() {
-    var self = this
+    var self = this;
     return (
       <View>
         <View style={{flexDirection: "row", justifyContent: "space-between"}}>
@@ -122,11 +135,13 @@ class SharedPinManager extends Component {
             onChangeText={(pin) => {this.setState({newPin: pin})}}
             style={{flex: 2}} />
           <Button title="Add" onPress={this.addPin} style={{flex: 1}} />
+          {this.state.adding && <ActivityIndicator />}
         </View>
+        {this.state.error && <Text>{this.state.error.toString()}</Text>}
 
         {this.state.savedPins.map(function (pin) {
           return (
-            <PINView key={pin} pin={pin} remove={() => {self.removePin(pin)}} />
+            <PINView key={pin.pin} pin={pin} remove={() => {self.removePin(pin)}} />
           )
         })}
       </View>
@@ -134,31 +149,11 @@ class SharedPinManager extends Component {
   }
 }
 
-class PINView extends Component {
-  constructor() {
-    super();
-    this.state = {
-      fullName: null
-    }
-  }
-
-  componentDidMount() {
-    var self = this;
-    fetch("https://gateway.jameslakin.co.uk/psc/api/lookup/" + this.props.pin).then(function (data) {
-      return data.json()
-    }).then(function (result) {
-      self.setState({fullName: result.fullName})
-    }).catch(function (error) {
-      self.setState({fullName: "No person found."})
-    })
-  }
-
-  render() {
-    return (
-      <View style={{flexDirection: "row", justifyContent: "space-between"}}>
-        <Text style={{fontSize: 16}}>{this.props.pin} - {this.state.fullName}</Text>
-        <Button title="Delet this" onPress={this.props.remove} />
-      </View>
-    );
-  }
+function PINView(props) {
+  return (
+    <View style={{flexDirection: "row", justifyContent: "space-between"}}>
+      <Text style={{fontSize: 16}}>{props.pin.pin} - {props.pin.name}</Text>
+      <Button title="Delet this" onPress={props.remove} />
+    </View>
+  );
 }

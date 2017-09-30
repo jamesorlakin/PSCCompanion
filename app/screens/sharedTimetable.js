@@ -4,6 +4,7 @@ import {
   Text,
   AsyncStorage,
   ScrollView,
+  Picker,
   ActivityIndicator,
   StyleSheet,
 } from 'react-native';
@@ -21,10 +22,10 @@ export default class SharedTimetableScreen extends Component {
     this.state = {
       enrolled: false,
       savedPins: [],
-      week: 0,
       day: 0,
       pinAndKey: null
     }
+    this.changeDay = this.changeDay.bind(this)
   }
 
   componentDidMount() {
@@ -43,17 +44,28 @@ export default class SharedTimetableScreen extends Component {
     })
   }
 
+  changeDay(index, value) {
+    this.setState({day: value})
+  }
+
   render() {
+    var self = this;
     if (this.state.enrolled) return (
       <View style={styles.container}>
         <Text style={{fontSize: 18}}>Your PIN is {this.state.pinAndKey.pin}.</Text>
+        <Picker selectedValue={this.state.day} onValueChange={this.changeDay}>
+          <Picker.Item label="Monday" value={0} />
+          <Picker.Item label="Tuesday" value={1} />
+          <Picker.Item label="Wednesday" value={2} />
+          <Picker.Item label="Thursday" value={3} />
+          <Picker.Item label="Friday" value={4} />
+        </Picker>
         <ScrollView horizontal={true}>
         {this.state.savedPins.length === 0 && <Text>No PINs added!</Text>}
         {this.state.savedPins.map(function (pin) {
           return (<ExternalTimetable pin={pin}
             key={pin}
-            day={this.state.day}
-            week={this.state.week} />)
+            day={self.state.day} />)
         })}
         </ScrollView>
       </View>
@@ -84,9 +96,9 @@ class ExternalTimetable extends Component {
 
   componentDidMount() {
     var self = this;
-    fetch("https://gateway.jameslakin.co.uk/psc/api/fetch?pin=" + this.props.pin +
+    fetch("https://gateway.jameslakin.co.uk/psc/api/fetch?pin=" + this.props.pin.pin +
     "&startOfWeek=" + moment().startOf('day').startOf('week')
-    .add(this.props.week, 'weeks').unix()).then(function (data) {
+    .unix()).then(function (data) {
       return data.json();
     }).then(function (results) {
       self.setState({loaded: true, data: results[0]})
@@ -98,9 +110,9 @@ class ExternalTimetable extends Component {
   render() {
     return (
       <View style={styles.container}>
-        <Text>PIN {this.props.pin}</Text>
+        <Text style={{fontSize: 17}}>{this.props.pin.pin} {this.props.pin.name}</Text>
          {this.state.error && <Text>{this.state.error.toString()}</Text>}
-         {this.state.loaded ? <Timetable data={JSON.parse(JSON.parse(this.state.data.data))} />
+         {this.state.loaded ? <Timetable data={JSON.parse(JSON.parse(this.state.data.data))} day={this.props.day} />
           : <ActivityIndicator />}
       </View>
     );

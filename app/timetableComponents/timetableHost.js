@@ -61,6 +61,8 @@ export default class Timetable extends Component {
     // No point in having a horizontal scroll for one day
     if (timetableColumns.length === 1) return timetableColumns[0];
 
+    if (typeof this.props.day === "number") return timetableColumns[this.props.day];
+
     return (
       <ScrollView ref={this.doScroll} horizontal={true}>
         {timetableColumns}
