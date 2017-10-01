@@ -61,12 +61,16 @@ export default class SharedTimetableScreen extends Component {
           <Picker.Item label="Friday" value={4} />
         </Picker>
         <ScrollView horizontal={true}>
-        {this.state.savedPins.length === 0 && <Text>No PINs added!</Text>}
-        {this.state.savedPins.map(function (pin) {
-          return (<ExternalTimetable pin={pin}
-            key={pin}
-            day={self.state.day} />)
-        })}
+          {this.state.savedPins.length === 0 && <Text>No PINs added!</Text>}
+          <ExternalTimetable pin={{pin: this.state.pinAndKey.pin, name: "Me"}}
+          key={this.state.pinAndKey.pin}
+          day={self.state.day}/>
+          {this.state.savedPins.map(function (pin) {
+            console.log(pin);
+            return (<ExternalTimetable pin={pin}
+              key={pin.pin}
+              day={self.state.day} />)
+          })}
         </ScrollView>
       </View>
     );
@@ -110,7 +114,7 @@ class ExternalTimetable extends Component {
   render() {
     return (
       <View style={styles.container}>
-        <Text style={{fontSize: 17}}>{this.props.pin.pin} {this.props.pin.name}</Text>
+        <Text style={{fontSize: 17}}>{this.props.pin.name} ({this.props.pin.pin})</Text>
          {this.state.error && <Text>{this.state.error.toString()}</Text>}
          {this.state.loaded ? <Timetable data={JSON.parse(JSON.parse(this.state.data.data))} day={this.props.day} />
           : <ActivityIndicator />}

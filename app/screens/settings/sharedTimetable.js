@@ -61,7 +61,6 @@ export default class SettingSharedTimetable extends Component {
           by default, as it requires your timetable data to be stored externally
           in a database I host. At this moment in time you cannot "un-enroll".</Text>
         {!this.state.enrolled && <Button onPress={this.enroll} title="Enroll" />}
-        <Text>{JSON.stringify(this.state.pinAndKey)}</Text>
         {this.state.enrolled &&
           <Text style={{fontSize: 18}}>Your PIN is {this.state.pinAndKey.pin}.</Text>}
         {this.state.enrolled && <SharedPinManager />}
@@ -101,6 +100,19 @@ class SharedPinManager extends Component {
 
   addPin() {
     var self = this;
+
+    if (this.state.newPin === "") {
+      this.setState({error: "Enter a PIN."})
+      return false;
+    }
+
+    for (var i = 0; i < this.state.savedPins.length; i++) {
+      if (self.state.newPin === self.state.savedPins[i].pin) {
+        self.setState({error: "Pin " + self.state.newPin + " already exists."})
+        return false;
+      }
+    }
+
     self.setState({adding: true});
     fetch("https://gateway.jameslakin.co.uk/psc/api/lookup/" + this.state.newPin).then(function (data) {
       return data.json()
@@ -129,7 +141,7 @@ class SharedPinManager extends Component {
       <View>
         <View style={{flexDirection: "row", justifyContent: "space-between"}}>
           <TextInput
-            placeholder="Enter a 6 digit pin"
+            placeholder="Enter a 6 digit PIN"
             keyboardType="numeric"
             defaultValue={this.state.newPin}
             onChangeText={(pin) => {this.setState({newPin: pin})}}
@@ -153,7 +165,7 @@ function PINView(props) {
   return (
     <View style={{flexDirection: "row", justifyContent: "space-between"}}>
       <Text style={{fontSize: 16}}>{props.pin.pin} - {props.pin.name}</Text>
-      <Button title="Delet this" onPress={props.remove} />
+      <Button title="Remove" onPress={props.remove} />
     </View>
   );
 }
