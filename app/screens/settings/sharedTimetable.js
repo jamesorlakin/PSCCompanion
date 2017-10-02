@@ -141,7 +141,7 @@ class SharedPinManager extends Component {
       <View>
         <View style={{flexDirection: "row", justifyContent: "space-between"}}>
           <TextInput
-            placeholder="Enter a 6 digit PIN"
+            placeholder="Enter a foreign PIN"
             keyboardType="numeric"
             defaultValue={this.state.newPin}
             onChangeText={(pin) => {this.setState({newPin: pin})}}
