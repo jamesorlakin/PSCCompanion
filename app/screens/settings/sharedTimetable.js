@@ -14,6 +14,7 @@ export default class SettingSharedTimetable extends Component {
     super();
     this.state = {
       enrolled: false,
+      enrolling: false,
       pinAndKey: {}
     }
     this.enroll = this.enroll.bind(this)
@@ -37,6 +38,7 @@ export default class SettingSharedTimetable extends Component {
 
   enroll() {
     var self = this;
+    this.setState({enrolling: true})
     AsyncStorage.getItem('user').then(function (userData) {
       console.log(userData);
       fetch("https://gateway.jameslakin.co.uk/psc/api/enroll", {
@@ -47,7 +49,7 @@ export default class SettingSharedTimetable extends Component {
         return data.json();
       }).then(function (result) {
         AsyncStorage.setItem('sharedPinAndKey', JSON.stringify(result))
-        self.setState({enrolled: true, pinAndKey: result})
+        self.setState({enrolled: true, enrolling: false, pinAndKey: result})
       })
     })
   }
@@ -60,7 +62,9 @@ export default class SettingSharedTimetable extends Component {
           Companion using a randomly generated unique PIN. This feature is off
           by default, as it requires your timetable data to be stored externally
           in a database I host. At this moment in time you cannot "un-enroll".</Text>
-        {!this.state.enrolled && <Button onPress={this.enroll} title="Enroll" />}
+        {!this.state.enrolled && !this.state.enrolling &&
+          <Button onPress={this.enroll} title="Enroll" />}
+        {this.state.enrolling && <ActivityIndicator />}
         {this.state.enrolled &&
           <Text style={{fontSize: 18}}>Your PIN is {this.state.pinAndKey.pin}.</Text>}
         {this.state.enrolled && <SharedPinManager />}
@@ -139,14 +143,17 @@ class SharedPinManager extends Component {
     var self = this;
     return (
       <View>
-        <View style={{flexDirection: "row", justifyContent: "space-between"}}>
+        <View style={{flexDirection: "row"}}>
           <TextInput
             placeholder="Enter a foreign PIN"
             keyboardType="numeric"
             defaultValue={this.state.newPin}
             onChangeText={(pin) => {this.setState({newPin: pin})}}
+            onSubmitEditing={this.addPin}
             style={{flex: 2}} />
-          <Button title="Add" onPress={this.addPin} style={{flex: 1}} />
+          <View style={{padding: 4}}>
+            <Button title="Add" onPress={this.addPin} />
+          </View>
           {this.state.adding && <ActivityIndicator />}
         </View>
         {this.state.error && <Text>{this.state.error.toString()}</Text>}
@@ -163,9 +170,9 @@ class SharedPinManager extends Component {
 
 function PINView(props) {
   return (
-    <View style={{flexDirection: "row", justifyContent: "space-between"}}>
+    <View style={{flexDirection: "row", justifyContent: "space-between", marginBottom: 4}}>
       <Text style={{fontSize: 16}}>{props.pin.pin} - {props.pin.name}</Text>
-      <Button title="Remove" onPress={props.remove} />
+      <Button title="Remove" color="#E80909" onPress={props.remove} />
     </View>
   );
 }
