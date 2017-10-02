@@ -55,6 +55,7 @@ export default class Timetable extends Component {
         dayWidth={dayWidth}
         key={key}
         day={key}
+        selectedDay={self.props.day}
         data={dayTimetables[key]} />)
     })
 

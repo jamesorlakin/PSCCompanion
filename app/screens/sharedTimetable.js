@@ -5,6 +5,7 @@ import {
   AsyncStorage,
   ScrollView,
   Picker,
+  Dimensions,
   ActivityIndicator,
   StyleSheet,
 } from 'react-native';
@@ -93,7 +94,7 @@ class ExternalTimetable extends Component {
     super(props);
     this.state = {
       loaded: false,
-      data: null,
+      data: {},
       error: null,
     }
   }
@@ -112,9 +113,19 @@ class ExternalTimetable extends Component {
   }
 
   render() {
+    if (this.state.loaded && this.state.data === undefined) {
+      return (
+        <View style={styles.container}>
+          <Text style={{fontSize: 17}}>{this.props.pin.name} ({this.props.pin.pin})</Text>
+          <Text style={{width: Dimensions.get('window').width*0.8}}>No timetable
+            data was returned after executing a network request for this user.</Text>
+        </View>
+      )
+    }
+
     return (
       <View style={styles.container}>
-        <Text style={{fontSize: 17}}>{this.props.pin.name} ({this.props.pin.pin})</Text>
+        <Text style={{fontSize: 17, marginBottom: 4}}>{this.props.pin.name} ({this.props.pin.pin})</Text>
          {this.state.error && <Text>{this.state.error.toString()}</Text>}
          {this.state.loaded ? <Timetable data={JSON.parse(JSON.parse(this.state.data.data))} day={this.props.day} />
           : <ActivityIndicator />}

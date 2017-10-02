@@ -45,7 +45,10 @@ export default class TimetableDay extends Component {
 
     return (<ScrollView width={this.props.dayWidth}>
         <View style={styles.container}>
-          <Text style={styles.boldTitleUnderline}>{moment.unix(this.props.day).format('dddd - Do')}</Text>
+          {
+            typeof this.props.selectedDay !== "number" &&
+            <Text style={styles.boldTitleUnderline}>{moment.unix(this.props.day).format('dddd - Do')}</Text>
+          }
           {rows}
         </View>
       </ScrollView>)
