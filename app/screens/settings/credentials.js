@@ -61,5 +61,6 @@ export default class SettingsCredentials extends Component {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+    marginBottom: 30
   },
 });

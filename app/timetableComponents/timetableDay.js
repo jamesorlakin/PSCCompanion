@@ -19,7 +19,7 @@ export default class TimetableDay extends Component {
       // Does the first event start at 8:30?
       if (i === 0 && moment.unix(events[i].Start)
         .isAfter(moment.unix(events[i].Start).hour(8).minute(30)))
-          rows.push(<EventElement key={i} item={{Type: "free",
+          rows.push(<EventElement key={i+"start"} item={{Type: "free",
             Start: moment.unix(events[i].Start).hour(8).minute(30).unix(),
             End: events[i].Start}} />);
 
@@ -38,7 +38,7 @@ export default class TimetableDay extends Component {
       // Is there nothing until 16:35?
       if (i+1 === events.length && moment.unix(events[i].End)
         .isBefore(moment.unix(events[i].Start).hour(16).minute(35)))
-          rows.push(<EventElement key={i} item={{Type: "free",
+          rows.push(<EventElement key={i+"end"} item={{Type: "free",
             Start: events[i].End,
             End: moment.unix(events[i].Start).hour(16).minute(35).unix()}} />);
     }

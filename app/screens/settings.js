@@ -9,6 +9,7 @@ import {
 
 import SettingsCredentials from './settings/credentials.js'
 import SettingsAdFree from './settings/adFree.js'
+import SettingsSharedTimetable from './settings/sharedTimetable.js'
 
 export default class SettingsScreen extends Component {
   static navigationOptions = {
@@ -21,8 +22,9 @@ export default class SettingsScreen extends Component {
         <ScrollView>
           <SettingsCredentials/>
           <SettingsAdFree/>
+          <SettingsSharedTimetable />
           <Text>Privacy Policy:</Text>
-          <Text>PSC Companion does not transmit personal data to any servers outside of college.
+          <Text>PSC Companion does not transmit personal data to any servers outside of college (unless you have enrolled into timetable sharing).
           Advertising (AdMob) is used in this application, however it may be switched off in the settings menu.
           Credentials for the college account are not stored on the app by default, unless you have activated
           the intranet auto login feature. This application requires the Phone State permission due the framework
@@ -37,7 +39,7 @@ export default class SettingsScreen extends Component {
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
+    //flex: 1,
     margin: 8,
   },
 });

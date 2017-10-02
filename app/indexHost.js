@@ -18,6 +18,7 @@ import WelcomeScreen from './screens/welcome.js'
 import FreeRoomScreen from './screens/freeroom.js'
 import UserTimetableScreen from './screens/userTimetable.js'
 import RoomTimetableScreen from './screens/roomTimetable.js'
+import SharedTimetableScreen from './screens/sharedTimetable.js'
 import MapScreen from './screens/map.js'
 import IntranetScreen from './screens/intranet.js'
 import SettingsScreen from './screens/settings.js'
@@ -28,6 +29,7 @@ const Drawer = DrawerNavigator({
   freeroom: {screen: FreeRoomScreen},
   userTimetable: {screen: UserTimetableScreen},
   roomTimetable: {screen: RoomTimetableScreen},
+  sharedTimetable: {screen: SharedTimetableScreen},
   map: {screen: MapScreen},
   intranet: {screen: IntranetScreen},
   settings: {screen: SettingsScreen},
