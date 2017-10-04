@@ -55,6 +55,8 @@ export default class Timetable extends Component {
         dayWidth={dayWidth}
         key={key}
         day={key}
+        onScroll={self.props.onScroll}
+        scrollTo={self.props.scrollTo}
         selectedDay={self.props.day}
         data={dayTimetables[key]} />)
     })

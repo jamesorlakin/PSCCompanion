@@ -23,10 +23,16 @@ export default class SharedTimetableScreen extends Component {
     this.state = {
       enrolled: false,
       savedPins: [],
-      day: 0,
-      pinAndKey: null
+      day: moment().isoWeekday()-1,
+      pinAndKey: null,
+      scrollTo: 0
     }
     this.changeDay = this.changeDay.bind(this)
+    this.onScroll = this.onScroll.bind(this);
+  }
+
+  onScroll(event) {
+    this.setState({scrollTo: event.nativeEvent.contentOffset.y});
   }
 
   componentDidMount() {
@@ -65,12 +71,13 @@ export default class SharedTimetableScreen extends Component {
           {this.state.savedPins.length === 0 && <Text>No PINs added!</Text>}
           <ExternalTimetable pin={{pin: this.state.pinAndKey.pin, name: "Me"}}
           key={this.state.pinAndKey.pin}
-          day={self.state.day}/>
+          day={self.state.day}
+          onScroll={self.onScroll}/>
           {this.state.savedPins.map(function (pin) {
-            console.log(pin);
             return (<ExternalTimetable pin={pin}
               key={pin.pin}
-              day={self.state.day} />)
+              day={self.state.day}
+              scrollTo={self.state.scrollTo} />)
           })}
         </ScrollView>
       </View>
@@ -127,7 +134,10 @@ class ExternalTimetable extends Component {
       <View style={styles.container}>
         <Text style={{fontSize: 17, marginBottom: 4}}>{this.props.pin.name} ({this.props.pin.pin})</Text>
          {this.state.error && <Text>{this.state.error.toString()}</Text>}
-         {this.state.loaded ? <Timetable data={JSON.parse(JSON.parse(this.state.data.data))} day={this.props.day} />
+         {this.state.loaded ? <Timetable data={JSON.parse(JSON.parse(this.state.data.data))}
+          day={this.props.day}
+          onScroll={this.props.onScroll}
+          scrollTo={this.props.scrollTo} />
           : <ActivityIndicator />}
       </View>
     );

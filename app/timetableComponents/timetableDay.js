@@ -10,6 +10,29 @@ import {
 import moment from 'moment'
 
 export default class TimetableDay extends Component {
+  constructor(props) {
+    super(props);
+    this.doneScroll = 0;
+    this.doScroll = this.doScroll.bind(this);
+    this.storeRef = this.storeRef.bind(this)
+  }
+
+  doScroll() {
+    if (this.scrollView === undefined) return false;
+    if (this.props.scrollTo === undefined) return false;
+    var self = this;
+    if (this.doneScroll !== this.props.scrollTo) setTimeout(function () {
+      self.doneScroll = self.props.scrollTo
+      self.scrollView.scrollTo({
+        y: self.props.scrollTo,
+        animated: false
+      })
+    }, 10)
+  }
+
+  storeRef(ref) {
+    this.scrollView = ref;
+  }
 
   render() {
     var events = this.props.data;
@@ -43,7 +66,12 @@ export default class TimetableDay extends Component {
             End: moment.unix(events[i].Start).hour(16).minute(35).unix()}} />);
     }
 
-    return (<ScrollView width={this.props.dayWidth}>
+    this.doScroll();
+
+    return (<ScrollView
+      width={this.props.dayWidth}
+      onScroll={this.props.onScroll}
+      ref={this.storeRef}>
         <View style={styles.container}>
           {
             typeof this.props.selectedDay !== "number" &&
@@ -78,7 +106,7 @@ const styles = StyleSheet.create({
 });
 
 function EventElement(props) {
-  var height = (props.item.End - props.item.Start)/60;
+  var height = ((props.item.End - props.item.Start)/60)+40;
   if (height<60) height = 60;
 
   var style = {
