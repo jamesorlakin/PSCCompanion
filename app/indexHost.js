@@ -68,7 +68,7 @@ const IndexHost = function (props) {
   return (
     <View style={styles.container}>
       <DrawerHost />
-      <BannerAd />
+      {__DEV__ ? <Text>Debug Copy</Text> : <BannerAd />}
     </View>
   )
 }
