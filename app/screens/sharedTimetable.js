@@ -60,7 +60,9 @@ export default class SharedTimetableScreen extends Component {
     if (this.state.enrolled) return (
       <View style={styles.container}>
         <Text style={{fontSize: 18}}>Your PIN is {this.state.pinAndKey.pin}.</Text>
-        <Picker selectedValue={this.state.day} onValueChange={this.changeDay}>
+        <Picker selectedValue={this.state.day}
+          onValueChange={this.changeDay}
+          mode="dropdown">
           <Picker.Item label="Monday" value={0} />
           <Picker.Item label="Tuesday" value={1} />
           <Picker.Item label="Wednesday" value={2} />
@@ -133,13 +135,18 @@ class ExternalTimetable extends Component {
 
     return (
       <View style={styles.container}>
-        <Text style={{fontSize: 17, marginBottom: 4}}>{this.props.pin.name} ({this.props.pin.pin})</Text>
-         {this.state.error && <Text>{this.state.error.toString()}</Text>}
-         {this.state.loaded ? <Timetable data={JSON.parse(JSON.parse(this.state.data.data))}
+        <Text style={{fontSize: 17, marginBottom: 4, textDecorationLine: 'underline'}}>
+          {this.props.pin.name}
+          {(this.state.data.startOfWeek !== moment().startOf('day').startOf('week').unix())
+            && " (Outdated)"}
+        </Text>
+
+        {this.state.loaded ? <Timetable data={JSON.parse(JSON.parse(this.state.data.data))}
           day={this.props.day}
           onScroll={this.props.onScroll}
           scrollTo={this.props.scrollTo} />
           : <ActivityIndicator />}
+        {this.state.error && <Text>{this.state.error.toString()}</Text>}
       </View>
     );
   }
