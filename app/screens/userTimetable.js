@@ -37,7 +37,7 @@ export default class UserTimetableScreen extends Component {
     ]).then(function (data) {
       self.setState({loaded: true, data: data})
       AsyncStorage.getItem('sharedPinAndKey').then(function (asyncData) {
-        if (data !== null) {
+        if (asyncData !== null) {
           var pinAndKey = JSON.parse(asyncData);
           fetch("https://gateway.jameslakin.co.uk/psc/api/submit", {
             method: "POST",
@@ -80,7 +80,7 @@ export default class UserTimetableScreen extends Component {
             color="gray"
             style={{width: 50}}
             title="<" />
-          <Text>Week commencing {moment().add(this.state.week, 'weeks').format('Do MMMM')}</Text>
+          <Text>Week commencing {moment().startOf('isoweek').add(this.state.week, 'weeks').format('Do MMMM')}</Text>
           <Button onPress={() => {this.switchWeek(1)}}
             color="gray"
             style={{width: 50, backgroundColor: "black"}}
