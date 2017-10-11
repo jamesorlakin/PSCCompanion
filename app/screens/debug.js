@@ -1,11 +1,10 @@
-/* @flow */
-
 import React, { Component } from 'react';
 import {
   View,
   TextInput,
   AsyncStorage,
   StyleSheet,
+  Button,
 } from 'react-native';
 
 export default class DebugScreen extends Component {
@@ -15,7 +14,12 @@ export default class DebugScreen extends Component {
 
   constructor() {
     super();
-    this.state = {tokens: ['Loading...']};
+    this.state = {
+      tokens: ['Loading...'],
+      pinAndKey: null,
+      newPinAndKey: null
+    };
+    this.savePinAndKey = this.savePinAndKey.bind(this)
   }
 
   componentDidMount() {
@@ -31,6 +35,14 @@ export default class DebugScreen extends Component {
 
       self.setState({tokens: state});
     })
+
+    AsyncStorage.getItem('sharedPinAndKey').then(function (result) {
+      self.setState({pinAndKey: result})
+    })
+  }
+
+  savePinAndKey() {
+    AsyncStorage.setItem('sharedPinAndKey', this.state.newPinAndKey)
   }
 
   render() {
@@ -38,6 +50,9 @@ export default class DebugScreen extends Component {
     return (<View style={styles.container}>{tokens.map(function (item) {
       return (<TextInput key={tokens.indexOf(item)}>{item}</TextInput>)
     })}
+    <TextInput defaultValue={this.state.pinAndKey}
+      onChangeText={(value) => {this.setState({newPinAndKey: value})}} />
+    <Button onPress={this.savePinAndKey} title="Save PinAndKey" />
     </View>)
   }
 }

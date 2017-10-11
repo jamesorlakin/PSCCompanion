@@ -7,6 +7,8 @@ import {
   ScrollView,
 } from 'react-native';
 
+import DebugScreen from './debug.js';
+
 import SettingsCredentials from './settings/credentials.js'
 import SettingsAdFree from './settings/adFree.js'
 import SettingsSharedTimetable from './settings/sharedTimetable.js'
@@ -31,6 +33,7 @@ export default class SettingsScreen extends Component {
           which this app is built on. It does not make use of phone functionality.</Text>
           <Text>About:</Text>
           <Text>PSC Companion Alpha, an app by James Lakin.</Text>
+          {__DEV__ && <DebugScreen/>}
         </ScrollView>
       </View>
     );
