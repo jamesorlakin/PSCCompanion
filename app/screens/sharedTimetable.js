@@ -125,7 +125,7 @@ class ExternalTimetable extends Component {
       return (
         <View style={styles.container}>
           <Text style={{fontSize: 17}}>{this.props.pin.name} ({this.props.pin.pin})</Text>
-          <Text style={{width: Dimensions.get('window').width*0.8}}>No timetable
+          <Text style={{width: Dimensions.get('window').width*0.6}}>No timetable
             data was returned after executing a network request for this user.</Text>
         </View>
       )

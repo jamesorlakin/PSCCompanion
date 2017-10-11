@@ -12,7 +12,7 @@ import {
 
 import moment from 'moment';
 import TimetableDay from './timetableDay.js';
-var dayWidth = Dimensions.get('window').width*0.8;
+var dayWidth = Dimensions.get('window').width*0.6;
 
 export default class Timetable extends Component {
   constructor(props) {
