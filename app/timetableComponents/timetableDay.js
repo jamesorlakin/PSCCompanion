@@ -8,6 +8,7 @@ import {
 } from 'react-native';
 
 import moment from 'moment'
+var colorHash = require('color-hash');
 
 export default class TimetableDay extends Component {
   constructor(props) {
@@ -112,12 +113,13 @@ function EventElement(props) {
   var style = {
     borderRadius: 4,
     borderWidth: 0.5,
-    borderColor: '#d6d7da',
+    borderColor: '#c5c6c9',
     height: height
   }
 
   if (props.item.Type === "free") return (
     <View style={style}>
+      <View style={{height: 2}} />
       <Text style={styles.italic}>Free</Text>
       <Text>{moment.unix(props.item.Start).format('LT')} - {moment.unix(props.item.End).format('LT')}</Text>
     </View>
@@ -125,6 +127,10 @@ function EventElement(props) {
 
   return (
     <View style={style}>
+      <View style={{
+        backgroundColor: (new colorHash()).hex("JL"+props.item.Title),
+        height: 3}}
+      />
       <Text style={styles.bold}>{props.item.Title}</Text>
       <Text>{moment.unix(props.item.Start).format('LT')} - {moment.unix(props.item.End).format('LT')} : {props.item.Room}</Text>
       {props.item.Staff !== "" && <Text>{props.item.Staff}</Text>}
