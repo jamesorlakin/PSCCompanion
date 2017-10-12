@@ -4,6 +4,7 @@ import React, { Component } from 'react';
 import {
   View,
   Text,
+  Image,
   StyleSheet,
   ScrollView,
   TouchableOpacity,
@@ -36,18 +37,20 @@ const Drawer = DrawerNavigator({
 })
 
 const MenuButton = function (props) {
-  if (props.navigation.state.index === 1) return (
-      <View>
-        <TouchableOpacity onPress={() => {props.navigation.navigate('DrawerClose')}}>
-          <Text style={{color: 'red', padding: 10, fontSize: 14}}>Close</Text>
-        </TouchableOpacity>
-      </View>
-    );
-
   return (
     <View>
-      <TouchableOpacity onPress={() => {props.navigation.navigate('DrawerOpen')}}>
-        <Text style={{color: 'blue', padding: 10, fontSize: 14}}>Menu</Text>
+      <TouchableOpacity onPress={() => {
+        props.navigation.state.index === 1 ?
+          props.navigation.navigate('DrawerClose')
+          : props.navigation.navigate('DrawerOpen')}}
+      >
+      <Image source={require('./images/hamburgerIcon.png')}
+        style={{
+          width: 64,
+          height: 64,
+          marginLeft: 0,
+          marginTop: 3
+        }}/>
       </TouchableOpacity>
     </View>
   );
