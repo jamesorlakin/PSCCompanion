@@ -90,7 +90,7 @@ export default class SharedTimetableScreen extends Component {
       <View style={styles.container}>
         <Text style={{fontSize: 18}}>You can now share your timetable with others!</Text>
         <Text>At present you are not currently enrolled, but may do so in the
-          settings menu. This is a one click process that will give you a pin
+          settings menu. This is a one click process that will give you a PIN
           to share with anyone you wish. Note that timetable data is stored by me
           for this function to work somewhat efficiently and without compromising
           your college tokens.</Text>
