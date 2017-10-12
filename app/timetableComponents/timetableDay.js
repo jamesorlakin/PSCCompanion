@@ -69,18 +69,13 @@ export default class TimetableDay extends Component {
 
     this.doScroll();
 
-    return (<ScrollView
-      width={this.props.dayWidth}
-      onScroll={this.props.onScroll}
-      ref={this.storeRef}>
-        <View style={styles.container}>
-          {
-            typeof this.props.selectedDay !== "number" &&
-            <Text style={styles.boldTitleUnderline}>{moment.unix(this.props.day).format('dddd - Do')}</Text>
-          }
-          {rows}
-        </View>
-      </ScrollView>)
+    return (<View width={this.props.dayWidth} style={styles.container}>
+      {
+        typeof this.props.selectedDay !== "number" &&
+        <Text style={styles.boldTitleUnderline}>{moment.unix(this.props.day).format('dddd - Do')}</Text>
+      }
+      {rows}
+    </View>)
   }
 }
 

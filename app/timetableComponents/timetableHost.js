@@ -67,8 +67,10 @@ export default class Timetable extends Component {
     if (typeof this.props.day === "number") return timetableColumns[this.props.day];
 
     return (
-      <ScrollView ref={this.doScroll} horizontal={true}>
-        {timetableColumns}
+      <ScrollView>
+        <ScrollView ref={this.doScroll} horizontal={true}>
+          {timetableColumns}
+        </ScrollView>
       </ScrollView>
     );
   }

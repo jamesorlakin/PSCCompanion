@@ -69,19 +69,21 @@ export default class SharedTimetableScreen extends Component {
           <Picker.Item label="Thursday" value={3} />
           <Picker.Item label="Friday" value={4} />
         </Picker>
-        <ScrollView horizontal={true}>
-          <ExternalTimetable pin={{pin: this.state.pinAndKey.pin, name: "Me"}}
-          key={this.state.pinAndKey.pin}
-          day={self.state.day}
-          onScroll={self.onScroll}/>
-          {this.state.savedPins.length === 0 && <Text style={{width: 100}}>Feeling lonely?
-            You can add PINs in the settings menu to see other timetables.</Text>}
-          {this.state.savedPins.map(function (pin) {
-            return (<ExternalTimetable pin={pin}
-              key={pin.pin}
-              day={self.state.day}
-              scrollTo={self.state.scrollTo} />)
-          })}
+        <ScrollView>
+          <ScrollView horizontal={true}>
+            <ExternalTimetable pin={{pin: this.state.pinAndKey.pin, name: "Me"}}
+            key={this.state.pinAndKey.pin}
+            day={self.state.day}
+            onScroll={self.onScroll}/>
+            {this.state.savedPins.length === 0 && <Text style={{width: 100}}>Feeling lonely?
+              You can add PINs in the settings menu to see other timetables.</Text>}
+            {this.state.savedPins.map(function (pin) {
+              return (<ExternalTimetable pin={pin}
+                key={pin.pin}
+                day={self.state.day}
+                scrollTo={self.state.scrollTo} />)
+            })}
+          </ScrollView>
         </ScrollView>
       </View>
     );
