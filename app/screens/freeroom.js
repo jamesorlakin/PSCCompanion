@@ -11,6 +11,7 @@ import {
 
 import api from '../api.js';
 import moment from 'moment';
+import randomColor from 'randomcolor';
 
 export default class FreeRoomScreen extends Component {
   static navigationOptions = {
@@ -136,9 +137,18 @@ class Room extends Component {
     return (
       <View>
         <View style={{height: 2, backgroundColor: 'gray'}} />
-        <Text style={styles.bold}>{this.props.item.Name}</Text>
-        <Text>{this.props.item.Building} - {this.props.item.Description}</Text>
-        <Text>Type: {this.props.item.Type}</Text>
+        <View style={{flexDirection: 'row'}}>
+          <View style={{
+            margin: 2,
+            width: 2,
+            backgroundColor: randomColor({seed: this.props.item.Building})
+          }} />
+          <View>
+            <Text style={styles.bold}>{this.props.item.Name}</Text>
+            <Text>{this.props.item.Building} - {this.props.item.Description}</Text>
+            <Text>Type: {this.props.item.Type}</Text>
+          </View>
+        </View>
       </View>
     )
   }
