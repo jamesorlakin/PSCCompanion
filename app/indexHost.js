@@ -33,7 +33,13 @@ const Drawer = DrawerNavigator({
   intranet: {screen: IntranetScreen},
   settings: {screen: SettingsScreen},
 }, {
-  contentComponent: props => (<ScrollView><DrawerItems {...props} /></ScrollView>)
+  contentComponent: props => (<ScrollView><DrawerItems {...props} /></ScrollView>),
+  contentOptions: {
+    activeTintColor: '#36648B',
+    style: {
+      marginVertical: 0,
+    }
+  }
 })
 
 const MenuButton = function (props) {
@@ -61,6 +67,12 @@ const DrawerHost = StackNavigator({
     navigationOptions: ({ navigation }) => ({
       title: 'PSC Companion',
       headerLeft: <MenuButton navigation={navigation} />,
+      headerStyle: {
+        backgroundColor: '#36648B'
+      },
+      headerTitleStyle: {
+        color: '#FFFAFA'
+      }
     })
   }
 })
