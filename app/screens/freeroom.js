@@ -12,6 +12,7 @@ import {
 import api from '../api.js';
 import moment from 'moment';
 import randomColor from 'randomcolor';
+import FadeInView from '../FadeInView.js';
 
 export default class FreeRoomScreen extends Component {
   static navigationOptions = {
@@ -85,7 +86,7 @@ export default class FreeRoomScreen extends Component {
     );
 
     return (
-      <View style={styles.container}>
+      <FadeInView style={styles.container}>
         <Picker selectedValue={this.state.period}
           onValueChange={this.changePeriod}
           mode="dropdown">
@@ -102,7 +103,7 @@ export default class FreeRoomScreen extends Component {
           <Picker.Item label="Lesson 8 - 15:40 - 16:35" value={10} />
         </Picker>
         <FlatList data={this.state.rooms} renderItem={({item}) => <Room item={item} />} />
-      </View>
+      </FadeInView>
     );
   }
 }
