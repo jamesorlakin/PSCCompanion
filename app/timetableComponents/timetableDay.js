@@ -8,7 +8,7 @@ import {
 } from 'react-native';
 
 import moment from 'moment'
-var colorHash = require('color-hash');
+import randomColor from 'randomcolor'
 
 export default class TimetableDay extends Component {
   constructor(props) {
@@ -128,7 +128,10 @@ function EventElement(props) {
   return (
     <View style={style}>
       <View style={{
-        backgroundColor: (new colorHash()).hex("JL"+props.item.Title),
+        backgroundColor: randomColor({
+          seed: props.item.Title+"hedgehog",
+          luminosity: "bright"
+        }),
         height: 3}}
       />
       <Text style={styles.bold}>{props.item.Title}</Text>
