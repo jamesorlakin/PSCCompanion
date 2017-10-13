@@ -30,7 +30,7 @@ export default class RoomTimetableScreen extends Component {
   }
 
   loadTimetable() {
-    this.setState({submitted: true})
+    this.setState({submitted: true, loaded: false})
     var self = this;
     api('roomtimetable/' + this.state.room, [
       {key: "includeBlanks", value: "true"},
