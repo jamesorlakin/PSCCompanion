@@ -41,12 +41,15 @@ export default class SharedTimetableScreen extends Component {
       if (data === null) {
         self.setState({enrolled: false})
       } else {
-        self.setState({enrolled: true, pinAndKey: JSON.parse(data)})
-      }
-    })
-    AsyncStorage.getItem('sharedSavedPins').then(function (data) {
-      if (data !== null) {
-        self.setState({savedPins: JSON.parse(data)})
+        var data = JSON.parse(data);
+        self.setState({enrolled: true, pinAndKey: data})
+        AsyncStorage.getItem('sharedSavedPins').then(function (pinData) {
+          if (pinData !== null) {
+            var pins = JSON.parse(pinData);
+            pins.unshift({name: "Me", pin: data.pin})
+            self.setState({savedPins: pins})
+          }
+        })
       }
     })
   }
@@ -69,21 +72,35 @@ export default class SharedTimetableScreen extends Component {
           <Picker.Item label="Thursday" value={3} />
           <Picker.Item label="Friday" value={4} />
         </Picker>
-        <ScrollView>
-          <ScrollView horizontal={true}>
-            <ExternalTimetable pin={{pin: this.state.pinAndKey.pin, name: "Me"}}
-            key={this.state.pinAndKey.pin}
-            day={self.state.day}
-            onScroll={self.onScroll}/>
-            {this.state.savedPins.length === 0 && <Text style={{width: 100}}>Feeling lonely?
-              You can add PINs in the settings menu to see other timetables.</Text>}
-            {this.state.savedPins.map(function (pin) {
-              return (<ExternalTimetable pin={pin}
-                key={pin.pin}
-                day={self.state.day}
-                scrollTo={self.state.scrollTo} />)
-            })}
-          </ScrollView>
+
+        {this.state.savedPins.length === 0 && <Text style={{width: 100}}>Feeling lonely?
+          You can add PINs in the settings menu to see other timetables.</Text>}
+
+        <ScrollView horizontal={true}>
+          <View style={{flex: 1}}>
+            <View style={{flexDirection: 'row'}}>
+              {this.state.savedPins.map(function (pin) {
+                return (<Text
+                  key={pin.pin}
+                  style={{fontSize: 17,
+                    marginBottom: 4,
+                    textDecorationLine: 'underline',
+                    width: Dimensions.get('window').width*0.6
+                  }}>{pin.name}</Text>)
+              })}
+            </View>
+
+            <ScrollView>
+              <View style={{flexDirection: 'row'}}>
+                {this.state.savedPins.map(function (pin) {
+                  return (<ExternalTimetable pin={pin}
+                    key={pin.pin}
+                    day={self.state.day}
+                    scrollTo={self.state.scrollTo} />)
+                })}
+              </View>
+            </ScrollView>
+          </View>
         </ScrollView>
       </View>
     );
@@ -136,13 +153,7 @@ class ExternalTimetable extends Component {
     }
 
     return (
-      <View style={styles.container}>
-        <Text style={{fontSize: 17, marginBottom: 4, textDecorationLine: 'underline'}}>
-          {this.props.pin.name}
-          {(this.state.data.startOfWeek !== moment().startOf('day').startOf('week').unix())
-            && " (Outdated)"}
-        </Text>
-
+      <View>
         {this.state.loaded ? <Timetable data={JSON.parse(JSON.parse(this.state.data.data))}
           day={this.props.day}
           onScroll={this.props.onScroll}
