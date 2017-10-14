@@ -13,6 +13,9 @@ import {
 import Timetable from '../timetableComponents/timetableHost.js';
 import moment from 'moment';
 
+var day = moment().isoWeekday()-1;
+if (day > 4) day = 0;
+
 export default class SharedTimetableScreen extends Component {
   static navigationOptions = {
     drawerLabel: 'Shared timetable'
@@ -23,7 +26,7 @@ export default class SharedTimetableScreen extends Component {
     this.state = {
       enrolled: false,
       savedPins: [],
-      day: moment().isoWeekday()-1,
+      day: day,
       pinAndKey: null,
       scrollTo: 0
     }
