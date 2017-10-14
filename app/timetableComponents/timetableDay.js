@@ -50,16 +50,16 @@ export default class TimetableDay extends Component {
       // Add the event
       rows.push(<EventElement key={events[i].Start+events[i].Type} item={events[i]} />);
 
-      if (i+1 !== events.length) {
+      /*if (i+1 !== events.length) {
         if (moment.unix(events[i+1].Start+1)
         .isAfter(moment.unix(events[i].Start).hour(10).minute(40))
         && moment.unix(events[i].End-1)
         .isBefore(moment.unix(events[i].Start).hour(10).minute(20)))
-          rows.push(<EventElement key={i+"start"} item={{Type: "break",
+          rows.push(<EventElement key={i+"break"} item={{Type: "break",
             Title: "Break",
             Start: moment.unix(events[i].Start).hour(10).minute(20).unix(),
             End: moment.unix(events[i].Start).hour(10).minute(40).unix()}} />)
-      };
+      };*/
 
       // Is there a gap between the end of now and the next item?
       if (i+1 !== events.length) {
@@ -109,8 +109,8 @@ const styles = StyleSheet.create({
 });
 
 function EventElement(props) {
-  var height = ((props.item.End - props.item.Start)/50);
-  if (props.item.Type === "break") height = 60;
+  var height = ((props.item.End - props.item.Start)/30);
+  //if (props.item.Type === "break") height = 60;
 
   var style = {
     borderRadius: 4,
