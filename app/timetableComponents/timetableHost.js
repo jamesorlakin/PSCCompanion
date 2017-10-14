@@ -60,14 +60,14 @@ export default class Timetable extends Component {
         data={dayTimetables[key]} />)
     })
 
+    if (typeof this.props.day === "number") return timetableColumns[this.props.day];
+
     var timetableHeaders = [];
     Object.keys(dayTimetables).forEach(function (key) {
       timetableHeaders.push(<Text
         style={[styles.boldTitleUnderline, {width: dayWidth}]}
         key={key}>{moment.unix(key).format('dddd - Do')}</Text>)
     })
-
-    if (typeof this.props.day === "number") return timetableColumns[this.props.day];
 
     return (
       <ScrollView ref={this.doScroll} horizontal={true}>
