@@ -109,7 +109,7 @@ const styles = StyleSheet.create({
 });
 
 function EventElement(props) {
-  var height = ((props.item.End - props.item.Start)/30);
+  var height = ((props.item.End - props.item.Start)/29);
   //if (props.item.Type === "break") height = 60;
 
   var style = {

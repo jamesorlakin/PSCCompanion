@@ -60,7 +60,17 @@ export default class Timetable extends Component {
         data={dayTimetables[key]} />)
     })
 
-    if (typeof this.props.day === "number") return timetableColumns[this.props.day];
+    if (typeof this.props.day === "number") {
+      if (timetableColumns[this.props.day] === undefined) return (
+        <View style={{width: dayWidth,
+          borderRadius: 4,
+          borderWidth: 0.5,
+          borderColor: '#c5c6c9'}}>
+          <Text>No events found for this day.</Text>
+        </View>
+      )
+      return timetableColumns[this.props.day];
+    }
 
     var timetableHeaders = [];
     Object.keys(dayTimetables).forEach(function (key) {
