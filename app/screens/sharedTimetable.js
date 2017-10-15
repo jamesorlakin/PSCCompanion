@@ -160,7 +160,8 @@ class ExternalTimetable extends Component {
       <View>
         {this.state.loaded && <Text style={{fontSize: 15, marginBottom: 4}}>
           {(this.state.data.startOfWeek !== moment().startOf('day').startOf('isoweek').unix())
-          ? "(Outdated)" : "Up-to-date"}
+          ? "Outdated - Using " + moment.unix(this.state.data.startOfWeek)
+            .format('Do MMMM') : "Up-to-date - Current week"}
         </Text>}
         {this.state.loaded ? <Timetable data={JSON.parse(JSON.parse(this.state.data.data))}
           day={this.props.day}
