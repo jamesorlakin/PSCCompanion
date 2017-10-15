@@ -71,7 +71,8 @@ const DrawerHost = StackNavigator({
         backgroundColor: '#36648B'
       },
       headerTitleStyle: {
-        color: '#FFFAFA'
+        color: '#FFFAFA',
+        padding: 8
       }
     })
   }
