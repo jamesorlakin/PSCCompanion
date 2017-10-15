@@ -45,7 +45,7 @@ export default class UserTimetableScreen extends Component {
             body: JSON.stringify({
               publishKey: pinAndKey.publishKey,
               pin: pinAndKey.pin,
-              startOfWeek: moment().startOf('day').startOf('week').add(self.state.week, 'weeks').unix(),
+              startOfWeek: moment().startOf('day').startOf('isoweek').add(self.state.week, 'weeks').unix(),
               data: JSON.stringify(data)
             })
           }).then(function (req) {

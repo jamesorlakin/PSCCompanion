@@ -13,6 +13,8 @@ import {
 import Timetable from '../timetableComponents/timetableHost.js';
 import moment from 'moment';
 
+var dayWidth = Dimensions.get('window').width*0.6;
+
 var day = moment().isoWeekday()-1;
 if (day > 4) day = 0;
 
@@ -88,7 +90,7 @@ export default class SharedTimetableScreen extends Component {
                   style={{fontSize: 17,
                     marginBottom: 4,
                     textDecorationLine: 'underline',
-                    width: Dimensions.get('window').width*0.6
+                    width: dayWidth
                   }}>{pin.name}</Text>)
               })}
             </View>
@@ -134,7 +136,7 @@ class ExternalTimetable extends Component {
   componentDidMount() {
     var self = this;
     fetch("https://gateway.jameslakin.co.uk/psc/api/fetch?pin=" + this.props.pin.pin +
-    "&startOfWeek=" + moment().startOf('day').startOf('week')
+    "&startOfWeek=" + moment().startOf('day').startOf('isoweek')
     .unix()).then(function (data) {
       return data.json();
     }).then(function (results) {
@@ -148,8 +150,7 @@ class ExternalTimetable extends Component {
     if (this.state.loaded && this.state.data === undefined) {
       return (
         <View style={styles.container}>
-          <Text style={{fontSize: 17}}>{this.props.pin.name} ({this.props.pin.pin})</Text>
-          <Text style={{width: Dimensions.get('window').width*0.6}}>No timetable
+          <Text style={{width: dayWidth}}>No timetable
             data was returned after executing a network request for this user.</Text>
         </View>
       )
@@ -157,11 +158,15 @@ class ExternalTimetable extends Component {
 
     return (
       <View>
+        {this.state.loaded && <Text style={{fontSize: 15, marginBottom: 4}}>
+          {(this.state.data.startOfWeek !== moment().startOf('day').startOf('isoweek').unix())
+          ? "(Outdated)" : "Up-to-date"}
+        </Text>}
         {this.state.loaded ? <Timetable data={JSON.parse(JSON.parse(this.state.data.data))}
           day={this.props.day}
           onScroll={this.props.onScroll}
           scrollTo={this.props.scrollTo} />
-          : <ActivityIndicator />}
+          : <ActivityIndicator style={{width: dayWidth}} />}
         {this.state.error && <Text>{this.state.error.toString()}</Text>}
       </View>
     );
