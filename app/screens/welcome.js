@@ -9,6 +9,7 @@ import {
 } from 'react-native';
 
 import api from '../api.js'
+import WhosFreeNow from '../whosFreeNowComponent.js'
 
 export default class WelcomeScreen extends Component {
   static navigationOptions = {
@@ -57,6 +58,10 @@ export default class WelcomeScreen extends Component {
             </View>
 
             <Text style={{fontSize: 18}}>D.O.B: {data.DateOfBirth}</Text>
+
+            <View style={{marginBottom: 20}}/>
+            <WhosFreeNow/>
+
             <View style={{marginBottom: 20}}/>
             <Text style={{fontSize: 16}}>Note that this application is very new.
               Bugs are to be expected now and again, and please report any you find
