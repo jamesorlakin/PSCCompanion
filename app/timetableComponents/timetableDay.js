@@ -136,7 +136,10 @@ function EventElement(props) {
         }),
         height: 3}}
       />
-      <Text style={styles.bold}>{props.item.Title}</Text>
+      <Text style={styles.bold}>
+        {props.item.IsCancelled && "(Cancelled) "}
+        {props.item.Title}
+      </Text>
       <Text>{moment.unix(props.item.Start).format('LT')} - {moment.unix(props.item.End).format('LT')} : {props.item.Room}</Text>
       {props.item.Staff !== "" && <Text>{props.item.Staff}</Text>}
     </View>
