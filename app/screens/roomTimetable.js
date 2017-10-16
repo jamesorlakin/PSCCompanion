@@ -34,8 +34,8 @@ export default class RoomTimetableScreen extends Component {
     var self = this;
     api('roomtimetable/' + this.state.room, [
       {key: "includeBlanks", value: "true"},
-      {key: "start", value: moment(this.state.day).startOf('day').startOf('week').unix()},
-      {key: "end", value: moment(this.state.day).endOf('day').endOf('week').unix()}
+      {key: "start", value: moment(this.state.day).startOf('day').startOf('isoweek').unix()},
+      {key: "end", value: moment(this.state.day).endOf('day').endOf('isoweek').unix()}
     ]).then(function (data) {
       self.setState({loaded: true, data: data})
     }).catch(function (error) {
