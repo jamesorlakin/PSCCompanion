@@ -41,7 +41,7 @@ export default class WhosFreeNow extends Component {
     if (!this.state.enrolled || this.state.savedPins.length === 0) return (<View />)
 
     return (
-      <View style={styles.container}>
+      <View style={[styles.container, {marginBottom: 20}]}>
         <Text style={{fontWeight: 'bold'}}>Who's free now?</Text>
         {this.state.savedPins.map(function (pin) {
           return (<Individual key={pin.pin} pin={pin} />)
@@ -73,32 +73,24 @@ class Individual extends Component {
   }
 
   render() {
-    var free = false;
+    var free = true;
 
     if (this.state.data !== null) {
       var timetable = JSON.parse(JSON.parse(this.state.data.data)).timetable
 
-      var now = moment()
+      var now = moment().hour(10).minute(55)
+
+      // Add the difference in unix time if we're out by a week:
+      var addTime = moment().startOf('day').startOf('isoweek').unix()
+        - moment.unix(timetable[0].Start).startOf('day').startOf('isoweek').unix()
+
       for (var i = 0; i < timetable.length; i++) {
-        if (i === 0) {
-          if (now.isBefore(moment.unix(timetable[i].Start))) free = true
-        }
-
-        if (i+1 !== timetable.length) {
-          if (now.isAfter(moment.unix(timetable[i].End))
-            && now.isBefore(moment.unix(timetable[i+1].Start))) {
-              free = true;
-              break;
-            }
-        }
-
-        if (i+1 === timetable.length) {
-          if (now.isAfter(moment.unix(timetable[i].End)))
-            free = true;
-        }
-
-        //if (now.isAfter(moment.unix(timetable[i]).Start)
-        //  && now.isBefore(moment.unix(timetable[i].End))) free = false
+        timetable[i].Start += addTime;
+        timetable[i].End += addTime;
+        if (now.isAfter(moment.unix(timetable[i].Start))
+          && now.isBefore(moment.unix(timetable[i].End))) {
+            free = false;
+          }
       }
     }
 
@@ -107,7 +99,7 @@ class Individual extends Component {
         <Text style={{flex: 1}}>{this.props.pin.name}</Text>
         {this.state.loaded &&
           ((this.state.data.startOfWeek !== moment().startOf('day').startOf('isoweek').unix())
-          && <Text style={{flex: 1}}>Outdated - Doesn't calculate properly yet</Text>)}
+          && <Text style={{flex: 1}}>Outdated</Text>)}
         {this.state.loaded ? (free ? <Free /> : <Occupied />)
           : <ActivityIndicator style={{flex: 1}} />}
       </View>
@@ -118,13 +110,13 @@ class Individual extends Component {
 
 function Free() {
   return (
-    <Text style={{color: 'green'}}>Free!</Text>
+    <Text style={{color: 'green', fontWeight: 'bold'}}>Free</Text>
   )
 }
 
 function Occupied(props) {
   return (
-    <Text style={{color: 'red'}}>Occupied</Text>
+    <Text style={{color: 'red'}}>Busy</Text>
   )
 }
 
