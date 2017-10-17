@@ -8,6 +8,7 @@ import {
 } from 'react-native';
 
 import moment from 'moment'
+import FadeInView from './FadeInView.js'
 
 export default class WhosFreeNow extends Component {
   constructor() {
@@ -110,13 +111,17 @@ class Individual extends Component {
 
 function Free() {
   return (
-    <Text style={{color: 'green', fontWeight: 'bold'}}>Free</Text>
+    <FadeInView>
+      <Text style={{color: 'green', fontWeight: 'bold'}}>Free</Text>
+    </FadeInView>
   )
 }
 
 function Occupied(props) {
   return (
-    <Text style={{color: 'red'}}>Busy</Text>
+    <FadeInView>
+      <Text style={{color: 'red'}}>Busy</Text>
+    </FadeInView>
   )
 }
 
