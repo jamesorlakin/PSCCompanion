@@ -78,7 +78,7 @@ class Individual extends Component {
     if (this.state.data !== null) {
       var timetable = JSON.parse(JSON.parse(this.state.data.data)).timetable
 
-      var now = moment().hour(10).minute(55)
+      var now = moment()
 
       // Add the difference in unix time if we're out by a week:
       var addTime = moment().startOf('day').startOf('isoweek').unix()
