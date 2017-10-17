@@ -80,7 +80,7 @@ export default class UserTimetableScreen extends Component {
             color="gray"
             style={{width: 50}}
             title="<" />
-          <Text style={{marginTop: 6}}>Week commencing
+          <Text style={{marginTop: 6}}>Week Commencing
             {" "+ moment().startOf('isoweek').add(this.state.week, 'weeks').format('Do MMMM')}</Text>
           <Button onPress={() => {this.switchWeek(1)}}
             color="gray"
