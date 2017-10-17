@@ -51,6 +51,17 @@ export default class TimetableDay extends Component {
       // Add the event
       rows.push(<EventElement key={events[i].Start+events[i].Type} item={events[i]} />);
 
+      /*if (i+1 !== events.length) {
+        if (moment.unix(events[i+1].Start+1)
+        .isAfter(moment.unix(events[i].Start).hour(10).minute(40))
+        && moment.unix(events[i].End-1)
+        .isBefore(moment.unix(events[i].Start).hour(10).minute(20)))
+          rows.push(<EventElement key={i+"break"} item={{Type: "break",
+            Title: "Break",
+            Start: moment.unix(events[i].Start).hour(10).minute(20).unix(),
+            End: moment.unix(events[i].Start).hour(10).minute(40).unix()}} />)
+      };*/
+
       // Is there a gap between the end of now and the next item?
       if (i+1 !== events.length) {
         if (events[i].End !== events[i+1].Start)
@@ -70,18 +81,9 @@ export default class TimetableDay extends Component {
 
     this.doScroll();
 
-    return (<ScrollView
-      width={this.props.dayWidth}
-      onScroll={this.props.onScroll}
-      ref={this.storeRef}>
-        <FadeInView style={styles.container}>
-          {
-            typeof this.props.selectedDay !== "number" &&
-            <Text style={styles.boldTitleUnderline}>{moment.unix(this.props.day).format('dddd - Do')}</Text>
-          }
-          {rows}
-        </FadeInView>
-      </ScrollView>)
+    return (<View width={this.props.dayWidth} style={styles.container}>
+      {rows}
+    </View>)
   }
 }
 
@@ -108,8 +110,8 @@ const styles = StyleSheet.create({
 });
 
 function EventElement(props) {
-  var height = ((props.item.End - props.item.Start)/60)+40;
-  if (height<60) height = 60;
+  var height = ((props.item.End - props.item.Start)/29);
+  //if (props.item.Type === "break") height = 60;
 
   var style = {
     borderRadius: 4,
@@ -135,7 +137,10 @@ function EventElement(props) {
         }),
         height: 3}}
       />
-      <Text style={styles.bold}>{props.item.Title}</Text>
+      <Text style={styles.bold}>
+        {props.item.IsCancelled && "(Cancelled) "}
+        {props.item.Title}
+      </Text>
       <Text>{moment.unix(props.item.Start).format('LT')} - {moment.unix(props.item.End).format('LT')} : {props.item.Room}</Text>
       {props.item.Staff !== "" && <Text>{props.item.Staff}</Text>}
     </View>

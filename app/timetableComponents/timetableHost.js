@@ -54,21 +54,43 @@ export default class Timetable extends Component {
       timetableColumns.push(<TimetableDay
         dayWidth={dayWidth}
         key={key}
-        day={key}
         onScroll={self.props.onScroll}
         scrollTo={self.props.scrollTo}
         selectedDay={self.props.day}
         data={dayTimetables[key]} />)
     })
 
-    // No point in having a horizontal scroll for one day
-    if (timetableColumns.length === 1) return timetableColumns[0];
+    if (typeof this.props.day === "number") {
+      if (timetableColumns[this.props.day] === undefined) return (
+        <View style={{width: dayWidth,
+          borderRadius: 4,
+          borderWidth: 0.5,
+          borderColor: '#c5c6c9'}}>
+          <Text>No events found for this day.</Text>
+        </View>
+      )
+      return timetableColumns[this.props.day];
+    }
 
-    if (typeof this.props.day === "number") return timetableColumns[this.props.day];
+    var timetableHeaders = [];
+    Object.keys(dayTimetables).forEach(function (key) {
+      timetableHeaders.push(<Text
+        style={[styles.boldTitleUnderline, {width: dayWidth}]}
+        key={key}>{moment.unix(key).format('dddd - Do')}</Text>)
+    })
 
     return (
       <ScrollView ref={this.doScroll} horizontal={true}>
-        {timetableColumns}
+        <View style={{flex: 1}}>
+          <View style={{flexDirection: 'row'}}>
+            {timetableHeaders}
+          </View>
+          <ScrollView>
+            <View style={{flexDirection: 'row'}}>
+              {timetableColumns}
+            </View>
+          </ScrollView>
+        </View>
       </ScrollView>
     );
   }

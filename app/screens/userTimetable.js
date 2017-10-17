@@ -32,8 +32,8 @@ export default class UserTimetableScreen extends Component {
     var self = this;
     api('timetable', [
       {key: "includeBlanks", value: "false"},
-      {key: "start", value: moment().startOf('day').startOf('week').add(this.state.week, 'weeks').unix()},
-      {key: "end", value: moment().endOf('day').endOf('week').add(this.state.week, 'weeks').unix()}
+      {key: "start", value: moment().startOf('day').startOf('isoweek').add(this.state.week, 'weeks').unix()},
+      {key: "end", value: moment().endOf('day').endOf('isoweek').add(this.state.week, 'weeks').unix()}
     ]).then(function (data) {
       self.setState({loaded: true, data: data})
       AsyncStorage.getItem('sharedPinAndKey').then(function (asyncData) {
@@ -45,7 +45,7 @@ export default class UserTimetableScreen extends Component {
             body: JSON.stringify({
               publishKey: pinAndKey.publishKey,
               pin: pinAndKey.pin,
-              startOfWeek: moment().startOf('day').startOf('week').add(self.state.week, 'weeks').unix(),
+              startOfWeek: moment().startOf('day').startOf('isoweek').add(self.state.week, 'weeks').unix(),
               data: JSON.stringify(data)
             })
           }).then(function (req) {

@@ -13,6 +13,11 @@ import {
 import Timetable from '../timetableComponents/timetableHost.js';
 import moment from 'moment';
 
+var dayWidth = Dimensions.get('window').width*0.6;
+
+var day = moment().isoWeekday()-1;
+if (day > 4) day = 0;
+
 export default class SharedTimetableScreen extends Component {
   static navigationOptions = {
     drawerLabel: 'Shared timetable'
@@ -23,7 +28,7 @@ export default class SharedTimetableScreen extends Component {
     this.state = {
       enrolled: false,
       savedPins: [],
-      day: moment().isoWeekday()-1,
+      day: day,
       pinAndKey: null,
       scrollTo: 0
     }
@@ -41,12 +46,15 @@ export default class SharedTimetableScreen extends Component {
       if (data === null) {
         self.setState({enrolled: false})
       } else {
-        self.setState({enrolled: true, pinAndKey: JSON.parse(data)})
-      }
-    })
-    AsyncStorage.getItem('sharedSavedPins').then(function (data) {
-      if (data !== null) {
-        self.setState({savedPins: JSON.parse(data)})
+        var data = JSON.parse(data);
+        self.setState({enrolled: true, pinAndKey: data})
+        AsyncStorage.getItem('sharedSavedPins').then(function (pinData) {
+          if (pinData !== null) {
+            var pins = JSON.parse(pinData);
+            pins.unshift({name: "Me", pin: data.pin})
+            self.setState({savedPins: pins})
+          }
+        })
       }
     })
   }
@@ -69,19 +77,35 @@ export default class SharedTimetableScreen extends Component {
           <Picker.Item label="Thursday" value={3} />
           <Picker.Item label="Friday" value={4} />
         </Picker>
+
+        {this.state.savedPins.length === 0 && <Text style={{width: 100}}>Feeling lonely?
+          You can add PINs in the settings menu to see other timetables.</Text>}
+
         <ScrollView horizontal={true}>
-          <ExternalTimetable pin={{pin: this.state.pinAndKey.pin, name: "Me"}}
-          key={this.state.pinAndKey.pin}
-          day={self.state.day}
-          onScroll={self.onScroll}/>
-          {this.state.savedPins.length === 0 && <Text style={{width: 100}}>Feeling lonely?
-            You can add PINs in the settings menu to see other timetables.</Text>}
-          {this.state.savedPins.map(function (pin) {
-            return (<ExternalTimetable pin={pin}
-              key={pin.pin}
-              day={self.state.day}
-              scrollTo={self.state.scrollTo} />)
-          })}
+          <View style={{flex: 1}}>
+            <View style={{flexDirection: 'row'}}>
+              {this.state.savedPins.map(function (pin) {
+                return (<Text
+                  key={pin.pin}
+                  style={{fontSize: 17,
+                    marginBottom: 4,
+                    textDecorationLine: 'underline',
+                    width: dayWidth
+                  }}>{pin.name}</Text>)
+              })}
+            </View>
+
+            <ScrollView>
+              <View style={{flexDirection: 'row'}}>
+                {this.state.savedPins.map(function (pin) {
+                  return (<ExternalTimetable pin={pin}
+                    key={pin.pin}
+                    day={self.state.day}
+                    scrollTo={self.state.scrollTo} />)
+                })}
+              </View>
+            </ScrollView>
+          </View>
         </ScrollView>
       </View>
     );
@@ -112,7 +136,7 @@ class ExternalTimetable extends Component {
   componentDidMount() {
     var self = this;
     fetch("https://gateway.jameslakin.co.uk/psc/api/fetch?pin=" + this.props.pin.pin +
-    "&startOfWeek=" + moment().startOf('day').startOf('week')
+    "&startOfWeek=" + moment().startOf('day').startOf('isoweek')
     .unix()).then(function (data) {
       return data.json();
     }).then(function (results) {
@@ -126,26 +150,24 @@ class ExternalTimetable extends Component {
     if (this.state.loaded && this.state.data === undefined) {
       return (
         <View style={styles.container}>
-          <Text style={{fontSize: 17}}>{this.props.pin.name} ({this.props.pin.pin})</Text>
-          <Text style={{width: Dimensions.get('window').width*0.6}}>No timetable
+          <Text style={{width: dayWidth}}>No timetable
             data was returned after executing a network request for this user.</Text>
         </View>
       )
     }
 
     return (
-      <View style={styles.container}>
-        <Text style={{fontSize: 17, marginBottom: 4, textDecorationLine: 'underline'}}>
-          {this.props.pin.name}
-          {(this.state.data.startOfWeek !== moment().startOf('day').startOf('week').unix())
-            && " (Outdated)"}
-        </Text>
-
+      <View>
+        {this.state.loaded && <Text style={{fontSize: 15, marginBottom: 4}}>
+          {(this.state.data.startOfWeek !== moment().startOf('day').startOf('isoweek').unix())
+          ? "Outdated - Using " + moment.unix(this.state.data.startOfWeek)
+            .format('Do MMMM') : "Up-to-date - Current week"}
+        </Text>}
         {this.state.loaded ? <Timetable data={JSON.parse(JSON.parse(this.state.data.data))}
           day={this.props.day}
           onScroll={this.props.onScroll}
           scrollTo={this.props.scrollTo} />
-          : <ActivityIndicator />}
+          : <ActivityIndicator style={{width: dayWidth}} />}
         {this.state.error && <Text>{this.state.error.toString()}</Text>}
       </View>
     );
