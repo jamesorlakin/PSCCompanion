@@ -4,6 +4,7 @@ import {
   Text,
   AsyncStorage,
   ActivityIndicator,
+  Picker,
   StyleSheet,
 } from 'react-native';
 
@@ -14,9 +15,26 @@ export default class WhosFreeNow extends Component {
     super();
     this.state = {
       enrolled: false,
-      savedPins: []
+      savedPins: [],
+      period: 0
     }
+    this.changePeriod = this.changePeriod.bind(this)
   }
+
+  // I've added 5 minutes to each period to ensure we're not on a boundary.
+  periodTimes = [
+    moment(),
+    moment().hour(8).minute(35),
+    moment().hour(9).minute(30),
+    moment().hour(10).minute(25),
+    moment().hour(10).minute(45),
+    moment().hour(11).minute(40),
+    moment().hour(12).minute(35),
+    moment().hour(13).minute(5),
+    moment().hour(13).minute(55),
+    moment().hour(14).minute(50),
+    moment().hour(15).minute(45)
+  ]
 
   componentDidMount() {
     var self = this;
@@ -37,14 +55,34 @@ export default class WhosFreeNow extends Component {
     })
   }
 
+  changePeriod(index, value) {
+    this.setState({period: value})
+  }
+
   render() {
+    var self = this;
     if (!this.state.enrolled || this.state.savedPins.length === 0) return (<View />)
 
     return (
       <View style={[styles.container, {marginBottom: 20}]}>
-        <Text style={{fontWeight: 'bold'}}>Who's free now?</Text>
+        <Text style={{fontWeight: 'bold'}}>Who's free?</Text>
+        <Picker selectedValue={this.state.period}
+          onValueChange={this.changePeriod}
+          mode="dropdown">
+          <Picker.Item label="Now" value={0} />
+          <Picker.Item label="Lesson 1 - 8:30 - 9:25" value={1} />
+          <Picker.Item label="Lesson 2 - 9:25 - 10:20" value={2} />
+          <Picker.Item label="Break - 10:20 - 10:40" value={3} />
+          <Picker.Item label="Lesson 3 - 10:40 - 11:35" value={4} />
+          <Picker.Item label="Lesson 4 - 11:35 - 12:30" value={5} />
+          <Picker.Item label="Tutor - 12:30 - 13:00" value={6} />
+          <Picker.Item label="Lunch - 13:00 - 13:50" value={7} />
+          <Picker.Item label="Lesson 6 - 13:50 - 14:45" value={8} />
+          <Picker.Item label="Lesson 7 - 14:45 - 15:40" value={9} />
+          <Picker.Item label="Lesson 8 - 15:40 - 16:35" value={10} />
+        </Picker>
         {this.state.savedPins.map(function (pin) {
-          return (<Individual key={pin.pin} pin={pin} />)
+          return (<Individual key={pin.pin} now={self.periodTimes[self.state.period]} pin={pin} />)
         })}
       </View>
     );
@@ -77,8 +115,7 @@ class Individual extends Component {
 
     if (this.state.data !== null) {
       var timetable = JSON.parse(JSON.parse(this.state.data.data)).timetable
-
-      var now = moment()
+      var now = this.props.now
 
       // Add the difference in unix time if we're out by a week:
       var addTime = moment().startOf('day').startOf('isoweek').unix()
@@ -90,6 +127,7 @@ class Individual extends Component {
         if (now.isAfter(moment.unix(timetable[i].Start))
           && now.isBefore(moment.unix(timetable[i].End))) {
             free = false;
+            break;
           }
       }
     }

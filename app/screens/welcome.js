@@ -57,15 +57,12 @@ export default class WelcomeScreen extends Component {
               <Text style={{fontSize: 20}}>Welcome, {this.state.data.Name}</Text>
             </View>
 
-            <Text style={{fontSize: 18, marginBottom: 20}}>D.O.B: {data.DateOfBirth}</Text>
-
             <WhosFreeNow/>
 
             <Text style={{fontSize: 16}}>Note that this application is very new.
               Bugs are to be expected now and again, and please report any you find
               so that I can fix them. Don't worry, this UI isn't final. I agree it's
               a bit ugly too...</Text>
-            {rows}
           </View>
         </ScrollView>
       )

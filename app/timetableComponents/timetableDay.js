@@ -109,6 +109,7 @@ const styles = StyleSheet.create({
 });
 
 function EventElement(props) {
+  if (props.item.Staff === "Paul Watson") props.item.Staff = <Text style={{fontWeight: 'bold', fontSize: 25}}>Uncle Paul</Text>
   var height = ((props.item.End - props.item.Start)/29);
   //if (props.item.Type === "break") height = 60;
 
