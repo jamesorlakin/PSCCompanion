@@ -10,6 +10,7 @@ import {
 
 import api from '../api.js'
 import WhosFreeNow from '../whosFreeNowComponent.js'
+import Summary from '../summaryComponent.js'
 
 export default class WelcomeScreen extends Component {
   static navigationOptions = {
@@ -56,6 +57,8 @@ export default class WelcomeScreen extends Component {
               <Image source={require('../images/userIcon.png')} />
               <Text style={{fontSize: 20}}>Welcome, {this.state.data.Name}</Text>
             </View>
+
+            <Summary/>
 
             <WhosFreeNow/>
 
