@@ -22,6 +22,7 @@ import SharedTimetableScreen from './screens/sharedTimetable.js'
 import MapScreen from './screens/map.js'
 import IntranetScreen from './screens/intranet.js'
 import SettingsScreen from './screens/settings.js'
+import WifiListScreen from './screens/wifiList.js'
 
 const Drawer = DrawerNavigator({
   welcome: {screen: WelcomeScreen},
@@ -32,6 +33,7 @@ const Drawer = DrawerNavigator({
   map: {screen: MapScreen},
   intranet: {screen: IntranetScreen},
   settings: {screen: SettingsScreen},
+  wifi: {screen: WifiListScreen}
 }, {
   contentComponent: props => (<ScrollView><DrawerItems {...props} /></ScrollView>),
   contentOptions: {
