@@ -35,6 +35,11 @@ export default class WifiListScreen extends Component {
     var self = this
     wifi.loadWifiList(function (networks) {
       networks = JSON.parse(networks)
+      networks.sort(function (a, b) {
+        if (a.level < b.level) return 1
+        if (a.level > b.level) return -1
+        return 0
+      })
       self.setState({networks: networks})
       self.addNetworks(networks);
     }, function (err) {
@@ -63,7 +68,10 @@ export default class WifiListScreen extends Component {
       <View style={styles.container}>
         <Button title={"Learning? " + this.state.learning}
           onPress={() => {self.setState({learning: !self.state.learning})}} />
-        <TextInput placeholder="Location" />
+        <Text>Strongest: {this.state.networks.length>0 &&
+          this.state.networks[0].BSSID}
+        </Text>
+        <Text>Stored Count: {this.state.storedNetworks.length}</Text>
         <TextInput value={JSON.stringify(this.state.storedNetworks)} />
         <ScrollView>
           {this.state.networks.map(function (item) {
