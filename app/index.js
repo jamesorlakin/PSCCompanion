@@ -45,4 +45,3 @@ const styles = StyleSheet.create({
 });
 
 AppRegistry.registerComponent('PSCCompanion', () => PSCCompanion);
-AppRegistry.registerHeadlessTask('wifiStateService', () => require('./wifi/wifiStateService.js'));
