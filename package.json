@@ -13,7 +13,6 @@
 		"react-native": "^0.48.4",
 		"react-native-admob": "^1.3.2",
 		"react-native-android-wifi": "0.0.19",
-		"react-native-local-notifications": "^1.0.0",
 		"react-native-photo-view": "^1.4.0",
 		"react-navigation": "^1.0.0-beta.11"
 	},

@@ -3,7 +3,6 @@ package com.psccompanion;
 import android.app.Application;
 
 import com.facebook.react.ReactApplication;
-import com.github.wumke.RNLocalNotifications.RNLocalNotificationsPackage;
 import com.devstepbcn.wifi.AndroidWifiPackage;
 import com.sbugert.rnadmob.RNAdMobPackage;
 import com.reactnative.photoview.PhotoViewPackage;
@@ -29,7 +28,6 @@ public class MainApplication extends Application implements ReactApplication {
           new MainReactPackage(),
             new AndroidWifiPackage(),
             new RNAdMobPackage(),
-            new RNLocalNotificationsPackage(),
             new PhotoViewPackage()
       );
     }
