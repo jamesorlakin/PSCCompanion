@@ -14,6 +14,7 @@ buildscript {
 
 allprojects {
     repositories {
+        buildDir = "C:/gradle/${rootProject.name}/${project.name}"
         mavenLocal()
         jcenter()
         maven {
