@@ -7,6 +7,7 @@ import {
 } from 'react-native';
 
 import moment from 'moment'
+var SharedPreferences = require('react-native-shared-preferences')
 
 export default class Summary extends Component {
   constructor() {
@@ -35,10 +36,12 @@ export default class Summary extends Component {
   render() {
     if (!this.state.loaded) return (<View />)
 
-    var nextEvent = "Nothing. Hell Yeah.";
+    var nextEvent = {type: "unknown"};
 
     var timetable = JSON.parse(JSON.parse(this.state.data.data)).timetable
-    var now = moment().day(2).hour(8).minute(28)
+    if (timetable.length === 0) return (<View />)
+
+    var now = moment()
     console.log(now);
 
     // Add the difference in unix time if we're out by a week:
@@ -49,19 +52,36 @@ export default class Summary extends Component {
       timetable[i].Start += addTime;
       timetable[i].End += addTime;
 
+      if (i === 0 && now.isBefore(moment.unix(timetable[i].Start))) {
+        nextEvent = timetable[i];
+        break;
+      }
+
       if (i+1 !== timetable.length) {
         if (now.isAfter(moment.unix(timetable[i].End))
           && now.isBefore(moment.unix(timetable[i+1].Start))) {
-            nextEvent = timetable[i+1].Title + " - " + moment.unix(timetable[i+1].Start).format('HH:mm')
+            nextEvent = timetable[i+1];
             break;
           }
       }
+
+      if (i+1 === timetable.length) {
+        // Use the first event and add a week
+        timetable[0].Start += 604800;
+        timetable[0].End += 604800;
+        nextEvent = timetable[0];
+      }
     }
+
+    SharedPreferences.setItem("summaryTimetable", JSON.stringify(timetable));
 
     return (
       <View style={styles.container}>
         <Text style={{fontWeight: 'bold'}}>What's next?</Text>
-        <Text>{nextEvent}</Text>
+        <Text>{nextEvent.type != "unknown" && nextEvent.Title + " - "
+          + moment.unix(nextEvent.Start).fromNow()}</Text>
+        <Text>{moment.unix(nextEvent.Start).format('dddd, HH:mm A') + " - "}
+          {moment.unix(nextEvent.End).format('HH:mm A')} : {nextEvent.Room}</Text>
       </View>
     );
   }
