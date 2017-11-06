@@ -97,8 +97,8 @@ android {
         applicationId "com.psccompanion"
         minSdkVersion 16
         targetSdkVersion 22
-        versionCode 46
-        versionName "0.46 Burger"
+        versionCode 47
+        versionName "0.47 Burger"
         ndk {
             abiFilters "armeabi-v7a", "x86"
         }
