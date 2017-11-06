@@ -1,5 +1,3 @@
-/* @flow */
-
 import React, { Component } from 'react';
 import {
   View,
@@ -38,7 +36,8 @@ export default class BannerAd extends Component {
   }
 
   render() {
-    if (this.state.error) return (<Text>{this.state.error}</Text>)
+    if (this.state.error) return (<View />)
+    //if (this.state.error) return (<Text>{this.state.error}</Text>)
 
     if (!this.state.loaded) return (<View />)
 
