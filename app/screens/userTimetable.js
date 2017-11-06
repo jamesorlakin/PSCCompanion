@@ -61,7 +61,7 @@ export default class UserTimetableScreen extends Component {
   }
 
   switchWeek(week) {
-    if (!this.state.loaded) return false
+    if (!this.state.loaded && this.state.error === null) return false
     var self = this;
     this.setState({loaded: false, week: this.state.week+week}, function () {
         self.loadTimetable();

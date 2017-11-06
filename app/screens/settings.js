@@ -12,6 +12,7 @@ import DebugScreen from './debug.js';
 import SettingsCredentials from './settings/credentials.js'
 import SettingsAdFree from './settings/adFree.js'
 import SettingsSharedTimetable from './settings/sharedTimetable.js'
+import SettingsResetTokens from './settings/resetTokens.js'
 
 export default class SettingsScreen extends Component {
   static navigationOptions = {
@@ -22,6 +23,7 @@ export default class SettingsScreen extends Component {
     return (
       <View style={styles.container}>
         <ScrollView>
+          <SettingsResetTokens/>
           <SettingsCredentials/>
           <SettingsAdFree/>
           <SettingsSharedTimetable />

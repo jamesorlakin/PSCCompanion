@@ -109,7 +109,8 @@ const styles = StyleSheet.create({
 });
 
 function EventElement(props) {
-  if (props.item.Staff === "Paul Watson") props.item.Staff = <Text style={{fontWeight: 'bold', fontSize: 25}}>Uncle Paul</Text>
+  var staff = props.item.Staff;
+  if (staff === "Paul Watson") staff = <Text style={{fontWeight: 'bold', fontSize: 25}}>Uncle Paul</Text>
   var height = ((props.item.End - props.item.Start)/29);
   //if (props.item.Type === "break") height = 60;
 
@@ -142,7 +143,7 @@ function EventElement(props) {
         {props.item.Title}
       </Text>
       <Text>{moment.unix(props.item.Start).format('LT')} - {moment.unix(props.item.End).format('LT')} : {props.item.Room}</Text>
-      {props.item.Staff !== "" && <Text>{props.item.Staff}</Text>}
+      {staff !== "" && <Text>{staff}</Text>}
     </View>
   )
 }
