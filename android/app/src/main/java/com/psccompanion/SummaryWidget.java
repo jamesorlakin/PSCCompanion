@@ -4,6 +4,7 @@ import android.appwidget.AppWidgetManager;
 import android.appwidget.AppWidgetProvider;
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.util.Log;
 import android.widget.RemoteViews;
 
 import org.json.JSONArray;
@@ -31,8 +32,10 @@ public class SummaryWidget extends AppWidgetProvider {
 
                 JSONObject event = timetable.getJSONObject(i);
                 Date eventStart = new Date((long)event.getInt("Start")*1000);
-                if (now.before(eventStart)) {
+                if (now.before(eventStart) && !event.getBoolean("IsCancelled")) {
                     views.setTextViewText(R.id.summaryLessonTitle, event.getString("Title"));
+
+                    views.setTextViewText(R.id.summaryLessonStaff, event.getString("Staff"));
 
                     SimpleDateFormat eventDateFormatter = new SimpleDateFormat("h:mm a", Locale.getDefault());
                     views.setTextViewText(R.id.summaryLessonTime, eventDateFormatter.format(eventStart)
@@ -41,6 +44,7 @@ public class SummaryWidget extends AppWidgetProvider {
                 }
             }
         } catch (Exception e) {
+            Log.e("widget", e.getMessage());
             views.setTextViewText(R.id.summaryTitle, "Unable to load! Is timetable sharing enabled?");
         }
 

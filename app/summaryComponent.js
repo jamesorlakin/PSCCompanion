@@ -7,6 +7,7 @@ import {
 } from 'react-native';
 
 import moment from 'moment'
+import randomColor from 'randomcolor'
 var SharedPreferences = require('react-native-shared-preferences')
 
 export default class Summary extends Component {
@@ -52,17 +53,9 @@ export default class Summary extends Component {
       timetable[i].Start += addTime;
       timetable[i].End += addTime;
 
-      if (i === 0 && now.isBefore(moment.unix(timetable[i].Start))) {
+      if (now.isBefore(moment.unix(timetable[i].Start)) && !timetable[i].IsCancelled) {
         nextEvent = timetable[i];
         break;
-      }
-
-      if (i+1 !== timetable.length) {
-        if (now.isAfter(moment.unix(timetable[i].End))
-          && now.isBefore(moment.unix(timetable[i+1].Start))) {
-            nextEvent = timetable[i+1];
-            break;
-          }
       }
 
       if (i+1 === timetable.length) {
@@ -78,8 +71,16 @@ export default class Summary extends Component {
     return (
       <View style={styles.container}>
         <Text style={{fontWeight: 'bold'}}>What's next?</Text>
+        {nextEvent.type != "unknown" && <View style={{
+          backgroundColor: randomColor({
+            seed: nextEvent.Title+"hedgehog",
+            luminosity: "bright"
+          }),
+          height: 3}}
+        />}
         <Text>{nextEvent.type != "unknown" && nextEvent.Title + " - "
           + moment.unix(nextEvent.Start).fromNow()}</Text>
+        <Text>{nextEvent.type != "unknown" && nextEvent.Staff}</Text>
         <Text>{moment.unix(nextEvent.Start).format('dddd, HH:mm A') + " - "}
           {moment.unix(nextEvent.End).format('HH:mm A')} : {nextEvent.Room}</Text>
       </View>
