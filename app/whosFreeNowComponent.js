@@ -69,7 +69,7 @@ export default class WhosFreeNow extends Component {
         <Picker selectedValue={this.state.period}
           onValueChange={this.changePeriod}
           mode="dropdown">
-          <Picker.Item label="Now" value={0} />
+          <Picker.Item label={"Now - " + this.periodTimes[0].format('HH:mm')} value={0} />
           <Picker.Item label="Lesson 1 - 8:30 - 9:25" value={1} />
           <Picker.Item label="Lesson 2 - 9:25 - 10:20" value={2} />
           <Picker.Item label="Break - 10:20 - 10:40" value={3} />
