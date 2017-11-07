@@ -150,7 +150,7 @@ class Individual extends Component {
 
 function Free() {
   return (
-    <Text style={{color: 'green', fontWeight: 'bold'}}>Free</Text>
+    <Text style={{color: 'green', fontWeight: 'bold', textAlign: 'right'}}>Free</Text>
   )
 }
 
