@@ -111,7 +111,7 @@ class Individual extends Component {
   }
 
   render() {
-    var free = true;
+    var currentEvent = false;
 
     if (this.state.data !== null) {
       var timetable = JSON.parse(JSON.parse(this.state.data.data)).timetable
@@ -124,9 +124,10 @@ class Individual extends Component {
       for (var i = 0; i < timetable.length; i++) {
         timetable[i].Start += addTime;
         timetable[i].End += addTime;
+
         if (now.isAfter(moment.unix(timetable[i].Start))
           && now.isBefore(moment.unix(timetable[i].End))) {
-            free = false;
+            currentEvent = timetable[i];
             break;
           }
       }
@@ -138,7 +139,8 @@ class Individual extends Component {
         {this.state.loaded &&
           ((this.state.data.startOfWeek !== moment().startOf('day').startOf('isoweek').unix())
           && <Text style={{flex: 1}}>Outdated</Text>)}
-        {this.state.loaded ? (free ? <Free /> : <Occupied />)
+        {this.state.loaded ? (currentEvent === false ? <Free />
+          : <Occupied event={currentEvent}/>)
           : <ActivityIndicator style={{flex: 1}} />}
       </View>
     );
@@ -153,6 +155,14 @@ function Free() {
 }
 
 function Occupied(props) {
+  if (props.event.IsCancelled) {
+    return (
+      <View>
+        <Free />
+        <Text style={{color: 'red', fontStyle: 'italic'}}>(Lesson cancelled)</Text>
+      </View>
+    )
+  }
   return (
     <Text style={{color: 'red'}}>Busy</Text>
   )
