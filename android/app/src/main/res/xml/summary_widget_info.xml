@@ -4,6 +4,7 @@
     android:initialLayout="@layout/summary_widget"
     android:minHeight="40dp"
     android:minWidth="110dp"
+    android:previewImage="@drawable/summary_widget_preview"
     android:resizeMode="horizontal|vertical"
     android:updatePeriodMillis="1800000"
     android:widgetCategory="home_screen|keyguard"></appwidget-provider>
