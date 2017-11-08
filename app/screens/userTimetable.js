@@ -35,7 +35,13 @@ export default class UserTimetableScreen extends Component {
       {key: "start", value: moment().startOf('day').startOf('isoweek').add(this.state.week, 'weeks').unix()},
       {key: "end", value: moment().endOf('day').endOf('isoweek').add(this.state.week, 'weeks').unix()}
     ]).then(function (data) {
+      for (var i = 0; i < data.timetable.length; i++) {
+        if (data.timetable[i].Title === "BTEC Diploma in  IT")
+          data.timetable[i].Title = "Computing & IT Diploma"
+      }
+      
       self.setState({loaded: true, data: data})
+
       AsyncStorage.getItem('sharedPinAndKey').then(function (asyncData) {
         if (asyncData !== null) {
           var pinAndKey = JSON.parse(asyncData);
