@@ -7,7 +7,6 @@ import {
 } from 'react-native';
 
 import moment from 'moment'
-import randomColor from 'randomcolor'
 var SharedPreferences = require('react-native-shared-preferences')
 
 export default class Summary extends Component {
@@ -37,7 +36,7 @@ export default class Summary extends Component {
   render() {
     if (!this.state.loaded) return (<View />)
 
-    var nextEvent = {type: "unknown"};
+    var nextEvent = {Type: "unknown"};
 
     var timetable = JSON.parse(JSON.parse(this.state.data.data)).timetable
     if (timetable.length === 0) return (<View />)
@@ -72,15 +71,12 @@ export default class Summary extends Component {
       <View style={styles.container}>
         <Text style={{fontWeight: 'bold'}}>What's next?</Text>
         {nextEvent.type != "unknown" && <View style={{
-          backgroundColor: randomColor({
-            seed: nextEvent.Title+"hedgehog",
-            luminosity: "bright"
-          }),
+          backgroundColor: nextEvent.Color,
           height: 3}}
         />}
-        <Text>{nextEvent.type != "unknown" && nextEvent.Title + " - "
+        <Text>{nextEvent.Type != "unknown" && nextEvent.Title + " - "
           + moment.unix(nextEvent.Start).fromNow()}</Text>
-        <Text>{nextEvent.type != "unknown" && nextEvent.Staff}</Text>
+        <Text>{nextEvent.Type != "unknown" && nextEvent.Staff}</Text>
         <Text>{moment.unix(nextEvent.Start).format('dddd, HH:mm A') + " - "}
           {moment.unix(nextEvent.End).format('HH:mm A')} : {nextEvent.Room}</Text>
       </View>

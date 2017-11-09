@@ -10,6 +10,7 @@ import {
 
 import api from '../api.js';
 import Timetable from '../timetableComponents/timetableHost.js';
+import randomColor from 'randomcolor'
 import moment from 'moment';
 
 export default class UserTimetableScreen extends Component {
@@ -38,8 +39,12 @@ export default class UserTimetableScreen extends Component {
       for (var i = 0; i < data.timetable.length; i++) {
         if (data.timetable[i].Title === "BTEC Diploma in  IT")
           data.timetable[i].Title = "Computing & IT Diploma"
+          data.timetable[i].Color = randomColor({
+            seed: data.timetable[i].Title+"hedgehog",
+            luminosity: "bright"
+          })
       }
-      
+
       self.setState({loaded: true, data: data})
 
       AsyncStorage.getItem('sharedPinAndKey').then(function (asyncData) {

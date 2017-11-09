@@ -8,7 +8,6 @@ import {
 } from 'react-native';
 
 import moment from 'moment'
-import randomColor from 'randomcolor'
 
 export default class TimetableDay extends Component {
   constructor(props) {
@@ -132,10 +131,7 @@ function EventElement(props) {
   return (
     <View style={style}>
       <View style={{
-        backgroundColor: randomColor({
-          seed: props.item.Title+"hedgehog",
-          luminosity: "bright"
-        }),
+        backgroundColor: props.item.Color,
         height: 3}}
       />
       <Text style={styles.bold}>
