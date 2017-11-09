@@ -97,8 +97,8 @@ android {
         applicationId "com.psccompanion"
         minSdkVersion 16
         targetSdkVersion 22
-        versionCode 50
-        versionName "0.5 Alpha"
+        versionCode 51
+        versionName "0.51 Alpha"
         ndk {
             abiFilters "armeabi-v7a", "x86"
         }
@@ -144,6 +144,7 @@ android {
 }
 
 dependencies {
+    compile 'com.flurry.android:ads:8.0.2'
     compile project(":react-native-shared-preferences")
     compile project(':react-native-admob')
     compile project(':react-native-photo-view')

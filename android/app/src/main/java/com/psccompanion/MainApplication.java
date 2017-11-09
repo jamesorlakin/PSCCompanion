@@ -4,6 +4,8 @@ import android.app.Application;
 
 import com.facebook.react.ReactApplication;
 import in.sriraman.sharedpreferences.RNSharedPreferencesReactPackage;
+
+import com.flurry.android.FlurryAgent;
 import com.sbugert.rnadmob.RNAdMobPackage;
 import com.reactnative.photoview.PhotoViewPackage;
 import com.facebook.react.ReactNativeHost;
@@ -42,5 +44,8 @@ public class MainApplication extends Application implements ReactApplication {
   public void onCreate() {
     super.onCreate();
     SoLoader.init(this, /* native exopackage */ false);
+    new FlurryAgent.Builder()
+      .withLogEnabled(true)
+      .build(this, "BJBCXVH7VSCMWGHZ3F55");
   }
 }
