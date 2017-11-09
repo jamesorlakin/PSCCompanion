@@ -4,6 +4,7 @@ import android.appwidget.AppWidgetManager;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.Color;
 import android.util.Log;
 import android.widget.RemoteViews;
 import android.widget.RemoteViewsService;
@@ -76,6 +77,9 @@ public class ScrollableTimetableViewsFactory implements RemoteViewsService.Remot
             JSONObject event = this.timetableItems.get(position);
 
             remoteView.setTextViewText(R.id.timetableLessonName, event.getString("Title"));
+
+            remoteView.setInt(R.id.timetableColor, "setBackgroundColor",
+                    Color.parseColor(event.getString("Color")));
 
             Date eventStart = new Date((long)event.getInt("Start")*1000);
             Date eventEnd = new Date((long)event.getInt("End")*1000);
