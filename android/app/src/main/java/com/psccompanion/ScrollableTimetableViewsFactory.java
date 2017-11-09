@@ -5,6 +5,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Color;
+import android.text.format.DateUtils;
 import android.util.Log;
 import android.widget.RemoteViews;
 import android.widget.RemoteViewsService;
@@ -39,7 +40,8 @@ public class ScrollableTimetableViewsFactory implements RemoteViewsService.Remot
 
             List<JSONObject> timetableItems = new ArrayList<JSONObject>();
             for (int i = 0; i < timetable.length(); i++) {
-                timetableItems.add(timetable.getJSONObject(i));
+                if (DateUtils.isToday((long) timetable.getJSONObject(i).getInt("Start")*1000))
+                    timetableItems.add(timetable.getJSONObject(i));
             }
 
             this.timetableItems = timetableItems;
@@ -83,7 +85,7 @@ public class ScrollableTimetableViewsFactory implements RemoteViewsService.Remot
 
             Date eventStart = new Date((long)event.getInt("Start")*1000);
             Date eventEnd = new Date((long)event.getInt("End")*1000);
-            SimpleDateFormat eventDateFormatter = new SimpleDateFormat("h:mm a", Locale.getDefault());
+            SimpleDateFormat eventDateFormatter = new SimpleDateFormat("H:mm", Locale.getDefault());
             remoteView.setTextViewText(R.id.timetableLessonTime, eventDateFormatter.format(eventStart)
                     + " - " + eventDateFormatter.format(eventEnd)
                     + " : " + event.getString("Room"));

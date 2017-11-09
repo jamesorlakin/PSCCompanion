@@ -40,17 +40,16 @@
                 <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
             </intent-filter>
 
-            <meta-data
-                android:name="android.appwidget.provider"
+            <meta-data android:name="android.appwidget.provider"
                 android:resource="@xml/summary_widget_info" />
         </receiver>
-        <receiver android:name=".ScrollableTimetableWidget">
+        <receiver android:name=".ScrollableTimetableWidget"
+            android:label="PSC Companion - Daily Timetable">
             <intent-filter>
                 <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
             </intent-filter>
 
-            <meta-data
-                android:name="android.appwidget.provider"
+            <meta-data android:name="android.appwidget.provider"
                 android:resource="@xml/scrollable_timetable_widget_info" />
         </receiver>
 
