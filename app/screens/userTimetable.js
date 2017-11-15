@@ -10,7 +10,6 @@ import {
 
 import api from '../api.js';
 import Timetable from '../timetableComponents/timetableHost.js';
-import randomColor from 'randomcolor'
 import moment from 'moment';
 
 export default class UserTimetableScreen extends Component {
@@ -35,29 +34,8 @@ export default class UserTimetableScreen extends Component {
       {key: "includeBlanks", value: "false"},
       {key: "start", value: moment().startOf('day').startOf('isoweek').add(this.state.week, 'weeks').unix()},
       {key: "end", value: moment().endOf('day').endOf('isoweek').add(this.state.week, 'weeks').unix()}
-    ]).then(function (data) {
-
-      self.setState({loaded: true, data: data})
-
-      AsyncStorage.getItem('sharedPinAndKey').then(function (asyncData) {
-        if (asyncData !== null) {
-          var pinAndKey = JSON.parse(asyncData);
-          fetch("https://gateway.jameslakin.co.uk/psc/api/submit", {
-            method: "POST",
-            headers: {'Content-Type':'application/json'},
-            body: JSON.stringify({
-              publishKey: pinAndKey.publishKey,
-              pin: pinAndKey.pin,
-              startOfWeek: moment().startOf('day').startOf('isoweek').add(self.state.week, 'weeks').unix(),
-              data: JSON.stringify(data)
-            })
-          }).then(function (req) {
-            req.text()
-          }).then(function (req) {
-            console.log(req);
-          })
-        }
-      })
+    ]).then(function (timetableData) {
+      self.setState({loaded: true, data: timetableData})
     }).catch(function (error) {
       self.setState({error: error})
     })
