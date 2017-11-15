@@ -1,5 +1,6 @@
-// A helper utility for fetching from the API.
+// A helper utility for fetching from the PSC API.
 import { AsyncStorage } from 'react-native';
+import randomColor from 'randomcolor';
 
 export default async function api(path, params) {
   var tokens = await AsyncStorage.getItem('tokens');
@@ -29,6 +30,19 @@ export default async function api(path, params) {
   })
 
   var result = await data.json();
+
+  if (path.indexOf('timetable')>-1) {
+    for (var i = 0; i < result.timetable.length; i++) {
+      if (result.timetable[i].Title === "BTEC Diploma in  IT")
+        result.timetable[i].Title = "Computing & IT Diploma"
+
+        result.timetable[i].Color = randomColor({
+          seed: result.timetable[i].Title+"hedgehog",
+          luminosity: "bright"
+        })
+    }
+  }
+
   console.log("API result: ");
   console.log(result);
   return result;
