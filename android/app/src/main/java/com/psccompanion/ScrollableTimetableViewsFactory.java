@@ -36,7 +36,8 @@ public class ScrollableTimetableViewsFactory implements RemoteViewsService.Remot
         try {
             SharedPreferences preferences = context.getSharedPreferences("wit_player_shared_preferences",
                     Context.MODE_PRIVATE);
-            JSONArray timetable = new JSONArray(preferences.getString("summaryTimetable", null));
+            JSONObject timetableData = new JSONObject(preferences.getString("cache_UserTimetable", null));
+            JSONArray timetable = timetableData.getJSONArray("timetable");
 
             List<JSONObject> timetableItems = new ArrayList<JSONObject>();
             for (int i = 0; i < timetable.length(); i++) {

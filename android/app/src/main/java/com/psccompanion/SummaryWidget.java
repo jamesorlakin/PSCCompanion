@@ -27,7 +27,8 @@ public class SummaryWidget extends AppWidgetProvider {
         Date now = new Date();
         try {
             SharedPreferences preferences = context.getSharedPreferences("wit_player_shared_preferences", Context.MODE_PRIVATE);
-            JSONArray timetable = new JSONArray(preferences.getString("summaryTimetable", null));
+            JSONObject timetableData = new JSONObject(preferences.getString("cache_UserTimetable", null));
+            JSONArray timetable = timetableData.getJSONArray("timetable");
             for (int i = 0; i < timetable.length(); i++) {
 
                 JSONObject event = timetable.getJSONObject(i);
