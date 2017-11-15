@@ -7,10 +7,10 @@ export default async function api(path, params) {
   tokens = JSON.parse(tokens);
 
   if (new Date(tokens.expireTime).getTime() < Date.now()) {
-    console.log("API: Token expired.");
+    console.log("PscApi: Token expired.");
     tokens = await refreshToken();
   } else {
-    console.log("API: The token shouldn't need refreshing");
+    console.log("PscApi: The token shouldn't need refreshing");
   }
 
   // Do we have params?
@@ -21,7 +21,7 @@ export default async function api(path, params) {
     }
   }
 
-  console.log("API: Using path - " + path);
+  console.log("PscApi: Using path - " + path);
 
   var data = await fetch("https://data.psc.ac.uk/api/" + path, {
     headers: {
@@ -43,7 +43,7 @@ export default async function api(path, params) {
     }
   }
 
-  console.log("API result: ");
+  console.log("PscApi result: ");
   console.log(result);
   return result;
 }

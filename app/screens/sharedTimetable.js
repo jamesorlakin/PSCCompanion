@@ -12,6 +12,7 @@ import {
 
 import Timetable from '../timetableComponents/timetableHost.js';
 import moment from 'moment';
+import sharedApi from '../sharedApi.js';
 
 var dayWidth = Dimensions.get('window').width*0.6;
 
@@ -135,12 +136,8 @@ class ExternalTimetable extends Component {
 
   componentDidMount() {
     var self = this;
-    fetch("https://gateway.jameslakin.co.uk/psc/api/fetch?pin=" + this.props.pin.pin +
-    "&startOfWeek=" + moment().startOf('day').startOf('isoweek')
-    .unix()).then(function (data) {
-      return data.json();
-    }).then(function (results) {
-      self.setState({loaded: true, data: results[0]})
+    sharedApi.fetchCurrentShared(this.props.pin.pin).then(function (result) {
+      self.setState({loaded: true, data: result})
     }).catch(function (error) {
       self.setState({error: error})
     })
@@ -163,6 +160,7 @@ class ExternalTimetable extends Component {
           ? "Outdated - Using " + moment.unix(this.state.data.startOfWeek)
             .format('Do MMMM') : "Up-to-date - Current week"}
         </Text>}
+        {this.state.data.isCached && <Text>Warning - Using an offline version</Text>}
         {this.state.loaded ? <Timetable data={JSON.parse(JSON.parse(this.state.data.data))}
           day={this.props.day}
           onScroll={this.props.onScroll}

@@ -9,6 +9,7 @@ import {
 } from 'react-native';
 
 import moment from 'moment'
+import sharedApi from './sharedApi.js'
 
 export default class WhosFreeNow extends Component {
   constructor() {
@@ -100,13 +101,8 @@ class Individual extends Component {
 
   componentDidMount() {
     var self = this;
-    fetch("https://gateway.jameslakin.co.uk/psc/api/fetch?pin=" + this.props.pin.pin +
-    "&startOfWeek=" + moment().startOf('day').startOf('isoweek').unix()).then(function (data) {
-      return data.json()
-    }).then(function (results) {
-      self.setState({loaded: true, data: results[0]})
-    }).catch(function (error) {
-      console.log(error)
+    sharedApi.fetchCachedShared(this.props.pin.pin).then(function (result) {
+      self.setState({loaded: true, data: result})
     })
   }
 
@@ -114,7 +110,12 @@ class Individual extends Component {
     var currentEvent = false;
 
     if (this.state.data !== null) {
-      var timetable = JSON.parse(JSON.parse(this.state.data.data)).timetable
+      var timetable = [];
+      try {
+        timetable = JSON.parse(JSON.parse(this.state.data.data)).timetable
+      } catch (e) {
+        return (<Text>Error parsing for this user.</Text>)
+      }
       var now = this.props.now
 
       // Add the difference in unix time if we're out by a week:
