@@ -10,7 +10,7 @@ import PhotoView from 'react-native-photo-view';
 
 export default class MapScreen extends Component {
   static navigationOptions = {
-    drawerLabel: 'Campus map'
+    drawerLabel: 'Campus Map'
   }
 
   render() {

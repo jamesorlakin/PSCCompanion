@@ -21,7 +21,7 @@ if (day > 4) day = 0;
 
 export default class SharedTimetableScreen extends Component {
   static navigationOptions = {
-    drawerLabel: 'Shared timetable'
+    drawerLabel: 'Shared Timetable'
   }
 
   constructor() {

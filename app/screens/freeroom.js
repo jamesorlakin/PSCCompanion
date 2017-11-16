@@ -15,7 +15,7 @@ import randomColor from 'randomcolor';
 
 export default class FreeRoomScreen extends Component {
   static navigationOptions = {
-    drawerLabel: 'Free rooms'
+    drawerLabel: 'Free Rooms'
   }
 
   // I've added 5 minutes to each period to ensure we're not on a boundary.

@@ -13,7 +13,7 @@ import moment from 'moment';
 
 export default class RoomTimetableScreen extends Component {
   static navigationOptions = {
-    drawerLabel: 'Room timetable'
+    drawerLabel: 'Room Timetable'
   }
 
   constructor() {

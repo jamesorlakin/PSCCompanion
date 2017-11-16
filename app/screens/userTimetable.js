@@ -14,7 +14,7 @@ import moment from 'moment';
 
 export default class UserTimetableScreen extends Component {
   static navigationOptions = {
-    drawerLabel: 'My timetable'
+    drawerLabel: 'My Timetable'
   }
 
   constructor() {
