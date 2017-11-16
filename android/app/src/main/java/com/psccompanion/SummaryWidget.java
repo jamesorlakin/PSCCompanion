@@ -46,7 +46,7 @@ public class SummaryWidget extends AppWidgetProvider {
             }
         } catch (Exception e) {
             Log.e("widget", e.getMessage());
-            views.setTextViewText(R.id.summaryTitle, "Unable to load! Is timetable sharing enabled?");
+            views.setTextViewText(R.id.summaryTitle, context.getString(R.string.summaryError));
         }
 
         // Instruct the widget manager to update the widget

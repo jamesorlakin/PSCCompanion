@@ -2,4 +2,5 @@
     <string name="app_name">PSC Companion</string>
     <string name="summaryTitle">What\'s next?</string>
     <string name="timetableTitle">Today\'s events:</string>
+    <string name="summaryError">Unable to load</string>
 </resources>
