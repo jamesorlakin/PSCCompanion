@@ -31,9 +31,18 @@ public class SummaryWidget extends AppWidgetProvider {
             JSONArray timetable = timetableData.getJSONArray("timetable");
             for (int i = 0; i < timetable.length(); i++) {
 
+                boolean isLastEvent = i+1 == timetable.length();
+                Log.d("widget", String.valueOf(isLastEvent));
+
                 JSONObject event = timetable.getJSONObject(i);
                 Date eventStart = new Date((long)event.getInt("Start")*1000);
-                if (now.before(eventStart) && !event.getBoolean("IsCancelled")) {
+                if ((now.before(eventStart) && !event.getBoolean("IsCancelled")) || isLastEvent) {
+
+                    if (isLastEvent) {
+                        event = timetable.getJSONObject(0);
+                        eventStart = new Date((long)event.getInt("Start")*1000);
+                        views.setTextViewText(R.id.summaryTitle, context.getString(R.string.summaryTitleNextWeek));
+                    }
                     views.setTextViewText(R.id.summaryLessonTitle, event.getString("Title"));
 
                     views.setTextViewText(R.id.summaryLessonStaff, event.getString("Staff"));
@@ -45,7 +54,7 @@ public class SummaryWidget extends AppWidgetProvider {
                 }
             }
         } catch (Exception e) {
-            Log.e("widget", e.getMessage());
+            Log.e("widget", e.getMessage() + "");
             views.setTextViewText(R.id.summaryTitle, context.getString(R.string.summaryError));
         }
 

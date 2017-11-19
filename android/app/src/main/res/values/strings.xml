@@ -3,4 +3,5 @@
     <string name="summaryTitle">What\'s next?</string>
     <string name="timetableTitle">Today\'s events:</string>
     <string name="summaryError">Unable to load</string>
+    <string name="summaryTitleNextWeek">Start of next week:</string>
 </resources>
