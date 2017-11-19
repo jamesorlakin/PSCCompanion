@@ -26,13 +26,10 @@ public class SummaryWidget extends AppWidgetProvider {
         RemoteViews views = new RemoteViews(context.getPackageName(), R.layout.summary_widget);
         Date now = new Date();
         try {
-            SharedPreferences preferences = context.getSharedPreferences("wit_player_shared_preferences", Context.MODE_PRIVATE);
-            JSONObject timetableData = new JSONObject(preferences.getString("cache_UserTimetable", null));
-            JSONArray timetable = timetableData.getJSONArray("timetable");
+            JSONArray timetable = TimetableCacheUtils.getTimetable(context);
             for (int i = 0; i < timetable.length(); i++) {
 
                 boolean isLastEvent = i+1 == timetable.length();
-                Log.d("widget", String.valueOf(isLastEvent));
 
                 JSONObject event = timetable.getJSONObject(i);
                 Date eventStart = new Date((long)event.getInt("Start")*1000);
