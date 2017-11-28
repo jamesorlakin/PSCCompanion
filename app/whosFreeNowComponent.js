@@ -160,12 +160,16 @@ function Occupied(props) {
     return (
       <View>
         <Free />
-        <Text style={{color: 'red', fontStyle: 'italic'}}>(Lesson cancelled)</Text>
+        <Text style={{color: 'red', fontStyle: 'italic', textAlign: 'right'}}>(Lesson cancelled)</Text>
       </View>
     )
   }
   return (
-    <Text style={{color: 'red'}}>Busy</Text>
+    <Text style={{color: 'red', textAlign: 'right'}}>
+      Busy
+      {props.event.Type === "activity" && " (activity)"}
+      {props.event.Title.indexOf('Lecture') > -1 && " (Lecture Programme)"}
+    </Text>
   )
 }
 

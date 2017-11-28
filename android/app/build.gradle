@@ -97,8 +97,8 @@ android {
         applicationId "com.psccompanion"
         minSdkVersion 16
         targetSdkVersion 22
-        versionCode 56
-        versionName "0.56 Operation Notice Me and Update Me"
+        versionCode 57
+        versionName "0.57 Be Active"
         ndk {
             abiFilters "armeabi-v7a", "x86"
         }
