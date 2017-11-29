@@ -67,21 +67,25 @@ export default class WhosFreeNow extends Component {
     return (
       <View style={[styles.container, {marginBottom: 20}]}>
         <Text style={{fontWeight: 'bold'}}>Who's free?</Text>
-        <Picker selectedValue={this.state.period}
-          onValueChange={this.changePeriod}
-          mode="dropdown">
-          <Picker.Item label={"Now - " + this.periodTimes[0].format('HH:mm')} value={0} />
-          <Picker.Item label="Lesson 1 - 8:30 - 9:25" value={1} />
-          <Picker.Item label="Lesson 2 - 9:25 - 10:20" value={2} />
-          <Picker.Item label="Break - 10:20 - 10:40" value={3} />
-          <Picker.Item label="Lesson 3 - 10:40 - 11:35" value={4} />
-          <Picker.Item label="Lesson 4 - 11:35 - 12:30" value={5} />
-          <Picker.Item label="Tutor - 12:30 - 13:00" value={6} />
-          <Picker.Item label="Lunch - 13:00 - 13:50" value={7} />
-          <Picker.Item label="Lesson 6 - 13:50 - 14:45" value={8} />
-          <Picker.Item label="Lesson 7 - 14:45 - 15:40" value={9} />
-          <Picker.Item label="Lesson 8 - 15:40 - 16:35" value={10} />
-        </Picker>
+        <View style={{flexDirection: 'row'}}>
+          <Text style={{marginTop: 15, color: 'black'}}>Time:</Text>
+          <Picker style={{flex: 1}}
+            selectedValue={this.state.period}
+            onValueChange={this.changePeriod}
+            mode="dropdown">
+            <Picker.Item label={"Now - " + this.periodTimes[0].format('HH:mm')} value={0} />
+            <Picker.Item label="Lesson 1 - 8:30 - 9:25" value={1} />
+            <Picker.Item label="Lesson 2 - 9:25 - 10:20" value={2} />
+            <Picker.Item label="Break - 10:20 - 10:40" value={3} />
+            <Picker.Item label="Lesson 3 - 10:40 - 11:35" value={4} />
+            <Picker.Item label="Lesson 4 - 11:35 - 12:30" value={5} />
+            <Picker.Item label="Tutor - 12:30 - 13:00" value={6} />
+            <Picker.Item label="Lunch - 13:00 - 13:50" value={7} />
+            <Picker.Item label="Lesson 6 - 13:50 - 14:45" value={8} />
+            <Picker.Item label="Lesson 7 - 14:45 - 15:40" value={9} />
+            <Picker.Item label="Lesson 8 - 15:40 - 16:35" value={10} />
+          </Picker>
+        </View>
         {this.state.savedPins.map(function (pin) {
           return (<Individual key={pin.pin} now={self.periodTimes[self.state.period]} pin={pin} />)
         })}

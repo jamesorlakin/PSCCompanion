@@ -68,16 +68,19 @@ export default class SharedTimetableScreen extends Component {
     var self = this;
     if (this.state.enrolled) return (
       <View style={styles.container}>
-        <Text style={{fontSize: 18}}>Your PIN is {this.state.pinAndKey.pin}.</Text>
-        <Picker selectedValue={this.state.day}
-          onValueChange={this.changeDay}
-          mode="dropdown">
-          <Picker.Item label="Monday" value={0} />
-          <Picker.Item label="Tuesday" value={1} />
-          <Picker.Item label="Wednesday" value={2} />
-          <Picker.Item label="Thursday" value={3} />
-          <Picker.Item label="Friday" value={4} />
-        </Picker>
+        <View style={{flexDirection: 'row'}}>
+          <Text style={{marginTop: 15, color: 'black'}}>Day:</Text>
+          <Picker style={{flex: 1}}
+            selectedValue={this.state.day}
+            onValueChange={this.changeDay}
+            mode="dropdown">
+            <Picker.Item label="Monday" value={0} />
+            <Picker.Item label="Tuesday" value={1} />
+            <Picker.Item label="Wednesday" value={2} />
+            <Picker.Item label="Thursday" value={3} />
+            <Picker.Item label="Friday" value={4} />
+          </Picker>
+        </View>
 
         {this.state.savedPins.length === 0 && <Text style={{width: 100}}>Feeling lonely?
           You can add PINs in the settings menu to see other timetables.</Text>}
