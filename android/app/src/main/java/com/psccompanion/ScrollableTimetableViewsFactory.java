@@ -86,6 +86,8 @@ public class ScrollableTimetableViewsFactory implements RemoteViewsService.Remot
             remoteView.setTextViewText(R.id.timetableLessonTime, eventDateFormatter.format(eventStart)
                     + " - " + eventDateFormatter.format(eventEnd)
                     + " : " + event.getString("Room"));
+
+            remoteView.setTextViewText(R.id.timetableLessonStaff, event.getString("Staff"));
         } catch (Exception e) {
             Log.e("widget", e.toString());
         }
