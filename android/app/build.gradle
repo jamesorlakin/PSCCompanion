@@ -97,8 +97,8 @@ android {
         applicationId "com.psccompanion"
         minSdkVersion 16
         targetSdkVersion 22
-        versionCode 58
-        versionName "0.58 Widget Me Plenty"
+        versionCode 59
+        versionName "0.59 Operation Pad Me Up Daddy"
         ndk {
             abiFilters "armeabi-v7a", "x86"
         }
