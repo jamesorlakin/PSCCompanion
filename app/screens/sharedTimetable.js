@@ -11,6 +11,7 @@ import {
 } from 'react-native';
 
 import Timetable from '../timetableComponents/timetableHost.js';
+import TimetableDayProgress from '../timetableComponents/timetableDayProgress.js';
 import moment from 'moment';
 import sharedApi from '../sharedApi.js';
 
@@ -48,8 +49,8 @@ export default class SharedTimetableScreen extends Component {
         self.setState({enrolled: false})
       } else {
         var data = JSON.parse(data);
-        self.setState({enrolled: true, pinAndKey: data})
         AsyncStorage.getItem('sharedSavedPins').then(function (pinData) {
+          self.setState({enrolled: true, pinAndKey: data})
           if (pinData !== null) {
             var pins = JSON.parse(pinData);
             pins.unshift({name: "Me", pin: data.pin})
@@ -88,6 +89,7 @@ export default class SharedTimetableScreen extends Component {
         <ScrollView horizontal={true}>
           <View style={{flex: 1}}>
             <View style={{flexDirection: 'row'}}>
+              <TimetableDayProgress blank />
               {this.state.savedPins.map(function (pin) {
                 return (<Text
                   key={pin.pin}
@@ -101,6 +103,7 @@ export default class SharedTimetableScreen extends Component {
 
             <ScrollView>
               <View style={{flexDirection: 'row'}}>
+                <TimetableDayProgress topGap={19}/>
                 {this.state.savedPins.map(function (pin) {
                   return (<ExternalTimetable pin={pin}
                     key={pin.pin}
@@ -158,12 +161,12 @@ class ExternalTimetable extends Component {
 
     return (
       <View>
-        {this.state.loaded && <Text style={{fontSize: 15, marginBottom: 4}}>
+        {this.state.loaded && (this.state.data.isCached ?
+          <Text>Warning - Using an offline version</Text> : <Text>
           {(this.state.data.startOfWeek !== moment().startOf('day').startOf('isoweek').unix())
           ? "Outdated - Using " + moment.unix(this.state.data.startOfWeek)
-            .format('Do MMMM') : "Up-to-date - Current week"}
-        </Text>}
-        {this.state.data.isCached && <Text>Warning - Using an offline version</Text>}
+            .format('Do MMM') : "Up-to-date - Current week"}
+        </Text>)}
         {this.state.loaded ? <Timetable data={JSON.parse(JSON.parse(this.state.data.data))}
           day={this.props.day}
           onScroll={this.props.onScroll}
