@@ -97,8 +97,8 @@ android {
         applicationId "com.psccompanion"
         minSdkVersion 16
         targetSdkVersion 22
-        versionCode 59
-        versionName "0.59 Operation Pad Me Up Daddy"
+        versionCode 60
+        versionName "0.60 Operation Time of Day"
         ndk {
             abiFilters "armeabi-v7a", "x86"
         }
