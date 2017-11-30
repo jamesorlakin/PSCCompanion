@@ -1,8 +1,10 @@
 package com.psccompanion;
 
+import android.app.PendingIntent;
 import android.appwidget.AppWidgetManager;
 import android.appwidget.AppWidgetProvider;
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.util.Log;
 import android.widget.RemoteViews;
@@ -26,6 +28,10 @@ public class SummaryWidget extends AppWidgetProvider {
         RemoteViews views = new RemoteViews(context.getPackageName(), R.layout.summary_widget);
         Date now = new Date();
         try {
+            views.setOnClickPendingIntent(R.id.summaryLayout, PendingIntent.getActivity(context,
+                    0, new Intent(context, MainActivity.class), PendingIntent.FLAG_UPDATE_CURRENT
+            ));
+
             JSONArray timetable = TimetableCacheUtils.getTimetable(context);
             for (int i = 0; i < timetable.length(); i++) {
 
