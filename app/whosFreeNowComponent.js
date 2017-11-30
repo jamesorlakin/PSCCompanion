@@ -173,6 +173,7 @@ function Occupied(props) {
       Busy
       {props.event.Type === "activity" && " (activity)"}
       {props.event.Title.indexOf('Lecture') > -1 && " (Lecture Programme)"}
+      {props.event.Title.indexOf('Workshop') > -1 && " (workshop)"}
     </Text>
   )
 }
