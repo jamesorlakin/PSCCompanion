@@ -11,6 +11,7 @@ import {
 import api from '../api.js'
 import WhosFreeNow from '../whosFreeNowComponent.js'
 import Summary from '../summaryComponent.js'
+import StudentNoticesScreen from './notices.js'
 
 export default class WelcomeScreen extends Component {
   static navigationOptions = {
@@ -57,10 +58,11 @@ export default class WelcomeScreen extends Component {
 
             <WhosFreeNow/>
 
+            <StudentNoticesScreen welcome/>
+
             <Text style={{fontSize: 16}}>Note that this application is very new.
               Bugs are to be expected now and again, and please report any you find
-              so that I can fix them. Don't worry, this UI isn't final. I agree it's
-              a bit ugly too...</Text>
+              so that I can fix them. Suggestions are also welcome.</Text>
           </View>
         </ScrollView>
       )
