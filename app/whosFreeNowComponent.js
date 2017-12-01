@@ -65,7 +65,7 @@ export default class WhosFreeNow extends Component {
     if (!this.state.enrolled || this.state.savedPins.length === 0) return (<View />)
 
     return (
-      <View style={[styles.container, {marginBottom: 20}]}>
+      <View style={styles.container}>
         <Text style={{fontWeight: 'bold'}}>Who's free?</Text>
         <View style={{flexDirection: 'row'}}>
           <Text style={{marginTop: 15, color: 'black'}}>Time:</Text>
@@ -183,6 +183,7 @@ const styles = StyleSheet.create({
     flex: 1,
     borderWidth: 5,
     borderRadius: 1,
-    padding: 4
+    padding: 4,
+    marginBottom: 20
   },
 });
