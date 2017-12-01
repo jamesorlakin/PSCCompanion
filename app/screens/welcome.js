@@ -39,11 +39,6 @@ export default class WelcomeScreen extends Component {
 
   render() {
     if (this.state.loaded) {
-      var rows = [];
-      var data = this.state.data;
-      Object.keys(data).forEach(function (key) {
-        rows.push(<Text key={key}>{key} - {data[key].toString()}</Text>)
-      })
 
       return (
         <ScrollView>
