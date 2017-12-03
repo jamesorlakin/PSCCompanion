@@ -1,3 +1,8 @@
+# This is a version of PSC Companion with minor tweaks to allow the use of Expo for a cheap (free!) and easy distribution method on iOS.
+Use the `exp` command line tool and the publish command to update. Merge changes from master into this branch and remove native dependencies if necessary.
+
+---
+
 This project was bootstrapped with [Create React Native App](https://github.com/react-community/create-react-native-app).
 
 Below you'll find information about performing common tasks. The most recent version of this guide is available [here](https://github.com/react-community/create-react-native-app/blob/master/react-native-scripts/template/README.md).
