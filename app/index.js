@@ -2,7 +2,6 @@
 
 import React, { Component } from 'react';
 import {
-  AppRegistry,
   StyleSheet,
   Text,
   AsyncStorage,
@@ -44,4 +43,4 @@ const styles = StyleSheet.create({
 
 });
 
-AppRegistry.registerComponent('PSCCompanion', () => PSCCompanion);
+//AppRegistry.registerComponent('PSCCompanion', () => PSCCompanion);

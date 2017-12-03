@@ -12,7 +12,10 @@ import {
 
 import { StackNavigator, DrawerNavigator, NavigationActions, DrawerItems } from 'react-navigation';
 
-import BannerAd from './adComponent.js'
+//import BannerAd from './adComponent.js'
+function BannerAd() {
+  return <View />
+}
 
 import WelcomeScreen from './screens/welcome.js'
 import FreeRoomScreen from './screens/freeroom.js'
@@ -20,7 +23,7 @@ import UserTimetableScreen from './screens/userTimetable.js'
 import RoomTimetableScreen from './screens/roomTimetable.js'
 import SharedTimetableScreen from './screens/sharedTimetable.js'
 import StudentNoticesScreen from './screens/notices.js'
-import MapScreen from './screens/map.js'
+//import MapScreen from './screens/map.js'
 import IntranetScreen from './screens/intranet.js'
 import SettingsScreen from './screens/settings.js'
 
@@ -31,7 +34,7 @@ const Drawer = DrawerNavigator({
   roomTimetable: {screen: RoomTimetableScreen},
   sharedTimetable: {screen: SharedTimetableScreen},
   notices: {screen: StudentNoticesScreen},
-  map: {screen: MapScreen},
+//  map: {screen: MapScreen},
   intranet: {screen: IntranetScreen},
   settings: {screen: SettingsScreen},
 }, {
