@@ -12,6 +12,7 @@ import api from '../api.js'
 import WhosFreeNow from '../whosFreeNowComponent.js'
 import Summary from '../summaryComponent.js'
 import StudentNoticesScreen from './notices.js'
+import ExpoNoticeComponent from '../expoNoticeComponent.js'
 
 export default class WelcomeScreen extends Component {
   static navigationOptions = {
@@ -55,6 +56,8 @@ export default class WelcomeScreen extends Component {
             </View>
 
             <Summary/>
+
+            <ExpoNoticeComponent/>
 
             <WhosFreeNow/>
 
