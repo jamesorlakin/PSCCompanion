@@ -48,7 +48,7 @@ export default class DebugScreen extends Component {
   render() {
     var tokens = this.state.tokens;
     return (<View style={styles.container}>{tokens.map(function (item) {
-      return (<TextInput key={tokens.indexOf(item)}>{item}</TextInput>)
+      return (<TextInput key={tokens.indexOf(item)} value={item} />)
     })}
     <TextInput defaultValue={this.state.pinAndKey}
       onChangeText={(value) => {this.setState({newPinAndKey: value})}} />
