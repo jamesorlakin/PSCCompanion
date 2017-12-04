@@ -6,7 +6,7 @@ import {
   AsyncStorage
 } from 'react-native';
 
-import { AdMobBanner } from 'react-native-admob'
+import { AdMobBanner } from 'expo'
 
 export default class BannerAd extends Component {
   constructor(props) {

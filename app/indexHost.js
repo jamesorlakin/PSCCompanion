@@ -12,10 +12,7 @@ import {
 
 import { StackNavigator, DrawerNavigator, NavigationActions, DrawerItems } from 'react-navigation';
 
-//import BannerAd from './adComponent.js'
-function BannerAd() {
-  return <View />
-}
+import BannerAd from './adComponent.js'
 
 import WelcomeScreen from './screens/welcome.js'
 import FreeRoomScreen from './screens/freeroom.js'
