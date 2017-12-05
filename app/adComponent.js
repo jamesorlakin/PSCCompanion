@@ -44,7 +44,7 @@ export default class BannerAd extends Component {
     if (!this.state.adFree) return (
       <AdMobBanner
         bannerSize="fullBanner"
-        adUnitID="ca-app-pub-7238065308394709/8039373135"
+        adUnitID="ca-app-pub-7238065308394709/7865267604"
         testDeviceID="EMULATOR"
         didFailToReceiveAdWithError={this.bannerError} />
     )
