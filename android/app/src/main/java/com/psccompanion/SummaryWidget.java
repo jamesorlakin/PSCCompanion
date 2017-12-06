@@ -41,6 +41,7 @@ public class SummaryWidget extends AppWidgetProvider {
                 Date eventStart = new Date((long)event.getInt("Start")*1000);
                 if ((now.before(eventStart) && !event.getBoolean("IsCancelled")) || isLastEvent) {
 
+                    views.setTextViewText(R.id.summaryTitle, context.getString(R.string.summaryTitle));
                     if (isLastEvent) {
                         event = timetable.getJSONObject(0);
                         eventStart = new Date((long)event.getInt("Start")*1000);
