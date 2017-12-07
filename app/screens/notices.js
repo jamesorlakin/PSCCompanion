@@ -6,6 +6,7 @@ import {
   ScrollView,
   StyleSheet,
   ActivityIndicator,
+  InteractionManager,
 } from 'react-native';
 
 import cheerio from 'react-native-cheerio';
@@ -26,7 +27,7 @@ export default class StudentNoticesScreen extends Component {
   }
 
   componentDidMount() {
-    this.fetchNotices()
+    InteractionManager.runAfterInteractions(this.fetchNotices)
   }
 
   async fetchNotices() {

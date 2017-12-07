@@ -3,6 +3,7 @@ import {
   View,
   Text,
   AsyncStorage,
+  ActivityIndicator,
   StyleSheet,
 } from 'react-native';
 
@@ -31,9 +32,9 @@ export default class Summary extends Component {
       {key: "start", value: moment().startOf('day').startOf('isoweek').unix()},
       {key: "end", value: moment().endOf('day').endOf('isoweek').unix()}
     ]).then(function (result) {
+      self.setState({loaded: true, data: result})
       sharedApi.updateCurrentShared(result)
       localTimetableCache.saveCache(result)
-      self.setState({loaded: true, data: result})
     }).catch(function (error) {
       console.log(error)
     })
@@ -66,7 +67,16 @@ export default class Summary extends Component {
 
     return (
       <View style={styles.container}>
-        <Text style={{fontWeight: 'bold'}}>What's next?</Text>
+        <View style={{flexDirection: 'row', justifyContent: "space-between"}}>
+
+          <Text style={{fontWeight: 'bold'}}>What's next?</Text>
+          {this.state.data.isCached && <View style={{flexDirection: 'row'}}>
+            <Text style={{fontStyle: 'italic'}}>Updating </Text>
+            <ActivityIndicator />
+          </View>}
+        </View>
+
+
         {nextEvent.type != "unknown" && <View style={{
           backgroundColor: nextEvent.Color,
           height: 3}}
@@ -76,7 +86,7 @@ export default class Summary extends Component {
         <Text>{nextEvent.Type != "unknown" && nextEvent.Staff}</Text>
         <Text>{moment.unix(nextEvent.Start).format('dddd, HH:mm A') + " - "}
           {moment.unix(nextEvent.End).format('HH:mm A')} : {nextEvent.Room}</Text>
-        {this.state.data.isCached && <Text>Using cached data</Text>}
+
       </View>
     );
   }
