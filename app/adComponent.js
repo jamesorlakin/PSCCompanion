@@ -42,11 +42,14 @@ export default class BannerAd extends Component {
     if (!this.state.loaded) return (<View />)
 
     if (!this.state.adFree) return (
-      <AdMobBanner
-        bannerSize="smartBannerPortrait"
-        adUnitID="ca-app-pub-7238065308394709/7865267604"
-        testDeviceID="EMULATOR"
-        didFailToReceiveAdWithError={this.bannerError} />
+      <View style={{alignItems: 'center'}}>
+        <AdMobBanner
+          bannerSize="banner"
+          adUnitID="ca-app-pub-7238065308394709/7865267604"
+          testDeviceID="EMULATOR"
+          didFailToReceiveAdWithError={this.bannerError}
+          style={{minHeight: 50, width: 320}} />
+      </View>
     )
 
     return (<View/>)
