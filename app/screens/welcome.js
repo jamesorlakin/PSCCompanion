@@ -22,7 +22,7 @@ export default class WelcomeScreen extends Component {
     super();
     this.state = {
       loaded: false,
-      data: null
+      data: {}
     }
   }
 
@@ -30,7 +30,7 @@ export default class WelcomeScreen extends Component {
     var self = this;
     AsyncStorage.getItem('user').then(function (data) {
       if (typeof data === "string") self.setState({loaded: true, data: JSON.parse(data)})
-      if (Math.floor(Math.random()*20) == 0 || typeof data !== "string") api('user').then(function (userInfo) {
+      if (Math.floor(Math.random()*100) == 0 || typeof data !== "string") api('user').then(function (userInfo) {
         userInfo.fetchedTime = new Date();
         self.setState({loaded: true, data: userInfo});
         AsyncStorage.setItem('user', JSON.stringify(userInfo));
@@ -39,38 +39,31 @@ export default class WelcomeScreen extends Component {
   }
 
   render() {
-    if (this.state.loaded) {
-
-      return (
-        <ScrollView>
-          <View style={styles.container}>
-            <View style={{flex: 1,
-              flexDirection: 'column',
-              justifyContent: 'center',
-              alignItems: 'center',
-              marginBottom: 15
-            }}>
-              <Image source={require('../images/userIcon.png')} />
-              <Text style={{fontSize: 20}}>Welcome, {this.state.data.Name}</Text>
-            </View>
-
-            <Summary/>
-
-            <WhosFreeNow/>
-
-            <StudentNoticesScreen welcome/>
-
-            <Text style={{fontSize: 16}}>Note that this application is very new.
-              Bugs are to be expected now and again, and please report any you find
-              so that I can fix them. Suggestions are also welcome.</Text>
-          </View>
-        </ScrollView>
-      )
-    }
-
     return (
-      <View/>
-    );
+      <ScrollView>
+        <View style={styles.container}>
+          <View style={{flex: 1,
+            flexDirection: 'column',
+            justifyContent: 'center',
+            alignItems: 'center',
+            marginBottom: 15
+          }}>
+            <Image source={require('../images/userIcon.png')} />
+            <Text style={{fontSize: 20}}>Welcome, {this.state.data.Name || "user"}</Text>
+          </View>
+
+          <Summary/>
+
+          <WhosFreeNow/>
+
+          <StudentNoticesScreen welcome/>
+
+          <Text style={{fontSize: 16}}>Note that this application is very new.
+            Bugs are to be expected now and again, and please report any you find
+            so that I can fix them. Suggestions are also welcome.</Text>
+        </View>
+      </ScrollView>
+    )
   }
 }
 
