@@ -40,7 +40,6 @@ export default class SettingSharedTimetable extends Component {
     var self = this;
     this.setState({enrolling: true})
     AsyncStorage.getItem('user').then(function (userData) {
-      console.log(userData);
       fetch("https://gateway.jameslakin.co.uk/psc/api/enroll", {
         method: "POST",
         headers: {'Content-Type':'application/json'},
@@ -156,6 +155,7 @@ class SharedPinManager extends Component {
           </View>
           {this.state.adding && <ActivityIndicator />}
         </View>
+        
         {this.state.error && <Text>{this.state.error.toString()}</Text>}
 
         {this.state.savedPins.map(function (pin) {
@@ -171,7 +171,7 @@ class SharedPinManager extends Component {
 function PINView(props) {
   return (
     <View style={{flexDirection: "row", justifyContent: "space-between", marginBottom: 4}}>
-      <Text style={{fontSize: 16}}>{props.pin.pin} - {props.pin.name}</Text>
+      <Text style={{fontSize: 16, marginTop: 8}}>{props.pin.pin} - {props.pin.name}</Text>
       <Button title="Remove" color="#E80909" onPress={props.remove} />
     </View>
   );
