@@ -7,7 +7,8 @@ import {
   StyleSheet,
 } from 'react-native';
 
-import moment from 'moment'
+import moment from 'moment';
+import { dayWidth } from './constants.js';
 
 export default class TimetableDay extends Component {
   constructor(props) {
@@ -68,7 +69,7 @@ export default class TimetableDay extends Component {
 
     this.doScroll();
 
-    return (<View width={this.props.dayWidth} style={styles.container}>
+    return (<View width={dayWidth} style={styles.container}>
       {rows}
     </View>)
   }

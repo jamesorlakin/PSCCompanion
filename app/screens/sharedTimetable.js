@@ -14,8 +14,7 @@ import Timetable from '../timetableComponents/timetableHost.js';
 import TimetableDayProgress from '../timetableComponents/timetableDayProgress.js';
 import moment from 'moment';
 import sharedApi from '../sharedApi.js';
-
-var dayWidth = Dimensions.get('window').width*0.6;
+import { dayWidth } from '../timetableComponents/constants.js';
 
 var day = moment().isoWeekday()-1;
 if (day > 4) day = 0;

@@ -12,7 +12,7 @@ import {
 
 import moment from 'moment';
 import TimetableDay from './timetableDay.js';
-var dayWidth = Dimensions.get('window').width*0.6;
+import { dayWidth } from './constants.js';
 
 export default class Timetable extends Component {
   constructor(props) {
@@ -52,7 +52,6 @@ export default class Timetable extends Component {
     var timetableColumns = [];
     Object.keys(dayTimetables).forEach(function (key) {
       timetableColumns.push(<TimetableDay
-        dayWidth={dayWidth}
         key={key}
         onScroll={self.props.onScroll}
         scrollTo={self.props.scrollTo}
