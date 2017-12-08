@@ -18,10 +18,10 @@ export default class Timetable extends Component {
   constructor(props) {
     super(props);
     this.doneScroll = false;
-    this.doScroll = this.doScroll.bind(this)
+    this.doWeekScroll = this.doWeekScroll.bind(this)
   }
 
-  doScroll(ref) {
+  doWeekScroll(ref) {
     if (this.props.week != 0) return true
     var self = this;
     if (!this.doneScroll) setTimeout(function () {
@@ -53,9 +53,6 @@ export default class Timetable extends Component {
     Object.keys(dayTimetables).forEach(function (key) {
       timetableColumns.push(<TimetableDay
         key={key}
-        onScroll={self.props.onScroll}
-        scrollTo={self.props.scrollTo}
-        selectedDay={self.props.day}
         data={dayTimetables[key]} />)
     })
 
@@ -79,7 +76,7 @@ export default class Timetable extends Component {
     })
 
     return (
-      <ScrollView ref={this.doScroll} horizontal={true}>
+      <ScrollView ref={this.doWeekScroll} horizontal={true}>
         <View style={{flex: 1}}>
           <View style={{flexDirection: 'row'}}>
             {timetableHeaders}
