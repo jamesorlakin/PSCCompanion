@@ -1,3 +1,3 @@
 import { Dimensions } from 'react-native';
 
-export const dayWidth = Dimensions.get('window').width*0.6;
+export const dayWidth = Dimensions.get('window').width*0.56;

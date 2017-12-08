@@ -97,7 +97,7 @@ function EventElement(props) {
         backgroundColor: props.item.Color,
         width: 3}}
       />
-      <View style={{marginLeft: 5}} >
+      <View style={{marginLeft: 5, marginRight: 5}} >
         <Text style={styles.bold}>
           {props.item.IsCancelled && "(Cancelled) "}
           {props.item.Title}
