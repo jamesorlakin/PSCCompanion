@@ -52,13 +52,13 @@ const MenuButton = function (props) {
           props.navigation.navigate('DrawerClose')
           : props.navigation.navigate('DrawerOpen')}}
       >
-      <Image source={require('./images/hamburgerIcon.png')}
-        style={{
-          width: 64,
-          height: 64,
-          marginLeft: 0,
-          marginTop: 3
-        }}/>
+        <Image source={require('./images/hamburgerIcon.png')}
+          style={{
+            width: 64,
+            height: 64,
+            marginLeft: 0,
+            marginTop: 3
+          }}/>
       </TouchableOpacity>
     </View>
   );

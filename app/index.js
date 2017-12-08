@@ -22,7 +22,7 @@ export default class PSCCompanion extends Component {
     var self = this;
     AsyncStorage.getItem('tokens').then(function (data) {
       // If it exists we get a string back.
-      self.setState({setup: (typeof data == "string")})
+      self.setState({setup: (typeof data === "string")})
     }).done()
   }
 
