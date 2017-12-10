@@ -1,8 +1,5 @@
 package com.psccompanion;
 
-import android.graphics.Color;
-import android.os.Build;
-import android.view.Window;
 import com.facebook.react.ReactActivity;
 
 public class MainActivity extends ReactActivity {
@@ -19,11 +16,5 @@ public class MainActivity extends ReactActivity {
     @Override
     protected void onStart() {
         super.onStart();
-
-        // Set a nice blue status bar.
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            Window w = getWindow();
-            w.setStatusBarColor(Color.parseColor("#36648B"));
-        }
     }
 }
