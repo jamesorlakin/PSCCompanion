@@ -7,33 +7,10 @@ import {
   StyleSheet,
 } from 'react-native';
 
-import moment from 'moment'
+import moment from 'moment';
+import { dayWidth } from './constants.js';
 
 export default class TimetableDay extends Component {
-  constructor(props) {
-    super(props);
-    this.doneScroll = 0;
-    this.doScroll = this.doScroll.bind(this);
-    this.storeRef = this.storeRef.bind(this)
-  }
-
-  doScroll() {
-    if (this.scrollView === undefined) return false;
-    if (this.props.scrollTo === undefined) return false;
-    var self = this;
-    if (this.doneScroll !== this.props.scrollTo) setTimeout(function () {
-      self.doneScroll = self.props.scrollTo
-      self.scrollView.scrollTo({
-        y: self.props.scrollTo,
-        animated: false
-      })
-    }, 10)
-  }
-
-  storeRef(ref) {
-    this.scrollView = ref;
-  }
-
   render() {
     var events = this.props.data;
     var rows = [];
@@ -66,9 +43,7 @@ export default class TimetableDay extends Component {
             End: moment.unix(events[i].Start).hour(16).minute(35).unix()}} />);
     }
 
-    this.doScroll();
-
-    return (<View width={this.props.dayWidth} style={styles.container}>
+    return (<View width={dayWidth} style={styles.container}>
       {rows}
     </View>)
   }
@@ -122,7 +97,7 @@ function EventElement(props) {
         backgroundColor: props.item.Color,
         width: 3}}
       />
-      <View style={{marginLeft: 5}} >
+      <View style={{marginLeft: 5, marginRight: 5}} >
         <Text style={styles.bold}>
           {props.item.IsCancelled && "(Cancelled) "}
           {props.item.Title}

@@ -2,7 +2,6 @@ import React, { Component } from 'react';
 import {
   View,
   Text,
-  ActivityIndicator,
   AsyncStorage,
   Button,
   StyleSheet,
@@ -11,6 +10,7 @@ import {
 import api from '../api.js';
 import Timetable from '../timetableComponents/timetableHost.js';
 import moment from 'moment';
+import { Fetching } from '../commonComponents.js'
 
 export default class UserTimetableScreen extends Component {
   static navigationOptions = {
@@ -68,7 +68,7 @@ export default class UserTimetableScreen extends Component {
             style={{width: 50, backgroundColor: "black"}}
             title=">" />
         </View>
-        {(this.state.loaded ? <Timetable data={this.state.data} week={this.state.week} /> : <ActivityIndicator />)}
+        {(this.state.loaded ? <Timetable data={this.state.data} week={this.state.week} /> : <Fetching />)}
         {(this.state.error && <Text>Error: {this.state.error.toString()}</Text>)}
       </View>
     )

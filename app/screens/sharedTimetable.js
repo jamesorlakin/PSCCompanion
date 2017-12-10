@@ -6,7 +6,6 @@ import {
   ScrollView,
   Picker,
   Dimensions,
-  ActivityIndicator,
   StyleSheet,
 } from 'react-native';
 
@@ -14,8 +13,8 @@ import Timetable from '../timetableComponents/timetableHost.js';
 import TimetableDayProgress from '../timetableComponents/timetableDayProgress.js';
 import moment from 'moment';
 import sharedApi from '../sharedApi.js';
-
-var dayWidth = Dimensions.get('window').width*0.6;
+import { dayWidth } from '../timetableComponents/constants.js';
+import { Fetching } from '../commonComponents.js';
 
 var day = moment().isoWeekday()-1;
 if (day > 4) day = 0;
@@ -168,10 +167,8 @@ class ExternalTimetable extends Component {
             .format('Do MMM') : "Up-to-date - Current week"}
         </Text>)}
         {this.state.loaded ? <Timetable data={JSON.parse(JSON.parse(this.state.data.data))}
-          day={this.props.day}
-          onScroll={this.props.onScroll}
-          scrollTo={this.props.scrollTo} />
-          : <ActivityIndicator style={{width: dayWidth}} />}
+          day={this.props.day} />
+          : <Fetching style={{width: dayWidth}} />}
         {this.state.error && <Text>{this.state.error.toString()}</Text>}
       </View>
     );

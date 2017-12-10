@@ -5,13 +5,13 @@ import {
   FlatList,
   Picker,
   Button,
-  ActivityIndicator,
   StyleSheet,
 } from 'react-native';
 
 import api from '../api.js';
 import moment from 'moment';
 import randomColor from 'randomcolor';
+import { Fetching } from '../commonComponents.js';
 
 export default class FreeRoomScreen extends Component {
   static navigationOptions = {
@@ -80,7 +80,7 @@ export default class FreeRoomScreen extends Component {
     if (this.state.rooms === false) return (
       <View style={styles.container, {alignItems: 'center'}}>
         <Text>This may take some time to load.</Text>
-        <ActivityIndicator />
+        <Fetching />
       </View>
     );
 
