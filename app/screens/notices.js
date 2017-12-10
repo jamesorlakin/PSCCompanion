@@ -5,13 +5,13 @@ import {
   Dimensions,
   ScrollView,
   StyleSheet,
-  ActivityIndicator,
   InteractionManager,
 } from 'react-native';
 
 import cheerio from 'react-native-cheerio';
 import HTMLView from 'react-native-htmlview';
 import moment from 'moment';
+import { Fetching } from '../commonComponents.js'
 
 export default class StudentNoticesScreen extends Component {
   static navigationOptions = {
@@ -56,7 +56,7 @@ export default class StudentNoticesScreen extends Component {
       <View style={styles.welcomeContainer}>
         <Text style={{fontWeight: 'bold'}}>Latest student notice:</Text>
         {this.state.notices.length > 0 ? <NoticeElement notice={this.state.notices[0]} />
-          : <ActivityIndicator />}
+          : <Fetching />}
       </View>
     )
 
@@ -64,7 +64,7 @@ export default class StudentNoticesScreen extends Component {
       <View style={styles.container}>
         <Text style={{fontSize: 30, textDecorationLine: 'underline'}}>Student notices:</Text>
         <ScrollView>
-          {this.state.notices.length === 0 && <ActivityIndicator />}
+          {this.state.notices.length === 0 && <Fetching />}
           {this.state.notices.map(function (notice) {
             return <NoticeElement key={notice.title} notice={notice} />
           })}
@@ -80,7 +80,11 @@ function NoticeElement(props) {
       <View style={{backgroundColor: '#36648B', height: 3}} />
       <Text style={{fontSize: 20, fontWeight: 'bold'}}>
         {props.notice.title}
-        <Text style={{fontWeight: 'normal'}}> ({props.notice.date.fromNow()})</Text>
+      </Text>
+      <Text style={{fontStyle: 'italic'}}>
+        (
+        {props.notice.date.fromNow()}, {props.notice.date.format('DD/mm/YY HH:mm')}
+        )
       </Text>
       <HTMLView value={props.notice.body} />
     </View>

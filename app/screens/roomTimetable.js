@@ -4,12 +4,12 @@ import {
   Text,
   TextInput,
   StyleSheet,
-  ActivityIndicator,
 } from 'react-native';
 
 import api from '../api.js';
 import Timetable from '../timetableComponents/timetableHost.js';
 import moment from 'moment';
+import { Fetching } from '../commonComponents.js';
 
 export default class RoomTimetableScreen extends Component {
   static navigationOptions = {
@@ -59,7 +59,7 @@ export default class RoomTimetableScreen extends Component {
           (typeof this.state.data.error === "string" ?
             <Text>Error: {this.state.data.error}</Text>
             : <Timetable data={this.state.data} />)
-          : (this.state.submitted && <ActivityIndicator />))}
+          : (this.state.submitted && <Fetching />))}
         {(this.state.error && <Text>Error: {this.state.error.toString()}</Text>)}
       </View>
     );
