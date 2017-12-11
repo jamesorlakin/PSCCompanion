@@ -97,8 +97,8 @@ android {
         applicationId "com.psccompanion"
         minSdkVersion 16
         targetSdkVersion 22
-        versionCode 64
-        versionName "0.64 Project Sideways"
+        versionCode 65
+        versionName "0.65 Operation Clash and Upgrade"
         ndk {
             abiFilters "armeabi-v7a", "x86"
         }
