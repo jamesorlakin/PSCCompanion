@@ -80,19 +80,22 @@ function EventElement(props) {
     padding: 2,
     borderWidth: 0.5,
     borderColor: '#c5c6c9',
-    height: height
+    height: height,
+    flexDirection: 'row'
   }
 
   if (props.item.Type === "free") return (
     <View style={style}>
-      <Text style={styles.italic}>Free</Text>
-      <Text>{moment.unix(props.item.Start).format('LT')} - {moment.unix(props.item.End).format('LT')}</Text>
-      <View style={{height: 2}} />
+      <View style={{width: 3}} />
+      <View style={{marginLeft: 5, marginRight: 5}} >
+        <Text style={styles.italic}>Free</Text>
+        <Text>{moment.unix(props.item.Start).format('LT')} - {moment.unix(props.item.End).format('LT')}</Text>
+      </View>
     </View>
   )
 
   return (
-    <View style={[style, {flexDirection: 'row'}]}>
+    <View style={style}>
       <View style={{
         backgroundColor: props.item.Color,
         width: 3}}
