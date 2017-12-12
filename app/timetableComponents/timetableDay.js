@@ -44,6 +44,16 @@ export default class TimetableDay extends Component {
     }
 
     return (<View width={dayWidth} style={styles.container}>
+      <View style={{
+        flexDirection: 'row',
+        justifyContent: 'space-between',
+        width: dayWidth,
+        paddingRight: 14,
+        paddingLeft: 14
+      }}>
+        <Text>Start - {moment.unix(events[0].Start).format('HH:mm')}</Text>
+        <Text>End - {moment.unix(events[events.length-1].End).format('HH:mm')}</Text>
+      </View>
       {rows}
     </View>)
   }
