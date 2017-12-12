@@ -72,7 +72,9 @@ export default class Timetable extends Component {
     Object.keys(dayTimetables).forEach(function (key) {
       timetableHeaders.push(<Text
         style={[styles.boldTitleUnderline, {width: dayWidth}]}
-        key={key}>{moment.unix(key).format('dddd - Do')}</Text>)
+        key={key}>
+          {moment.unix(key).format('dddd - Do')}
+        </Text>)
     })
 
     return (
@@ -108,6 +110,7 @@ const styles = StyleSheet.create({
   boldTitleUnderline: {
     fontSize: 17,
     fontWeight: 'bold',
-    textDecorationLine: 'underline'
+    textDecorationLine: 'underline',
+    textAlign: 'center'
   }
 });

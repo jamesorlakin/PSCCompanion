@@ -87,8 +87,9 @@ export default class SharedTimetableScreen extends Component {
                 return (<Text
                   key={pin.pin}
                   style={{fontSize: 17,
-                    marginBottom: 4,
                     textDecorationLine: 'underline',
+                    textAlign: 'center',
+                    fontWeight: 'bold',
                     width: dayWidth
                   }}>{pin.name}</Text>)
               })}
@@ -154,7 +155,8 @@ class ExternalTimetable extends Component {
     return (
       <View>
         {this.state.loaded && (this.state.data.isCached ?
-          <Text>Warning - Using an offline version</Text> : <Text>
+          <Text style={{textAlign: 'center'}}>Warning - Using an offline version</Text>
+          : <Text style={{textAlign: 'center'}}>
           {(this.state.data.startOfWeek !== moment().startOf('day').startOf('isoweek').unix())
           ? "Outdated - Using " + moment.unix(this.state.data.startOfWeek)
             .format('Do MMM') : "Up-to-date - Current week"}
