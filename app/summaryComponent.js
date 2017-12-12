@@ -11,6 +11,7 @@ import moment from 'moment'
 import api from './api.js'
 import sharedApi from './sharedApi.js'
 import localTimetableCache from './timetableComponents/localTimetableCache.js'
+import Timeline from 'react-native-timeline-listview'
 
 export default class Summary extends Component {
   constructor() {
@@ -84,6 +85,8 @@ export default class Summary extends Component {
           <ClashingLessons events={this.state.data.clashing} />}
         {this.state.data.floating.length > 0 &&
           <FloatingLessons events={this.state.data.floating} />}
+
+        <TodayTimeline events={this.state.data.timetable} />
       </View>
     );
   }
@@ -126,6 +129,29 @@ function SummaryEvent(props) {
       <Text>{props.event.Staff}</Text>
       <Text>{moment.unix(props.event.Start).format('dddd, HH:mm A') + " - "}
         {moment.unix(props.event.End).format('HH:mm A')} : {props.event.Room}</Text>
+    </View>
+  )
+}
+
+function TodayTimeline(props) {
+  var today = moment().day();
+  var events = props.events.filter(function (event) {
+    if (moment.unix(event.Start).day() === today) return true;
+    return false;
+  })
+  events = events.map(function (event) {
+    return {
+      time: moment.unix(event.Start).format('HH:mm'),
+      title: event.Title,
+      description: event.Staff + " - " + event.Room,
+      dotColor: event.Color
+    }
+  })
+
+  return (
+    <View style={styles.container}>
+      <Text style={{fontWeight: 'bold'}}>What's today?</Text>
+      <Timeline data={events} lineColor="#36648B" circleColor="#36648B" innerCircle='dot' />
     </View>
   )
 }
