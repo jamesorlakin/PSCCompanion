@@ -44,4 +44,5 @@ const styles = StyleSheet.create({
 
 });
 
+AppRegistry.registerHeadlessTask('UpdateTimetableService', () => require('./updateTimetableService.js'));
 AppRegistry.registerComponent('PSCCompanion', () => PSCCompanion);

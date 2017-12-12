@@ -15,6 +15,7 @@ public class MainActivity extends ReactActivity {
 
     @Override
     protected void onStart() {
+        UpdateTimetableUtils.setAlarm(this);
         super.onStart();
     }
 }

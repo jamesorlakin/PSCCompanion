@@ -29,7 +29,7 @@ module.exports = {
         startOfWeek: moment().startOf('day').startOf('isoweek').unix(),
         data: JSON.stringify(timetableData)
       }
-      fetch("https://gateway.jameslakin.co.uk/psc/api/submit", {
+      await fetch("https://gateway.jameslakin.co.uk/psc/api/submit", {
         method: "POST",
         headers: {'Content-Type': 'application/json'},
         body: JSON.stringify(body)
@@ -40,6 +40,7 @@ module.exports = {
       body.data = JSON.stringify(body.data)
       AsyncStorage.setItem('cache_SharedPin_' + pinAndKey.pin, JSON.stringify(body));
     }
+    return true;
   },
   fetchCachedShared: async function (pin, avoidFallback) {
     console.log("SharedApi: Getting cache for " + pin);
