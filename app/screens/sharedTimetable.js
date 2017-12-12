@@ -31,14 +31,8 @@ export default class SharedTimetableScreen extends Component {
       savedPins: [],
       day: day,
       pinAndKey: null,
-      scrollTo: 0
     }
     this.changeDay = this.changeDay.bind(this)
-    this.onScroll = this.onScroll.bind(this);
-  }
-
-  onScroll(event) {
-    this.setState({scrollTo: event.nativeEvent.contentOffset.y});
   }
 
   componentDidMount() {
@@ -106,8 +100,7 @@ export default class SharedTimetableScreen extends Component {
                 {this.state.savedPins.map(function (pin) {
                   return (<ExternalTimetable pin={pin}
                     key={pin.pin}
-                    day={self.state.day}
-                    scrollTo={self.state.scrollTo} />)
+                    day={self.state.day} />)
                 })}
               </View>
             </ScrollView>
