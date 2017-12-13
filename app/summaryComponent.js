@@ -155,6 +155,7 @@ function TodayTimeline(props) {
   return (
     <View style={styles.container}>
       <Text style={{fontWeight: 'bold'}}>What's today?</Text>
+      <View style={{height: 3}}/>
       <Timeline data={events} lineColor="#36648B" circleColor="#36648B" innerCircle='dot' />
     </View>
   )
