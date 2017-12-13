@@ -31,14 +31,8 @@ export default class SharedTimetableScreen extends Component {
       savedPins: [],
       day: day,
       pinAndKey: null,
-      scrollTo: 0
     }
     this.changeDay = this.changeDay.bind(this)
-    this.onScroll = this.onScroll.bind(this);
-  }
-
-  onScroll(event) {
-    this.setState({scrollTo: event.nativeEvent.contentOffset.y});
   }
 
   componentDidMount() {
@@ -93,8 +87,9 @@ export default class SharedTimetableScreen extends Component {
                 return (<Text
                   key={pin.pin}
                   style={{fontSize: 17,
-                    marginBottom: 4,
                     textDecorationLine: 'underline',
+                    textAlign: 'center',
+                    fontWeight: 'bold',
                     width: dayWidth
                   }}>{pin.name}</Text>)
               })}
@@ -106,8 +101,7 @@ export default class SharedTimetableScreen extends Component {
                 {this.state.savedPins.map(function (pin) {
                   return (<ExternalTimetable pin={pin}
                     key={pin.pin}
-                    day={self.state.day}
-                    scrollTo={self.state.scrollTo} />)
+                    day={self.state.day} />)
                 })}
               </View>
             </ScrollView>
@@ -161,7 +155,8 @@ class ExternalTimetable extends Component {
     return (
       <View>
         {this.state.loaded && (this.state.data.isCached ?
-          <Text>Warning - Using an offline version</Text> : <Text>
+          <Text style={{textAlign: 'center'}}>Warning - Using an offline version</Text>
+          : <Text style={{textAlign: 'center'}}>
           {(this.state.data.startOfWeek !== moment().startOf('day').startOf('isoweek').unix())
           ? "Outdated - Using " + moment.unix(this.state.data.startOfWeek)
             .format('Do MMM') : "Up-to-date - Current week"}

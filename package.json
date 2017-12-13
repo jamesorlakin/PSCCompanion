@@ -23,10 +23,11 @@
     "expo": "^23.0.4",
     "react": "16.0.0",
     "react-native": "https://github.com/expo/react-native/archive/sdk-23.0.0.tar.gz",
-    "moment": "^2.18.1",
+    "moment": "^2.19.3",
 		"randomcolor": "^0.5.3",
 		"react-native-cheerio": "^1.0.0-rc.4",
 		"react-native-htmlview": "^0.12.1",
-		"react-navigation": "^1.0.0-beta.19"
+		"react-navigation": "^1.0.0-beta.19",
+    "react-native-timeline-listview": "^0.2.2"
   }
 }
