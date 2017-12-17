@@ -24,6 +24,7 @@ export default async function api(path, params) {
   console.log("PscApi: Using path - " + path);
 
   var data = await fetch("https://data.psc.ac.uk/api/" + path, {
+    credentials: 'include',
     headers: {
       "Authorization": "Bearer " + tokens.access_token
     }
