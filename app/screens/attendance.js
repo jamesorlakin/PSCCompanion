@@ -36,33 +36,38 @@ export default class AttendanceScreen extends Component {
   }
 
   async fetchData() {
-    var request = await fetch('https://intranet.psc.ac.uk/records/student/attendance/marks.php', {
-      credentials: 'include'
-    })
-    var response = await request.text()
-    var document = cheerio.load(response);
-    var attendance = {
-      items: []
-    };
+    try {
+      var request = await fetch('https://intranet.psc.ac.uk/records/student/attendance/marks.php', {
+        credentials: 'include'
+      })
+      var response = await request.text()
+      var document = cheerio.load(response);
+      var attendance = {
+        items: []
+      };
 
-    document("table[id='MarksGrid'] > tbody > tr > td > a > span").each(function(item) {
-      var newItem = {}
+      document("table[id='MarksGrid'] > tbody > tr > td > a > span").each(function(item) {
+        var newItem = {}
 
-      var tableCell = document(this).html()
-      cell = tableCell.replace('<strong>', '').replace('</strong>', '').split(/<br>/)
-      if (tableCell.indexOf('<strong>')===0) cell.unshift('Unknown')
+        var tableCell = document(this).html()
+        cell = tableCell.replace('<strong>', '').replace('</strong>', '').split(/<br>/)
+        if (tableCell.indexOf('<strong>')===0) cell.unshift('Unknown')
 
-      newItem.State = cell[0]
-      newItem.Title = cell[1]
-      newItem.Staff = cell[2]
-      newItem.Time = cell[3] + " " + cell[4].split(" to ")[0]
-      newItem.raw = tableCell
+        newItem.State = cell[0]
+        newItem.Title = cell[1]
+        newItem.Staff = cell[2]
+        newItem.Time = cell[3] + " " + cell[4].split(" to ")[0]
+        newItem.raw = tableCell
 
-      attendance.items.push(newItem)
-    });
-    attendance.percentage = document("table[id='MarksGrid'] > tbody > tr > td[class='bold percentage']").text()
+        attendance.items.push(newItem)
+      });
+      attendance.percentage = document("table[id='MarksGrid'] > tbody > tr > td[class='bold percentage']").text()
 
-    this.setState({attendance: attendance, loaded: true})
+      if (attendance.items.length === 0) return false
+      this.setState({attendance: attendance, loaded: true})
+    } catch (e) {
+
+    }
   }
 
   render() {
