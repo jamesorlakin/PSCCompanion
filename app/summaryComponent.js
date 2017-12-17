@@ -143,6 +143,8 @@ function TodayTimeline(props) {
     return false;
   })
 
+  if (events.length === 0) return (<View/>)
+
   events = events.map(function (event) {
     return {
       time: moment.unix(event.Start).format('HH:mm'),
