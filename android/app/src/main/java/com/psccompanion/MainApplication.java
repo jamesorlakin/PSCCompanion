@@ -44,7 +44,7 @@ public class MainApplication extends Application implements ReactApplication {
   public void onCreate() {
     super.onCreate();
     SoLoader.init(this, /* native exopackage */ false);
-    new FlurryAgent.Builder()
+    if (!BuildConfig.DEBUG) new FlurryAgent.Builder()
       .withLogEnabled(true)
       .build(this, "BJBCXVH7VSCMWGHZ3F55");
   }
