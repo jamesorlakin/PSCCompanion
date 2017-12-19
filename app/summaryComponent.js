@@ -126,7 +126,8 @@ function SummaryEvent(props) {
         backgroundColor: props.event.Color,
         height: 3}}
       />
-      <Text>{props.event.Title + " - " + moment.unix(props.event.Start).fromNow()}</Text>
+      <Text>{props.event.IsCancelled && <Text style={{color: 'red'}}>(Cancelled) </Text>}
+        {props.event.Title + " - " + moment.unix(props.event.Start).fromNow()}</Text>
       <Text>{props.event.Staff}</Text>
       <Text>{moment.unix(props.event.Start).format('dddd, HH:mm A') + " - "}
         {moment.unix(props.event.End).format('HH:mm A')} : {props.event.Room}</Text>
@@ -174,7 +175,7 @@ function Abnormalities(props) {
     <View style={styles.container}>
       <Text style={{fontWeight: 'bold'}}>Cancelled or moved lessons:</Text>
       {events.map(function (event) {
-        return <SummaryEvent event={event} />
+        return <SummaryEvent event={event} key={event.Title+event.Start} />
       })}
     </View>
   )
