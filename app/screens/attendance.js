@@ -8,6 +8,8 @@ import {
   ScrollView,
   AsyncStorage,
   InteractionManager,
+  Modal,
+  TouchableHighlight,
 } from 'react-native';
 
 import cheerio from 'react-native-cheerio';
@@ -23,6 +25,7 @@ export default class AttendanceScreen extends Component {
     super(props);
     this.state = {
       loaded: false,
+      error: false,
       attendance: {
         items: [],
         percentage: 0
@@ -54,10 +57,26 @@ export default class AttendanceScreen extends Component {
         if (tableCell.indexOf('<strong>')===0) cell.unshift('Unknown')
 
         newItem.State = cell[0]
+        switch (newItem.State) {
+          case 'Present':
+            newItem.Color = 'green'
+            break;
+          case 'Unknown':
+            newItem.Color = 'gray'
+            break;
+          case 'Not Required':
+            newItem.Color = 'blue'
+            break;
+          case 'Lesson Cancelled':
+            newItem.Color = 'blue'
+            break;
+          default:
+            newItem.Color = 'red'
+        }
         newItem.Title = cell[1]
         newItem.Staff = cell[2]
         newItem.Time = cell[3] + " " + cell[4].split(" to ")[0]
-        newItem.raw = tableCell
+        //newItem.raw = tableCell
 
         attendance.items.push(newItem)
       });
@@ -66,7 +85,7 @@ export default class AttendanceScreen extends Component {
       if (attendance.items.length === 0) return false
       this.setState({attendance: attendance, loaded: true})
     } catch (e) {
-
+      this.setState({error: e})
     }
   }
 
@@ -76,6 +95,8 @@ export default class AttendanceScreen extends Component {
         <Text style={{fontWeight: 'bold'}}>Recent attendance percentage:</Text>
         {this.state.loaded ? <AttendanceProgress attendance={this.state.attendance} />
           : <Fetching />}
+        {this.state.error && <Text>An error occurred, for this feature to work
+          you must sign into the Student Intranet within the app.</Text>}
       </View>
     )
 
@@ -84,10 +105,17 @@ export default class AttendanceScreen extends Component {
     return (
       <ScrollView>
         <View style={styles.container}>
+          <Text>Heads up! This feature is largely undeveloped and won't really be
+            improved further. It uses hacky web scraping from the intranet and is
+            a pain to build. Feel free to improve on attendance.js and
+            send me a pull request if you're keen for this to work better.
+          </Text>
           <AttendanceProgress attendance={this.state.attendance} />
-          {this.state.attendance.items.map(function (item) {
-            return <AttendanceItem key={item.Time} item={item}/>
-          })}
+          <View style={{flexDirection: 'row', flex: 1, flexWrap: 'wrap', alignContent: 'space-between'}}>
+            {this.state.attendance.items.map(function (item) {
+              return <AttendanceItem key={item.Time} item={item}/>
+            })}
+          </View>
         </View>
       </ScrollView>
     );
@@ -114,12 +142,53 @@ function AttendanceProgress(props) {
   )
 }
 
-function AttendanceItem(props) {
-  var item = props.item
+class AttendanceItem extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      expanded: false
+    }
+    this.openModal = this.openModal.bind(this)
+    this.closeModal = this.closeModal.bind(this)
+  }
+
+  openModal() {
+    this.setState({expanded: true})
+  }
+
+  closeModal() {
+    this.setState({expanded: false})
+  }
+
+  render() {
+    var item = this.props.item
+    return (
+      <TouchableHighlight onPress={this.openModal}>
+        <View
+          style={{width: 30,
+            height: 30,
+            backgroundColor: item.Color,
+            borderWidth: 1
+          }}
+        >
+          <AttendanceExpanded
+            item={item}
+            expanded={this.state.expanded}
+            close={this.closeModal}
+          />
+        </View>
+      </TouchableHighlight>
+    )
+  }
+}
+
+function AttendanceExpanded(props) {
+  var rows = []
+
   return (
-    <View>
-      <Text>{JSON.stringify(item)}</Text>
-    </View>
+    <Modal visible={props.expanded} onRequestClose={props.close}>
+      <Text>{JSON.stringify(props.item)}</Text>
+    </Modal>
   )
 }
 
