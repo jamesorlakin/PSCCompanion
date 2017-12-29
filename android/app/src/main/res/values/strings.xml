@@ -4,4 +4,6 @@
     <string name="timetableTitle">Today\'s events:</string>
     <string name="summaryError">Unable to load</string>
     <string name="summaryTitleNextWeek">Start of next week:</string>
+    <string name="summaryNothing">Nothing!</string>
+    <string name="timetableEmpty">No events!</string>
 </resources>

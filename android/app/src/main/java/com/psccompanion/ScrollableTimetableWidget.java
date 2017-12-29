@@ -30,6 +30,7 @@ public class ScrollableTimetableWidget extends AppWidgetProvider {
         intent.setData(Uri.parse(intent.toUri(Intent.URI_INTENT_SCHEME)));
 
         views.setRemoteAdapter(R.id.timetableList, intent);
+        views.setEmptyView(R.id.timetableList, R.id.timetableEmpty);
 
         // Instruct the widget manager to update the widget
         appWidgetManager.updateAppWidget(appWidgetId, views);

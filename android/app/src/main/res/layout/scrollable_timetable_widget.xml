@@ -11,6 +11,14 @@
         android:layout_height="wrap_content"
         android:text="@string/timetableTitle" />
 
+    <TextView
+        android:id="@+id/timetableEmpty"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/timetableEmpty"
+        android:textAlignment="center"
+        android:textAppearance="@android:style/TextAppearance.Material.Medium" />
+
     <ListView
         android:id="@+id/timetableList"
         android:layout_width="match_parent"

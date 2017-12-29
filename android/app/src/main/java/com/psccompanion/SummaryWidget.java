@@ -33,6 +33,8 @@ public class SummaryWidget extends AppWidgetProvider {
             ));
 
             JSONArray timetable = TimetableCacheUtils.getTimetable(context);
+            if (timetable.length() == 0) views.setTextViewText(R.id.summaryLessonTitle,
+                    context.getString(R.string.summaryNothing));
             for (int i = 0; i < timetable.length(); i++) {
 
                 boolean isLastEvent = i+1 == timetable.length();
