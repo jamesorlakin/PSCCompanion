@@ -97,8 +97,8 @@ android {
         applicationId "com.psccompanion"
         minSdkVersion 16
         targetSdkVersion 22
-        versionCode 68
-        versionName "0.68 Project Attend R2"
+        versionCode 69
+        versionName "0.69 Operation Crash a Bit Less"
         ndk {
             abiFilters "armeabi-v7a", "x86"
         }
