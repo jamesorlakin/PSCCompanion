@@ -11,7 +11,7 @@ import {
 import api from '../api.js'
 import WhosFreeNow from '../whosFreeNowComponent.js'
 import Summary from '../summaryComponent.js'
-import StudentNoticesScreen from './notices.js'
+import AttendanceScreen from './attendance.js'
 import ExpoNoticeComponent from '../expoNoticeComponent.js'
 
 export default class WelcomeScreen extends Component {
@@ -55,11 +55,11 @@ export default class WelcomeScreen extends Component {
 
           <Summary/>
 
-          <ExpoNoticeComponent/>
+          <AttendanceScreen welcome/>
 
           <WhosFreeNow/>
 
-          <StudentNoticesScreen welcome/>
+          <ExpoNoticeComponent/>
 
           <Text style={{fontSize: 16}}>Note that this application is very new.
             Bugs are to be expected now and again, and please report any you find

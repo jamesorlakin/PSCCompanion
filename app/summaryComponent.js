@@ -52,7 +52,6 @@ export default class Summary extends Component {
     var now = moment()
 
     for (var i = 0; i < timetable.length; i++) {
-
       if (now.isBefore(moment.unix(timetable[i].Start)) && !timetable[i].IsCancelled) {
         nextEvent = timetable[i];
         break;
@@ -80,6 +79,8 @@ export default class Summary extends Component {
 
           <SummaryEvent event={nextEvent} />
         </View>
+
+        <Abnormalities events={this.state.data.timetable}/>
 
         {this.state.data.clashing.length > 0 &&
           <ClashingLessons events={this.state.data.clashing} />}
@@ -125,10 +126,12 @@ function SummaryEvent(props) {
         backgroundColor: props.event.Color,
         height: 3}}
       />
-      <Text>{props.event.Title + " - " + moment.unix(props.event.Start).fromNow()}</Text>
+      <Text>{props.event.IsCancelled && <Text style={{color: 'red'}}>(Cancelled) </Text>}
+        {props.event.Title + " - " + moment.unix(props.event.Start).fromNow()}</Text>
       <Text>{props.event.Staff}</Text>
       <Text>{moment.unix(props.event.Start).format('dddd, HH:mm A') + " - "}
         {moment.unix(props.event.End).format('HH:mm A')} : {props.event.Room}</Text>
+      {props.event.IsRoomChange && <Text style={{color: 'red'}}>Room change!</Text>}
     </View>
   )
 }
@@ -136,9 +139,13 @@ function SummaryEvent(props) {
 function TodayTimeline(props) {
   var today = moment().day();
   var events = props.events.filter(function (event) {
+    if (event.IsCancelled) return false;
     if (moment.unix(event.Start).day() === today) return true;
     return false;
   })
+
+  if (events.length === 0) return (<View/>)
+
   events = events.map(function (event) {
     return {
       time: moment.unix(event.Start).format('HH:mm'),
@@ -151,7 +158,25 @@ function TodayTimeline(props) {
   return (
     <View style={styles.container}>
       <Text style={{fontWeight: 'bold'}}>What's today?</Text>
+      <View style={{height: 3}}/>
       <Timeline data={events} lineColor="#36648B" circleColor="#36648B" innerCircle='dot' />
+    </View>
+  )
+}
+
+function Abnormalities(props) {
+  var events = props.events.filter(function (event) {
+    if (event.IsCancelled || event.IsRoomChange) return true;
+    return false;
+  })
+
+  if (events.length === 0) return (<View/>);
+  return (
+    <View style={styles.container}>
+      <Text style={{fontWeight: 'bold'}}>Cancelled or moved lessons:</Text>
+      {events.map(function (event) {
+        return <SummaryEvent event={event} key={event.Title+event.Start} />
+      })}
     </View>
   )
 }

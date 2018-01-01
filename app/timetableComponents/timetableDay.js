@@ -112,7 +112,7 @@ function EventElement(props) {
       />
       <View style={{marginLeft: 5, marginRight: 5}} >
         <Text style={styles.bold}>
-          {props.item.IsCancelled && "(Cancelled) "}
+          {props.item.IsCancelled && <Text style={{color: 'red'}}>(Cancelled) </Text>}
           {props.item.Title}
         </Text>
         <Text>{moment.unix(props.item.Start).format('LT')} - {moment.unix(props.item.End).format('LT')} : {props.item.Room}</Text>

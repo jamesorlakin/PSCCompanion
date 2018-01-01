@@ -153,7 +153,7 @@ class ExternalTimetable extends Component {
     }
 
     return (
-      <View>
+      <View style={{width: dayWidth}}>
         {this.state.loaded && (this.state.data.isCached ?
           <Text style={{textAlign: 'center'}}>Warning - Using an offline version</Text>
           : <Text style={{textAlign: 'center'}}>

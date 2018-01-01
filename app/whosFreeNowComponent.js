@@ -114,43 +114,49 @@ class Individual extends Component {
     var currentEvent = false;
 
     if (this.state.data !== null) {
-      var timetable = [];
       try {
-        timetable = JSON.parse(JSON.parse(this.state.data.data)).timetable
+        var timetable = JSON.parse(JSON.parse(this.state.data.data)).timetable
+        if (timetable.length === 0) throw 'No timetable'
+        var now = this.props.now
+
+        // Add the difference in unix time if we're out by a week:
+        var addTime = moment().startOf('day').startOf('isoweek').unix()
+          - moment.unix(timetable[0].Start).startOf('day').startOf('isoweek').unix()
+
+        for (var i = 0; i < timetable.length; i++) {
+          timetable[i].Start += addTime;
+          timetable[i].End += addTime;
+
+          if (now.isAfter(moment.unix(timetable[i].Start))
+            && now.isBefore(moment.unix(timetable[i].End))) {
+              currentEvent = timetable[i];
+              break;
+            }
+        }
+
+        return (
+          <View style={{flexDirection: 'row', borderWidth: 1, padding: 2}}>
+            <Text style={{flex: 1}}>{this.props.pin.name}</Text>
+            {this.state.loaded &&
+              ((this.state.data.startOfWeek !== moment().startOf('day').startOf('isoweek').unix())
+              && <Text style={{flex: 1}}>Outdated</Text>)}
+            {this.state.loaded ? (currentEvent === false ? <Free />
+              : <Occupied event={currentEvent}/>)
+              : <ActivityIndicator style={{flex: 1}} />}
+          </View>
+        );
       } catch (e) {
-        return (<Text>Error parsing for this user.</Text>)
-      }
-      var now = this.props.now
-
-      // Add the difference in unix time if we're out by a week:
-      var addTime = moment().startOf('day').startOf('isoweek').unix()
-        - moment.unix(timetable[0].Start).startOf('day').startOf('isoweek').unix()
-
-      for (var i = 0; i < timetable.length; i++) {
-        timetable[i].Start += addTime;
-        timetable[i].End += addTime;
-
-        if (now.isAfter(moment.unix(timetable[i].Start))
-          && now.isBefore(moment.unix(timetable[i].End))) {
-            currentEvent = timetable[i];
-            break;
-          }
+        console.log(e);
+        return (
+          <View style={{flexDirection: 'row', borderWidth: 1, padding: 2}}>
+            <Text style={{flex: 1}}>{this.props.pin.name}</Text>
+            <Text>Error parsing for this user.</Text>
+          </View>
+        )
       }
     }
-
-    return (
-      <View style={{flexDirection: 'row', borderWidth: 1, padding: 2}}>
-        <Text style={{flex: 1}}>{this.props.pin.name}</Text>
-        {this.state.loaded &&
-          ((this.state.data.startOfWeek !== moment().startOf('day').startOf('isoweek').unix())
-          && <Text style={{flex: 1}}>Outdated</Text>)}
-        {this.state.loaded ? (currentEvent === false ? <Free />
-          : <Occupied event={currentEvent}/>)
-          : <ActivityIndicator style={{flex: 1}} />}
-      </View>
-    );
+    return null
   }
-
 }
 
 function Free() {

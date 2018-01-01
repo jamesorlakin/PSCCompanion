@@ -1,5 +1,6 @@
 {
   "expo": {
+    "name": "PSC Companion - Expo",
     "privacy": "public",
     "icon": "./app/images/pscCompanionLogo.png",
     "sdkVersion": "23.0.0"
