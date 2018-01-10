@@ -14,6 +14,7 @@ import {
 
 import cheerio from 'react-native-cheerio';
 import ProgressCircle from 'react-native-progress-circle'
+import moment from 'moment'
 import { Fetching } from '../commonComponents.js'
 
 export default class AttendanceScreen extends Component {
@@ -76,6 +77,7 @@ export default class AttendanceScreen extends Component {
         newItem.Title = cell[1]
         newItem.Staff = cell[2]
         newItem.Time = cell[3] + " " + cell[4].split(" to ")[0]
+        newItem.moment = moment(newItem.Time, 'DD MMM YYYY h:mma')
         //newItem.raw = tableCell
 
         attendance.items.push(newItem)
@@ -93,7 +95,10 @@ export default class AttendanceScreen extends Component {
     if (this.props.welcome) return (
       <View style={styles.welcomeContainer}>
         <Text style={{fontWeight: 'bold'}}>Recent attendance percentage:</Text>
-        {this.state.loaded ? <AttendanceProgress attendance={this.state.attendance} />
+        {this.state.loaded ? <View>
+            <AttendanceProgress attendance={this.state.attendance} />
+            <RecentAttendance attendance={this.state.attendance} />
+          </View>
           : <Fetching />}
         {this.state.error && <Text>An error occurred, for this feature to work
           you must sign into the Student Intranet within the app.</Text>}
@@ -111,7 +116,7 @@ export default class AttendanceScreen extends Component {
             send me a pull request if you're keen for this to work better.
           </Text>
           <AttendanceProgress attendance={this.state.attendance} />
-          <View style={{flexDirection: 'row', flex: 1, flexWrap: 'wrap', alignContent: 'space-between'}}>
+          <View style={{flexDirection: 'row', flexWrap: 'wrap', justifyContent: 'space-between'}}>
             {this.state.attendance.items.map(function (item) {
               return <AttendanceItem key={item.Time} item={item}/>
             })}
@@ -133,11 +138,33 @@ function AttendanceProgress(props) {
         shadowColor="#E83131"
         bgColor="#fff"
       >
-        <Text style={{ fontSize: 18 }}>{props.attendance.percentage}%</Text>
+        <Text style={{fontSize: 18}}>{props.attendance.percentage}%</Text>
       </ProgressCircle>
       <Text>From {props.attendance.items[0].Time.substr(0, 6) + " to "}
         {props.attendance.items[props.attendance.items.length-1].Time.substr(0, 11)}
       </Text>
+    </View>
+  )
+}
+
+function RecentAttendance(props) {
+  var today = moment().startOf('day')
+  var endToday = moment().endOf('day')
+  var todayItems = []
+  var items = props.attendance.items
+  for (var i = 0; i < items.length; i++) {
+    if (items[i].moment.isBetween(today, endToday)) todayItems.push(items[i])
+    if (items[i].moment.isAfter(endToday)) break
+  }
+  if (todayItems.length === 0) return null
+  return (
+    <View>
+      <Text style={{fontWeight: 'bold'}}>Today's events:</Text>
+      <View style={{flexDirection: 'row', justifyContent: 'space-between'}}>
+        {todayItems.map(function (item) {
+          return <AttendanceItem item={item} key={item.Time} />
+        })}
+      </View>
     </View>
   )
 }
@@ -184,7 +211,6 @@ class AttendanceItem extends React.Component {
 
 function AttendanceExpanded(props) {
   var rows = []
-
   return (
     <Modal visible={props.expanded} onRequestClose={props.close}>
       <Text>{JSON.stringify(props.item)}</Text>
@@ -203,6 +229,6 @@ const styles = StyleSheet.create({
     borderRadius: 1,
     padding: 4,
     marginBottom: 20,
-    height: 158
+    minHeight: 158
   }
 });
