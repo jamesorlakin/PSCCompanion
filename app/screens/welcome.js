@@ -6,6 +6,7 @@ import {
   AsyncStorage,
   ScrollView,
   StyleSheet,
+  TouchableWithoutFeedback,
 } from 'react-native';
 
 import api from '../api.js'
@@ -48,7 +49,9 @@ export default class WelcomeScreen extends Component {
             alignItems: 'center',
             marginBottom: 15
           }}>
-            <Image source={require('../images/userIcon.png')} />
+            <TouchableWithoutFeedback onPress={() => this.props.navigation.navigate('grime')}>
+              <Image source={require('../images/userIcon.png')} />
+            </TouchableWithoutFeedback>
             <Text style={{fontSize: 20}}>Welcome, {this.state.data.Name || "user"}</Text>
           </View>
 

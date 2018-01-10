@@ -24,9 +24,17 @@ import MapScreen from './screens/map.js'
 import AttendanceScreen from './screens/attendance.js'
 import IntranetScreen from './screens/intranet.js'
 import SettingsScreen from './screens/settings.js'
+import GrimeScreen from './screens/grime.js'
+
+const WelcomeNavigator = StackNavigator({
+  welcome: {screen: WelcomeScreen, path: 'welcome'},
+  grime: {screen: GrimeScreen, path: 'grime'}
+}, {
+  headerMode: 'none'
+})
 
 const Drawer = DrawerNavigator({
-  welcome: {screen: WelcomeScreen},
+  welcome: {screen: WelcomeNavigator},
   freeroom: {screen: FreeRoomScreen},
   attendance: {screen: AttendanceScreen},
   userTimetable: {screen: UserTimetableScreen},
@@ -67,7 +75,7 @@ const MenuButton = function (props) {
 }
 
 const DrawerHost = StackNavigator({
-    Drawer: {screen: Drawer,
+  Drawer: {screen: Drawer,
     navigationOptions: ({ navigation }) => ({
       title: 'PSC Companion',
       headerLeft: <MenuButton navigation={navigation} />,
