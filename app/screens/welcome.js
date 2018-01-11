@@ -13,6 +13,7 @@ import api from '../api.js'
 import WhosFreeNow from '../whosFreeNowComponent.js'
 import Summary from '../summaryComponent.js'
 import AttendanceScreen from './attendance.js'
+import PrintingStatusComponent from '../printingStatusComponent.js'
 
 export default class WelcomeScreen extends Component {
   static navigationOptions = {
@@ -57,9 +58,11 @@ export default class WelcomeScreen extends Component {
 
           <Summary/>
 
+          <WhosFreeNow/>
+
           <AttendanceScreen welcome/>
 
-          <WhosFreeNow/>
+          <PrintingStatusComponent/>
 
           <Text style={{fontSize: 16}}>Note that this application is very new.
             Bugs are to be expected now and again, and please report any you find
