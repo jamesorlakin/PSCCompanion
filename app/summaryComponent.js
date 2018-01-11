@@ -4,7 +4,6 @@ import {
   Text,
   AsyncStorage,
   ActivityIndicator,
-  StyleSheet,
 } from 'react-native';
 
 import moment from 'moment'
@@ -12,6 +11,7 @@ import api from './api.js'
 import sharedApi from './sharedApi.js'
 import localTimetableCache from './timetableComponents/localTimetableCache.js'
 import Timeline from 'react-native-timeline-listview'
+import { WelcomeBox } from './commonComponents.js'
 
 export default class Summary extends Component {
   constructor() {
@@ -67,18 +67,7 @@ export default class Summary extends Component {
 
     return (
       <View>
-        <View style={styles.container}>
-
-          <View style={{flexDirection: 'row', justifyContent: "space-between"}}>
-            <Text style={{fontWeight: 'bold'}}>What's next?</Text>
-            {this.state.data.isCached && <View style={{flexDirection: 'row'}}>
-              <Text style={{fontStyle: 'italic'}}>Updating </Text>
-              <ActivityIndicator />
-            </View>}
-          </View>
-
-          <SummaryEvent event={nextEvent} />
-        </View>
+        <TodayTimeline events={this.state.data.timetable} isCached={this.state.data.isCached}/>
 
         <Abnormalities events={this.state.data.timetable}/>
 
@@ -86,8 +75,6 @@ export default class Summary extends Component {
           <ClashingLessons events={this.state.data.clashing} />}
         {this.state.data.floating.length > 0 &&
           <FloatingLessons events={this.state.data.floating} />}
-
-        <TodayTimeline events={this.state.data.timetable} />
       </View>
     );
   }
@@ -95,26 +82,24 @@ export default class Summary extends Component {
 
 function ClashingLessons(props) {
   return (
-    <View style={styles.container}>
-      <Text style={{fontWeight: 'bold'}}>Clashing lessons:</Text>
+    <WelcomeBox title="Clashing lessons:">
       {props.events.map(function (event) {
         return <SummaryEvent event={event} key={event.Title+event.Start}/>
       })}
-    </View>
+    </WelcomeBox>
   )
 }
 
 function FloatingLessons(props) {
   return (
-    <View style={styles.container}>
-      <Text style={{fontWeight: 'bold'}}>Floating lessons:</Text>
+    <WelcomeBox title="Floating lessons:">
       <Text>Floating lessons don't have an exact time. However, the time given
         should refer to the week of the lesson.
       </Text>
       {props.events.map(function (event) {
         return <SummaryEvent event={event} key={event.Title+event.Start}/>
       })}
-    </View>
+    </WelcomeBox>
   )
 }
 
@@ -156,11 +141,14 @@ function TodayTimeline(props) {
   })
 
   return (
-    <View style={styles.container}>
-      <Text style={{fontWeight: 'bold'}}>What's today?</Text>
+    <WelcomeBox title="What's today?">
+      {props.isCached && <View style={{flexDirection: 'row'}}>
+        <Text style={{fontStyle: 'italic'}}>Updating </Text>
+        <ActivityIndicator />
+      </View>}
       <View style={{height: 3}}/>
       <Timeline data={events} lineColor="#36648B" circleColor="#36648B" innerCircle='dot' />
-    </View>
+    </WelcomeBox>
   )
 }
 
@@ -172,21 +160,10 @@ function Abnormalities(props) {
 
   if (events.length === 0) return (<View/>);
   return (
-    <View style={styles.container}>
-      <Text style={{fontWeight: 'bold'}}>Cancelled or moved lessons:</Text>
+    <WelcomeBox title="Cancelled or moved lessons:">
       {events.map(function (event) {
         return <SummaryEvent event={event} key={event.Title+event.Start} />
       })}
-    </View>
+    </WelcomeBox>
   )
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    borderWidth: 5,
-    borderRadius: 1,
-    padding: 4,
-    marginBottom: 20
-  },
-});
