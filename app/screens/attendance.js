@@ -12,10 +12,10 @@ import {
   TouchableHighlight,
 } from 'react-native';
 
-import cheerio from 'react-native-cheerio';
+import cheerio from 'react-native-cheerio'
 import ProgressCircle from 'react-native-progress-circle'
 import moment from 'moment'
-import { Fetching } from '../commonComponents.js'
+import { Fetching, WelcomeBox } from '../commonComponents.js'
 
 export default class AttendanceScreen extends Component {
   static navigationOptions = {
@@ -93,8 +93,7 @@ export default class AttendanceScreen extends Component {
 
   render() {
     if (this.props.welcome) return (
-      <View style={styles.welcomeContainer}>
-        <Text style={{fontWeight: 'bold'}}>Recent attendance percentage:</Text>
+      <WelcomeBox title="Recent attendance percentage:">
         {this.state.loaded ? <View>
             <AttendanceProgress attendance={this.state.attendance} />
             <RecentAttendance attendance={this.state.attendance} />
@@ -102,7 +101,7 @@ export default class AttendanceScreen extends Component {
           : <Fetching />}
         {this.state.error && <Text>An error occurred, for this feature to work
           you must sign into the Student Intranet within the app.</Text>}
-      </View>
+      </WelcomeBox>
     )
 
     if (!this.state.loaded) return (<Fetching style={styles.container} />)
@@ -222,13 +221,5 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     margin: 8,
-  },
-  welcomeContainer: {
-    flex: 1,
-    borderWidth: 5,
-    borderRadius: 1,
-    padding: 4,
-    marginBottom: 20,
-    minHeight: 158
   }
 });

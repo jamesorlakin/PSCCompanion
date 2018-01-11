@@ -10,6 +10,7 @@ import {
 
 import moment from 'moment'
 import sharedApi from './sharedApi.js'
+import { WelcomeBox } from './commonComponents.js'
 
 export default class WhosFreeNow extends Component {
   constructor() {
@@ -65,8 +66,7 @@ export default class WhosFreeNow extends Component {
     if (!this.state.enrolled || this.state.savedPins.length === 0) return (<View />)
 
     return (
-      <View style={styles.container}>
-        <Text style={{fontWeight: 'bold'}}>Who's free?</Text>
+      <WelcomeBox title="Who's free?">
         <View style={{flexDirection: 'row'}}>
           <Text style={{marginTop: 15, color: 'black'}}>Time:</Text>
           <Picker style={{flex: 1}}
@@ -89,7 +89,7 @@ export default class WhosFreeNow extends Component {
         {this.state.savedPins.map(function (pin) {
           return (<Individual key={pin.pin} now={self.periodTimes[self.state.period]} pin={pin} />)
         })}
-      </View>
+      </WelcomeBox>
     );
   }
 }
