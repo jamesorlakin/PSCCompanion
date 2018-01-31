@@ -19,7 +19,7 @@ export function WelcomeBox(props) {
   return (
     <View style={styles.welcomeBox}>
       <Text style={{fontWeight: 'bold'}}>{props.title}</Text>
-      {props.children}
+      {props.loading ? <Fetching/> : props.children}
     </View>
   )
 }

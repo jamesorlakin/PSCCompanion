@@ -14,17 +14,16 @@ export default class PrintingStatusComponent extends Component {
     super(props);
     this.state = {
       loaded: false,
-      configured: true,
+      configured: false,
       credit: 0,
+      pages: 0
     }
   }
 
   async componentDidMount() {
     var credentials = await AsyncStorage.getItem('credentials')
-    if (typeof credentials !== "string") {
-      this.setState({configured: false})
-      return
-    }
+    if (typeof credentials === "string") this.setState({configured: true})
+    else return
     credentials = JSON.parse(credentials)
 
     await (await fetch('https://iprint.psc.ac.uk/app?service=restart')).text()
@@ -46,19 +45,20 @@ export default class PrintingStatusComponent extends Component {
     var credit = printStatusPage("div[class='widget stat-bal'] > div").text()
     credit = credit.substr(2).substr(0, credit.length - 4)
 
-    console.log(credit);
+    var pages = printStatusPage("div[class='widget stat-pages'] > div").text()
 
-    this.setState({loaded: true, credit: credit})
+    this.setState({loaded: true, credit: credit, pages: pages})
     //fetch()
   }
 
   render() {
     if (!this.state.configured) return null
     return (
-      <WelcomeBox title="Current printing credit:">
+      <WelcomeBox title="Current printing credit:" loading={!this.state.loaded}>
         <View style={{alignItems: 'center'}}>
           <Text style={{fontSize: 40}}>{this.state.credit}</Text>
         </View>
+        <Text>Total pages printed: {this.state.pages}</Text>
       </WelcomeBox>
     )
   }
