@@ -97,8 +97,8 @@ android {
         applicationId "com.psccompanion"
         minSdkVersion 16
         targetSdkVersion 22
-        versionCode 71
-        versionName "0.71 Project Print"
+        versionCode 72
+        versionName "0.72 Operation Load The Printer Weekly"
         ndk {
             abiFilters "armeabi-v7a", "x86"
         }
