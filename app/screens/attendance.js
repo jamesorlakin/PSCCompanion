@@ -71,6 +71,9 @@ export default class AttendanceScreen extends Component {
           case 'Lesson Cancelled':
             newItem.Color = 'blue'
             break;
+          case 'Late':
+            newItem.Color = 'yellow'
+            break;
           default:
             newItem.Color = 'red'
         }
@@ -83,6 +86,7 @@ export default class AttendanceScreen extends Component {
         attendance.items.push(newItem)
       });
       attendance.percentage = document("table[id='MarksGrid'] > tbody > tr > td[class='bold percentage']").text()
+      console.log(attendance.percentage)
 
       if (attendance.items.length === 0) return false
       this.setState({attendance: attendance, loaded: true})
@@ -147,8 +151,8 @@ function AttendanceProgress(props) {
 }
 
 function RecentAttendance(props) {
-  var today = moment().startOf('day')
-  var endToday = moment().endOf('day')
+  var today = moment().startOf('week')
+  var endToday = moment().endOf('week')
   var todayItems = []
   var items = props.attendance.items
   for (var i = 0; i < items.length; i++) {
@@ -158,8 +162,11 @@ function RecentAttendance(props) {
   if (todayItems.length === 0) return null
   return (
     <View>
-      <Text style={{fontWeight: 'bold'}}>Today's events:</Text>
-      <View style={{flexDirection: 'row', justifyContent: 'space-between'}}>
+      <Text style={{fontWeight: 'bold'}}>This week's events:</Text>
+      <View style={{flexDirection: 'row',
+        justifyContent: 'center',
+        flexWrap: 'wrap'
+      }}>
         {todayItems.map(function (item) {
           return <AttendanceItem item={item} key={item.Time} />
         })}
