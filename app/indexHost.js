@@ -21,7 +21,7 @@ import RoomTimetableScreen from './screens/roomTimetable.js'
 import SharedTimetableScreen from './screens/sharedTimetable.js'
 import StudentNoticesScreen from './screens/notices.js'
 import MapScreen from './screens/map.js'
-import AttendanceScreen from './screens/attendance.js'
+//import AttendanceScreen from './screens/attendance.js'
 import IntranetScreen from './screens/intranet.js'
 import SettingsScreen from './screens/settings.js'
 import GrimeScreen from './screens/grime.js'
@@ -36,7 +36,7 @@ const WelcomeNavigator = StackNavigator({
 const Drawer = DrawerNavigator({
   welcome: {screen: WelcomeNavigator},
   freeroom: {screen: FreeRoomScreen},
-  attendance: {screen: AttendanceScreen},
+//  attendance: {screen: AttendanceScreen},
   userTimetable: {screen: UserTimetableScreen},
   roomTimetable: {screen: RoomTimetableScreen},
   sharedTimetable: {screen: SharedTimetableScreen},
