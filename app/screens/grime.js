@@ -35,7 +35,7 @@ export default class GrimeScreen extends Component {
   render() {
     return (
       <View style={styles.container}>
-        <Text style={{fontSize: 20, textDecorationLine: 'underline'}}>Is this background noise grime?</Text>
+        <Text style={{fontSize: 20, textDecorationLine: 'underline'}}>Is this grime?</Text>
         <ProgressCircle
           percent={this.state.percent}
           radius={80}
@@ -62,7 +62,7 @@ function GrimeResult() {
   var isGrime = Math.floor(Math.random()*2) === 0
   if (isGrime) return (
     <View style={{alignItems: 'center'}}>
-      <Text style={{fontSize: 30}}>Warning! Grime detected!</Text>
+      <Text style={{fontSize: 30, color: 'red'}}>Warning! Grime detected!</Text>
       <Text>You know grime means filth, right?</Text>
     </View>
   )
