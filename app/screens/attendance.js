@@ -51,39 +51,43 @@ export default class AttendanceScreen extends Component {
       };
 
       document("table[id='MarksGrid'] > tbody > tr > td > a > span").each(function(item) {
-        var newItem = {}
+        try {
+          var newItem = {}
 
-        var tableCell = document(this).html()
-        cell = tableCell.replace('<strong>', '').replace('</strong>', '').split(/<br>/)
-        if (tableCell.indexOf('<strong>')===0) cell.unshift('Unknown')
+          var tableCell = document(this).html()
+          cell = tableCell.replace('<strong>', '').replace('</strong>', '').split(/<br>/)
+          if (tableCell.indexOf('<strong>')===0) cell.unshift('Unknown')
 
-        newItem.State = cell[0]
-        switch (newItem.State) {
-          case 'Present':
-            newItem.Color = 'green'
-            break;
-          case 'Unknown':
-            newItem.Color = 'gray'
-            break;
-          case 'Not Required':
-            newItem.Color = 'blue'
-            break;
-          case 'Lesson Cancelled':
-            newItem.Color = 'blue'
-            break;
-          case 'Late':
-            newItem.Color = 'yellow'
-            break;
-          default:
-            newItem.Color = 'red'
+          newItem.State = cell[0]
+          switch (newItem.State) {
+            case 'Present':
+              newItem.Color = 'green'
+              break;
+            case 'Unknown':
+              newItem.Color = 'gray'
+              break;
+            case 'Not Required':
+              newItem.Color = 'blue'
+              break;
+            case 'Lesson Cancelled':
+              newItem.Color = 'blue'
+              break;
+            case 'Late':
+              newItem.Color = 'yellow'
+              break;
+            default:
+              newItem.Color = 'red'
+          }
+          newItem.Title = cell[1]
+          newItem.Staff = cell[2]
+          newItem.Time = cell[3] + " " + cell[4].split(" to ")[0]
+          newItem.moment = moment(newItem.Time, 'DD MMM YYYY h:mma')
+
+          attendance.items.push(newItem)
+        } catch (e) {
+          // If the cell has an unexpected markup, catch the error.
+          console.log(e)
         }
-        newItem.Title = cell[1]
-        newItem.Staff = cell[2]
-        newItem.Time = cell[3] + " " + cell[4].split(" to ")[0]
-        newItem.moment = moment(newItem.Time, 'DD MMM YYYY h:mma')
-        //newItem.raw = tableCell
-
-        attendance.items.push(newItem)
       });
       attendance.percentage = document("table[id='MarksGrid'] > tbody > tr > td[class='bold percentage']").text()
       console.log(attendance.percentage)
