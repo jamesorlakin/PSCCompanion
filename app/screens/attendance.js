@@ -2,14 +2,13 @@ import React, { Component } from 'react';
 import {
   View,
   Text,
-  TextInput,
   StyleSheet,
   Button,
   ScrollView,
   AsyncStorage,
   InteractionManager,
-  Modal,
   TouchableHighlight,
+  Alert,
 } from 'react-native';
 
 import cheerio from 'react-native-cheerio'
@@ -48,7 +47,7 @@ export default class AttendanceScreen extends Component {
       var document = cheerio.load(response);
       var attendance = {
         items: []
-      };
+      }
 
       document("table[id='MarksGrid'] > tbody > tr > td > a > span").each(function(item) {
         try {
@@ -185,47 +184,32 @@ class AttendanceItem extends React.Component {
     this.state = {
       expanded: false
     }
-    this.openModal = this.openModal.bind(this)
-    this.closeModal = this.closeModal.bind(this)
+    this.showInfo = this.showInfo.bind(this)
   }
 
-  openModal() {
-    this.setState({expanded: true})
-  }
-
-  closeModal() {
-    this.setState({expanded: false})
+  showInfo() {
+    var text = this.props.item.State + "\n" +
+      this.props.item.Staff + "\n" +
+      this.props.item.moment.format('lll')
+    Alert.alert(this.props.item.Title, text)
   }
 
   render() {
     var item = this.props.item
     return (
-      <TouchableHighlight onPress={this.openModal}>
-        <View
-          style={{width: 30,
-            height: 30,
-            backgroundColor: item.Color,
-            borderWidth: 1
-          }}
-        >
-          <AttendanceExpanded
-            item={item}
-            expanded={this.state.expanded}
-            close={this.closeModal}
+      <View>
+        <TouchableHighlight onPress={this.showInfo}>
+          <View
+            style={{width: 30,
+              height: 30,
+              backgroundColor: item.Color,
+              borderWidth: 1
+            }}
           />
-        </View>
-      </TouchableHighlight>
+        </TouchableHighlight>
+      </View>
     )
   }
-}
-
-function AttendanceExpanded(props) {
-  var rows = []
-  return (
-    <Modal visible={props.expanded} onRequestClose={props.close}>
-      <Text>{JSON.stringify(props.item)}</Text>
-    </Modal>
-  )
 }
 
 const styles = StyleSheet.create({
