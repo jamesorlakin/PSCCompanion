@@ -7,10 +7,11 @@ import {
   StyleSheet,
 } from 'react-native';
 
-import api from '../api.js';
-import Timetable from '../timetableComponents/timetableHost.js';
-import moment from 'moment';
+import api from '../api.js'
+import Timetable from '../timetableComponents/timetableHost.js'
+import moment from 'moment'
 import { Fetching } from '../commonComponents.js'
+import localTimetableCache from '../timetableComponents/localTimetableCache.js'
 
 export default class UserTimetableScreen extends Component {
   static navigationOptions = {
@@ -28,17 +29,18 @@ export default class UserTimetableScreen extends Component {
     this.switchWeek = this.switchWeek.bind(this);
   }
 
-  loadTimetable() {
-    var self = this;
-    api('timetable', [
-      {key: "includeBlanks", value: "false"},
-      {key: "start", value: moment().startOf('day').startOf('isoweek').add(this.state.week, 'weeks').unix()},
-      {key: "end", value: moment().endOf('day').endOf('isoweek').add(this.state.week, 'weeks').unix()}
-    ]).then(function (timetableData) {
-      self.setState({loaded: true, data: timetableData})
-    }).catch(function (error) {
-      self.setState({error: error})
-    })
+  async loadTimetable() {
+    try {
+      var timetable = await api('timetable', [
+        {key: "includeBlanks", value: "false"},
+        {key: "start", value: moment().startOf('day').startOf('isoweek').add(this.state.week, 'weeks').unix()},
+        {key: "end", value: moment().endOf('day').endOf('isoweek').add(this.state.week, 'weeks').unix()}
+      ])
+      this.setState({loaded: true, data: timetable})
+    } catch (e) {
+      var timetable = await localTimetableCache.getCache()
+      this.setState({loaded: true, data: timetable, error: e})
+    }
   }
 
   switchWeek(week) {
@@ -68,8 +70,9 @@ export default class UserTimetableScreen extends Component {
             style={{width: 50, backgroundColor: "black"}}
             title=">" />
         </View>
+        {(this.state.error && <Text>Error fetching timetable:
+          {' ' + this.state.error.toString()}. Using this week's cached copy!</Text>)}
         {(this.state.loaded ? <Timetable data={this.state.data} week={this.state.week} /> : <Fetching />)}
-        {(this.state.error && <Text>Error: {this.state.error.toString()}</Text>)}
       </View>
     )
 

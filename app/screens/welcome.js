@@ -6,12 +6,14 @@ import {
   AsyncStorage,
   ScrollView,
   StyleSheet,
+  TouchableWithoutFeedback,
 } from 'react-native';
 
 import api from '../api.js'
 import WhosFreeNow from '../whosFreeNowComponent.js'
 import Summary from '../summaryComponent.js'
 import AttendanceScreen from './attendance.js'
+import PrintingStatusComponent from '../printingStatusComponent.js'
 import ExpoNoticeComponent from '../expoNoticeComponent.js'
 
 export default class WelcomeScreen extends Component {
@@ -49,15 +51,19 @@ export default class WelcomeScreen extends Component {
             alignItems: 'center',
             marginBottom: 15
           }}>
-            <Image source={require('../images/userIcon.png')} />
+            <TouchableWithoutFeedback onPress={() => this.props.navigation.navigate('grime')}>
+              <Image source={require('../images/userIcon.png')} />
+            </TouchableWithoutFeedback>
             <Text style={{fontSize: 20}}>Welcome, {this.state.data.Name || "user"}</Text>
           </View>
 
           <Summary/>
 
+          <WhosFreeNow/>
+
           <AttendanceScreen welcome/>
 
-          <WhosFreeNow/>
+          <PrintingStatusComponent/>
 
           <ExpoNoticeComponent/>
 

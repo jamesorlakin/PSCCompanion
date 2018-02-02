@@ -42,7 +42,9 @@ export default class SettingsCredentials extends Component {
     return (
       <View style={styles.container}>
         <Text>Automatic logon:</Text>
-        <Text>Enter the username and password for your college account below to enable automatic intranet logon:</Text>
+        <Text>Enter the username and password for your college account below to
+          enable automatic intranet logon. It will also allow you to view
+          attendance data and printing credit.</Text>
         <View>
           <TextInput defaultValue={this.state.credentials.username}
             placeholder="Username"

@@ -2,19 +2,19 @@ import React, { Component } from 'react';
 import {
   View,
   Text,
-  TextInput,
   StyleSheet,
   Button,
   ScrollView,
   AsyncStorage,
   InteractionManager,
-  Modal,
   TouchableHighlight,
+  Alert,
 } from 'react-native';
 
-import cheerio from 'react-native-cheerio';
+import cheerio from 'react-native-cheerio'
 import ProgressCircle from 'react-native-progress-circle'
-import { Fetching } from '../commonComponents.js'
+import moment from 'moment'
+import { Fetching, WelcomeBox } from '../commonComponents.js'
 
 export default class AttendanceScreen extends Component {
   static navigationOptions = {
@@ -47,40 +47,49 @@ export default class AttendanceScreen extends Component {
       var document = cheerio.load(response);
       var attendance = {
         items: []
-      };
+      }
 
       document("table[id='MarksGrid'] > tbody > tr > td > a > span").each(function(item) {
-        var newItem = {}
+        try {
+          var newItem = {}
 
-        var tableCell = document(this).html()
-        cell = tableCell.replace('<strong>', '').replace('</strong>', '').split(/<br>/)
-        if (tableCell.indexOf('<strong>')===0) cell.unshift('Unknown')
+          var tableCell = document(this).html()
+          cell = tableCell.replace('<strong>', '').replace('</strong>', '').split(/<br>/)
+          if (tableCell.indexOf('<strong>')===0) cell.unshift('Unknown')
 
-        newItem.State = cell[0]
-        switch (newItem.State) {
-          case 'Present':
-            newItem.Color = 'green'
-            break;
-          case 'Unknown':
-            newItem.Color = 'gray'
-            break;
-          case 'Not Required':
-            newItem.Color = 'blue'
-            break;
-          case 'Lesson Cancelled':
-            newItem.Color = 'blue'
-            break;
-          default:
-            newItem.Color = 'red'
+          newItem.State = cell[0]
+          switch (newItem.State) {
+            case 'Present':
+              newItem.Color = 'green'
+              break;
+            case 'Unknown':
+              newItem.Color = 'gray'
+              break;
+            case 'Not Required':
+              newItem.Color = 'blue'
+              break;
+            case 'Lesson Cancelled':
+              newItem.Color = 'blue'
+              break;
+            case 'Late':
+              newItem.Color = 'yellow'
+              break;
+            default:
+              newItem.Color = 'red'
+          }
+          newItem.Title = cell[1]
+          newItem.Staff = cell[2]
+          newItem.Time = cell[3] + " " + cell[4].split(" to ")[0]
+          newItem.moment = moment(newItem.Time, 'DD MMM YYYY h:mma')
+
+          attendance.items.push(newItem)
+        } catch (e) {
+          // If the cell has an unexpected markup, catch the error.
+          console.log(e)
         }
-        newItem.Title = cell[1]
-        newItem.Staff = cell[2]
-        newItem.Time = cell[3] + " " + cell[4].split(" to ")[0]
-        //newItem.raw = tableCell
-
-        attendance.items.push(newItem)
       });
       attendance.percentage = document("table[id='MarksGrid'] > tbody > tr > td[class='bold percentage']").text()
+      console.log(attendance.percentage)
 
       if (attendance.items.length === 0) return false
       this.setState({attendance: attendance, loaded: true})
@@ -91,13 +100,15 @@ export default class AttendanceScreen extends Component {
 
   render() {
     if (this.props.welcome) return (
-      <View style={styles.welcomeContainer}>
-        <Text style={{fontWeight: 'bold'}}>Recent attendance percentage:</Text>
-        {this.state.loaded ? <AttendanceProgress attendance={this.state.attendance} />
+      <WelcomeBox title="Recent attendance percentage:">
+        {this.state.loaded ? <View>
+            <AttendanceProgress attendance={this.state.attendance} />
+            <RecentAttendance attendance={this.state.attendance} />
+          </View>
           : <Fetching />}
         {this.state.error && <Text>An error occurred, for this feature to work
           you must sign into the Student Intranet within the app.</Text>}
-      </View>
+      </WelcomeBox>
     )
 
     if (!this.state.loaded) return (<Fetching style={styles.container} />)
@@ -111,7 +122,7 @@ export default class AttendanceScreen extends Component {
             send me a pull request if you're keen for this to work better.
           </Text>
           <AttendanceProgress attendance={this.state.attendance} />
-          <View style={{flexDirection: 'row', flex: 1, flexWrap: 'wrap', alignContent: 'space-between'}}>
+          <View style={{flexDirection: 'row', flexWrap: 'wrap', justifyContent: 'space-between'}}>
             {this.state.attendance.items.map(function (item) {
               return <AttendanceItem key={item.Time} item={item}/>
             })}
@@ -133,11 +144,36 @@ function AttendanceProgress(props) {
         shadowColor="#E83131"
         bgColor="#fff"
       >
-        <Text style={{ fontSize: 18 }}>{props.attendance.percentage}%</Text>
+        <Text style={{fontSize: 18}}>{props.attendance.percentage}%</Text>
       </ProgressCircle>
       <Text>From {props.attendance.items[0].Time.substr(0, 6) + " to "}
         {props.attendance.items[props.attendance.items.length-1].Time.substr(0, 11)}
       </Text>
+    </View>
+  )
+}
+
+function RecentAttendance(props) {
+  var today = moment().startOf('week')
+  var endToday = moment().endOf('week')
+  var todayItems = []
+  var items = props.attendance.items
+  for (var i = 0; i < items.length; i++) {
+    if (items[i].moment.isBetween(today, endToday)) todayItems.push(items[i])
+    if (items[i].moment.isAfter(endToday)) break
+  }
+  if (todayItems.length === 0) return null
+  return (
+    <View>
+      <Text style={{fontWeight: 'bold'}}>This week's events:</Text>
+      <View style={{flexDirection: 'row',
+        justifyContent: 'center',
+        flexWrap: 'wrap'
+      }}>
+        {todayItems.map(function (item) {
+          return <AttendanceItem item={item} key={item.Time} />
+        })}
+      </View>
     </View>
   )
 }
@@ -148,61 +184,37 @@ class AttendanceItem extends React.Component {
     this.state = {
       expanded: false
     }
-    this.openModal = this.openModal.bind(this)
-    this.closeModal = this.closeModal.bind(this)
+    this.showInfo = this.showInfo.bind(this)
   }
 
-  openModal() {
-    this.setState({expanded: true})
-  }
-
-  closeModal() {
-    this.setState({expanded: false})
+  showInfo() {
+    var text = this.props.item.State + "\n" +
+      this.props.item.Staff + "\n" +
+      this.props.item.moment.format('lll')
+    Alert.alert(this.props.item.Title, text)
   }
 
   render() {
     var item = this.props.item
     return (
-      <TouchableHighlight onPress={this.openModal}>
-        <View
-          style={{width: 30,
-            height: 30,
-            backgroundColor: item.Color,
-            borderWidth: 1
-          }}
-        >
-          <AttendanceExpanded
-            item={item}
-            expanded={this.state.expanded}
-            close={this.closeModal}
+      <View>
+        <TouchableHighlight onPress={this.showInfo}>
+          <View
+            style={{width: 30,
+              height: 30,
+              backgroundColor: item.Color,
+              borderWidth: 1
+            }}
           />
-        </View>
-      </TouchableHighlight>
+        </TouchableHighlight>
+      </View>
     )
   }
-}
-
-function AttendanceExpanded(props) {
-  var rows = []
-
-  return (
-    <Modal visible={props.expanded} onRequestClose={props.close}>
-      <Text>{JSON.stringify(props.item)}</Text>
-    </Modal>
-  )
 }
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
     margin: 8,
-  },
-  welcomeContainer: {
-    flex: 1,
-    borderWidth: 5,
-    borderRadius: 1,
-    padding: 4,
-    marginBottom: 20,
-    height: 158
   }
 });
