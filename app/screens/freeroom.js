@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { Component } from 'react'
 import {
   View,
   Text,
@@ -6,12 +6,12 @@ import {
   Picker,
   Button,
   StyleSheet,
-} from 'react-native';
+} from 'react-native'
 
-import api from '../api.js';
-import moment from 'moment';
-import randomColor from 'randomcolor';
-import { Fetching } from '../commonComponents.js';
+import api from '../api.js'
+import moment from 'moment'
+import randomColor from 'randomcolor'
+import { Fetching, commonStyles } from '../commonComponents.js'
 
 export default class FreeRoomScreen extends Component {
   static navigationOptions = {
@@ -78,14 +78,14 @@ export default class FreeRoomScreen extends Component {
 
   render() {
     if (this.state.rooms === false) return (
-      <View style={styles.container, {alignItems: 'center'}}>
+      <View style={commonStyles.screenContainer, {alignItems: 'center'}}>
         <Text>This may take some time to load.</Text>
         <Fetching />
       </View>
     );
 
     return (
-      <View style={styles.container}>
+      <View style={commonStyles.screenContainer}>
         <View style={{flexDirection: 'row'}}>
           <Text style={{marginTop: 15, color: 'black'}}>Time:</Text>
           <Picker style={{flex: 1}}
@@ -110,19 +110,6 @@ export default class FreeRoomScreen extends Component {
     );
   }
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    margin: 8
-  },
-  bold: {
-    fontWeight: 'bold'
-  },
-  title: {
-    fontSize: 17
-  }
-});
 
 class Room extends Component {
   constructor() {
@@ -157,3 +144,12 @@ class Room extends Component {
     )
   }
 }
+
+const styles = StyleSheet.create({
+  bold: {
+    fontWeight: 'bold'
+  },
+  title: {
+    fontSize: 17
+  }
+})

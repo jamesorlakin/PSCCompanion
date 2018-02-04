@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { Component } from 'react'
 import {
   View,
   Text,
@@ -8,10 +8,10 @@ import {
   InteractionManager,
 } from 'react-native';
 
-import cheerio from 'react-native-cheerio';
-import HTMLView from 'react-native-htmlview';
-import moment from 'moment';
-import { Fetching } from '../commonComponents.js'
+import cheerio from 'react-native-cheerio'
+import HTMLView from 'react-native-htmlview'
+import moment from 'moment'
+import { Fetching, commonStyles } from '../commonComponents.js'
 
 export default class StudentNoticesScreen extends Component {
   static navigationOptions = {
@@ -52,16 +52,8 @@ export default class StudentNoticesScreen extends Component {
   }
 
   render() {
-    if (this.props.welcome) return (
-      <View style={styles.welcomeContainer}>
-        <Text style={{fontWeight: 'bold'}}>Latest student notice:</Text>
-        {this.state.notices.length > 0 ? <NoticeElement notice={this.state.notices[0]} />
-          : <Fetching />}
-      </View>
-    )
-
     return (
-      <View style={styles.container}>
+      <View style={commonStyles.screenContainer}>
         <Text style={{fontSize: 30, textDecorationLine: 'underline'}}>Student notices:</Text>
         <ScrollView>
           {this.state.notices.length === 0 && <Fetching />}
@@ -90,17 +82,3 @@ function NoticeElement(props) {
     </View>
   )
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    margin: 8,
-  },
-  welcomeContainer: {
-    flex: 1,
-    borderWidth: 5,
-    borderRadius: 1,
-    padding: 4,
-    marginBottom: 20
-  }
-});

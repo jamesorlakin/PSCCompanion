@@ -14,7 +14,7 @@ import {
 import cheerio from 'react-native-cheerio'
 import ProgressCircle from 'react-native-progress-circle'
 import moment from 'moment'
-import { Fetching, WelcomeBox } from '../commonComponents.js'
+import { Fetching, WelcomeBox, commonStyles } from '../commonComponents.js'
 
 export default class AttendanceScreen extends Component {
   static navigationOptions = {
@@ -114,11 +114,11 @@ export default class AttendanceScreen extends Component {
       </WelcomeBox>
     )
 
-    if (!this.state.loaded) return (<Fetching style={styles.container} />)
+    if (!this.state.loaded) return (<Fetching style={commonStyles.screenContainer} />)
 
     return (
       <ScrollView>
-        <View style={styles.container}>
+        <View style={commonStyles.screenContainer}>
           <Text>Heads up! This feature is largely undeveloped and won't really be
             improved further. It uses hacky web scraping from the intranet and is
             a pain to build. Feel free to improve on attendance.js and
@@ -216,10 +216,3 @@ class AttendanceItem extends React.Component {
     )
   }
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    margin: 8,
-  }
-});

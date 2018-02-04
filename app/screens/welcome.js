@@ -14,6 +14,7 @@ import WhosFreeNow from '../whosFreeNowComponent.js'
 import Summary from '../summaryComponent.js'
 import AttendanceScreen from './attendance.js'
 import PrintingStatusComponent from '../printingStatusComponent.js'
+import { commonStyles } from '../commonComponents.js'
 
 export default class WelcomeScreen extends Component {
   static navigationOptions = {
@@ -43,7 +44,7 @@ export default class WelcomeScreen extends Component {
   render() {
     return (
       <ScrollView>
-        <View style={styles.container}>
+        <View style={commonStyles.screenContainer}>
           <View style={{flex: 1,
             flexDirection: 'column',
             justifyContent: 'center',
@@ -72,10 +73,3 @@ export default class WelcomeScreen extends Component {
     )
   }
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    margin: 8
-  },
-});

@@ -17,20 +17,23 @@ export function Fetching(props) {
 
 export function WelcomeBox(props) {
   return (
-    <View style={styles.welcomeBox}>
+    <View style={commonStyles.welcomeBox}>
       <Text style={{fontWeight: 'bold'}}>{props.title}</Text>
       {props.loading ? <Fetching/> : props.children}
     </View>
   )
 }
 
-const styles = StyleSheet.create({
+export const commonStyles = StyleSheet.create({
   welcomeBox: {
     flex: 1,
     borderWidth: 5,
     borderRadius: 1,
     padding: 4,
     marginBottom: 20,
-    //minHeight: 158
-  }
+  },
+  screenContainer: {
+    flex: 1,
+    margin: 8
+  },
 });

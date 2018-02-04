@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { Component } from 'react'
 import {
   View,
   WebView,
@@ -6,7 +6,7 @@ import {
   Text,
   AsyncStorage,
   StyleSheet,
-} from 'react-native';
+} from 'react-native'
 
 export default class IntranetScreen extends Component {
   static navigationOptions = {
@@ -19,11 +19,11 @@ export default class IntranetScreen extends Component {
       shouldRender: false,
       credentials: null
     };
-    this.goBack = this.goBack.bind(this);
+    this.goBack = this.goBack.bind(this)
   }
 
   componentDidMount() {
-    BackHandler.addEventListener('hardwareBackPress', this.goBack);
+    BackHandler.addEventListener('hardwareBackPress', this.goBack)
     var self = this;
     AsyncStorage.getItem('credentials').then(function (data) {
       var credentials = null
@@ -54,7 +54,7 @@ export default class IntranetScreen extends Component {
       }
 
       return (
-        <View style={styles.container}>
+        <View style={{flex: 1}}>
           <WebView source={{uri: "https://intranet.psc.ac.uk"}}
             ref="WEBVIEW"
             injectedJavaScript={injection}/>
@@ -62,12 +62,6 @@ export default class IntranetScreen extends Component {
       );
     }
 
-    return (<View />)
+    return null
   }
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-  },
-});

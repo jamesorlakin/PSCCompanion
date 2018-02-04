@@ -1,15 +1,15 @@
-import React, { Component } from 'react';
+import React, { Component } from 'react'
 import {
   View,
   Text,
   TextInput,
   StyleSheet,
-} from 'react-native';
+} from 'react-native'
 
-import api from '../api.js';
-import Timetable from '../timetableComponents/timetableHost.js';
-import moment from 'moment';
-import { Fetching } from '../commonComponents.js';
+import api from '../api.js'
+import Timetable from '../timetableComponents/timetableHost.js'
+import moment from 'moment'
+import { Fetching, commonStyles } from '../commonComponents.js'
 
 export default class RoomTimetableScreen extends Component {
   static navigationOptions = {
@@ -25,8 +25,8 @@ export default class RoomTimetableScreen extends Component {
       room: null,
       error: null
     }
-    this.switchRoom = this.switchRoom.bind(this);
-    this.loadTimetable = this.loadTimetable.bind(this);
+    this.switchRoom = this.switchRoom.bind(this)
+    this.loadTimetable = this.loadTimetable.bind(this)
   }
 
   loadTimetable() {
@@ -50,7 +50,7 @@ export default class RoomTimetableScreen extends Component {
 
   render() {
     return (
-      <View style={styles.container}>
+      <View style={commonStyles.screenContainer}>
         <Text>Enter a room identifier: </Text>
         <TextInput onSubmitEditing={this.loadTimetable}
           placeholder="e.g VY101"
@@ -65,10 +65,3 @@ export default class RoomTimetableScreen extends Component {
     );
   }
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    margin: 8,
-  },
-});
