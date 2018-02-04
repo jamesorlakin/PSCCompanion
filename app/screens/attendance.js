@@ -105,9 +105,12 @@ export default class AttendanceScreen extends Component {
             <AttendanceProgress attendance={this.state.attendance} />
             <RecentAttendance attendance={this.state.attendance} />
           </View>
-          : <Fetching />}
-        {this.state.error && <Text>An error occurred, for this feature to work
-          you must sign into the Student Intranet within the app.</Text>}
+          : !this.state.error && <Fetching />}
+        {this.state.error && <Text>For the attendance feature to work,
+          you must sign into the Student Intranet within the app. This relies
+          upon scraping the Intranet, and so might not work perfectly. If you
+          configure your college username and password in the settings menu,
+          you'll be able to see print credit below too.</Text>}
       </WelcomeBox>
     )
 
@@ -196,13 +199,18 @@ class AttendanceItem extends React.Component {
     return (
       <View>
         <TouchableHighlight onPress={this.showInfo}>
-          <View
-            style={{width: 30,
-              height: 30,
-              backgroundColor: item.Color,
-              borderWidth: 1
-            }}
-          />
+          <View style={{width: 45,
+            height: 40,
+            backgroundColor: item.Color,
+            borderWidth: 1,
+            justifyContent: 'center'
+          }}>
+            <Text style={{
+              textAlign: 'center',
+              fontSize: 8,
+              color: 'black'
+            }}>{item.Title}</Text>
+          </View>
         </TouchableHighlight>
       </View>
     )
