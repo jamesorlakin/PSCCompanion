@@ -146,7 +146,7 @@ function AttendanceProgress(props) {
       >
         <Text style={{fontSize: 18}}>{props.attendance.percentage}%</Text>
       </ProgressCircle>
-      <Text>From {props.attendance.items[0].Time.substr(0, 6) + " to "}
+      <Text>From {props.attendance.items[0].Time.substr(0, 5) + " to "}
         {props.attendance.items[props.attendance.items.length-1].Time.substr(0, 11)}
       </Text>
     </View>
@@ -154,8 +154,8 @@ function AttendanceProgress(props) {
 }
 
 function RecentAttendance(props) {
-  var today = moment().startOf('week')
-  var endToday = moment().endOf('week')
+  var today = moment().startOf('isoweek')
+  var endToday = moment().endOf('isoweek')
   var todayItems = []
   var items = props.attendance.items
   for (var i = 0; i < items.length; i++) {
@@ -180,10 +180,7 @@ function RecentAttendance(props) {
 
 class AttendanceItem extends React.Component {
   constructor(props) {
-    super(props);
-    this.state = {
-      expanded: false
-    }
+    super(props)
     this.showInfo = this.showInfo.bind(this)
   }
 
