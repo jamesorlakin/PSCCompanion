@@ -4,6 +4,7 @@ import {
   Text,
   Dimensions,
   StyleSheet,
+  Image,
 } from 'react-native'
 
 import PhotoView from 'react-native-photo-view'
@@ -11,7 +12,13 @@ import { commonStyles } from '../commonComponents.js'
 
 export default class MapScreen extends Component {
   static navigationOptions = {
-    drawerLabel: 'Campus Map'
+    drawerLabel: 'Campus Map',
+    drawerIcon: ({ tintColor }) => (
+      <Image
+        source={require('../images/menuIcons/map.png')}
+        style={{width: 20, height: 20, tintColor: tintColor}}
+      />
+    )
   }
 
   render() {

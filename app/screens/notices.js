@@ -6,6 +6,7 @@ import {
   ScrollView,
   StyleSheet,
   InteractionManager,
+  Image,
 } from 'react-native';
 
 import cheerio from 'react-native-cheerio'
@@ -15,7 +16,13 @@ import { Fetching, commonStyles } from '../commonComponents.js'
 
 export default class StudentNoticesScreen extends Component {
   static navigationOptions = {
-    drawerLabel: 'Student Notices'
+    drawerLabel: 'Student Notices',
+    drawerIcon: ({ tintColor }) => (
+      <Image
+        source={require('../images/menuIcons/notices.png')}
+        style={{width: 20, height: 20, tintColor: tintColor}}
+      />
+    )
   }
 
   constructor(props) {

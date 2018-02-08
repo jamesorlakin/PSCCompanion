@@ -7,13 +7,20 @@ import {
   Button,
   Linking,
   ScrollView,
+  Image,
 } from 'react-native'
 
 import { commonStyles } from '../commonComponents.js'
 
 export default class AboutScreen extends Component {
   static navigationOptions = {
-    drawerLabel: 'About'
+    drawerLabel: 'About',
+    drawerIcon: ({ tintColor }) => (
+      <Image
+        source={require('../images/menuIcons/about.png')}
+        style={{width: 20, height: 20, tintColor: tintColor}}
+      />
+    )
   }
 
   openSource() {
@@ -58,6 +65,12 @@ export default class AboutScreen extends Component {
 
           <Text>Timetable data is sourced from data.psc.ac.uk. Attendance, student
             notices and printing credit is obtained through web scraping.</Text>
+
+          <Breaker/>
+
+          <Text>GLYPHICONS used in the navigation bar are licenced under the
+            Creative Commons Attribution 3.0 (CC BY 3.0). Learn more at
+            Glyphicons.com</Text>
 
         </View>
       </ScrollView>

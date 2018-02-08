@@ -5,6 +5,7 @@ import {
   AsyncStorage,
   StyleSheet,
   ScrollView,
+  Image,
 } from 'react-native'
 
 import { commonStyles } from '../commonComponents.js'
@@ -17,7 +18,13 @@ import SettingsResetTokens from './settings/resetTokens.js'
 
 export default class SettingsScreen extends Component {
   static navigationOptions = {
-    drawerLabel: 'Settings'
+    drawerLabel: 'Settings',
+    drawerIcon: ({ tintColor }) => (
+      <Image
+        source={require('../images/menuIcons/settings.png')}
+        style={{width: 20, height: 20, tintColor: tintColor}}
+      />
+    )
   }
 
   render() {

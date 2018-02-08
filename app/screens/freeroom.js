@@ -6,6 +6,7 @@ import {
   Picker,
   Button,
   StyleSheet,
+  Image,
 } from 'react-native'
 
 import api from '../api.js'
@@ -15,7 +16,13 @@ import { Fetching, commonStyles } from '../commonComponents.js'
 
 export default class FreeRoomScreen extends Component {
   static navigationOptions = {
-    drawerLabel: 'Free Rooms'
+    drawerLabel: 'Free Rooms',
+    drawerIcon: ({ tintColor }) => (
+      <Image
+        source={require('../images/menuIcons/freeroom.png')}
+        style={{width: 20, height: 20, tintColor: tintColor}}
+      />
+    )
   }
 
   // I've added 5 minutes to each period to ensure we're not on a boundary.

@@ -4,6 +4,7 @@ import {
   Text,
   TextInput,
   StyleSheet,
+  Image,
 } from 'react-native'
 
 import api from '../api.js'
@@ -13,7 +14,13 @@ import { Fetching, commonStyles } from '../commonComponents.js'
 
 export default class RoomTimetableScreen extends Component {
   static navigationOptions = {
-    drawerLabel: 'Room Timetable'
+    drawerLabel: 'Room Timetable',
+    drawerIcon: ({ tintColor }) => (
+      <Image
+        source={require('../images/menuIcons/roomTimetable.png')}
+        style={{width: 20, height: 20, tintColor: tintColor}}
+      />
+    )
   }
 
   constructor() {

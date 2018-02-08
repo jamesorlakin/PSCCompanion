@@ -6,11 +6,18 @@ import {
   Text,
   AsyncStorage,
   StyleSheet,
+  Image,
 } from 'react-native'
 
 export default class IntranetScreen extends Component {
   static navigationOptions = {
-    drawerLabel: 'Student Intranet'
+    drawerLabel: 'Student Intranet',
+    drawerIcon: ({ tintColor }) => (
+      <Image
+        source={require('../images/menuIcons/intranet.png')}
+        style={{width: 20, height: 20, tintColor: tintColor}}
+      />
+    )
   }
 
   constructor(props) {

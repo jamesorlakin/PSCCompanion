@@ -7,6 +7,7 @@ import {
   Picker,
   Dimensions,
   StyleSheet,
+  Image,
 } from 'react-native'
 
 import Timetable from '../timetableComponents/timetableHost.js'
@@ -21,7 +22,13 @@ if (day > 4) day = 0
 
 export default class SharedTimetableScreen extends Component {
   static navigationOptions = {
-    drawerLabel: 'Shared Timetable'
+    drawerLabel: 'Shared Timetable',
+    drawerIcon: ({ tintColor }) => (
+      <Image
+        source={require('../images/menuIcons/sharedTimetable.png')}
+        style={{width: 20, height: 20, tintColor: tintColor}}
+      />
+    )
   }
 
   constructor() {

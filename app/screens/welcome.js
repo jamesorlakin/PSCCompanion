@@ -18,7 +18,13 @@ import { commonStyles } from '../commonComponents.js'
 
 export default class WelcomeScreen extends Component {
   static navigationOptions = {
-    drawerLabel: 'Welcome'
+    drawerLabel: 'Welcome',
+    drawerIcon: ({ tintColor }) => (
+      <Image
+        source={require('../images/menuIcons/welcome.png')}
+        style={{width: 20, height: 20, tintColor: tintColor}}
+      />
+    )
   }
 
   constructor() {
