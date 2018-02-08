@@ -136,7 +136,7 @@ function TodayTimeline(props) {
       time: moment.unix(event.Start).format('HH:mm'),
       title: event.Title,
       description: event.Staff + " - " + event.Room,
-      dotColor: event.Color
+      circleColor: event.Color
     }
   })
 
@@ -147,7 +147,7 @@ function TodayTimeline(props) {
         <ActivityIndicator />
       </View>}
       <View style={{height: 3}}/>
-      <Timeline data={events} lineColor="#36648B" circleColor="#36648B" innerCircle='dot' />
+      <Timeline data={events} lineColor="#36648B" innerCircle='dot' />
     </WelcomeBox>
   )
 }

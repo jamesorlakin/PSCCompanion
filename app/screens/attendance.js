@@ -14,7 +14,7 @@ import {
 import cheerio from 'react-native-cheerio'
 import ProgressCircle from 'react-native-progress-circle'
 import moment from 'moment'
-import { Fetching, WelcomeBox } from '../commonComponents.js'
+import { Fetching, WelcomeBox, commonStyles } from '../commonComponents.js'
 
 export default class AttendanceScreen extends Component {
   static navigationOptions = {
@@ -105,17 +105,20 @@ export default class AttendanceScreen extends Component {
             <AttendanceProgress attendance={this.state.attendance} />
             <RecentAttendance attendance={this.state.attendance} />
           </View>
-          : <Fetching />}
-        {this.state.error && <Text>An error occurred, for this feature to work
-          you must sign into the Student Intranet within the app.</Text>}
+          : !this.state.error && <Fetching />}
+        {this.state.error && <Text>For the attendance feature to work,
+          you must sign into the Student Intranet within the app. This relies
+          upon scraping the Intranet, and so might not work perfectly. If you
+          configure your college username and password in the settings menu,
+          you'll be able to see print credit below too.</Text>}
       </WelcomeBox>
     )
 
-    if (!this.state.loaded) return (<Fetching style={styles.container} />)
+    if (!this.state.loaded) return (<Fetching style={commonStyles.screenContainer} />)
 
     return (
       <ScrollView>
-        <View style={styles.container}>
+        <View style={commonStyles.screenContainer}>
           <Text>Heads up! This feature is largely undeveloped and won't really be
             improved further. It uses hacky web scraping from the intranet and is
             a pain to build. Feel free to improve on attendance.js and
@@ -146,7 +149,7 @@ function AttendanceProgress(props) {
       >
         <Text style={{fontSize: 18}}>{props.attendance.percentage}%</Text>
       </ProgressCircle>
-      <Text>From {props.attendance.items[0].Time.substr(0, 6) + " to "}
+      <Text>From {props.attendance.items[0].Time.substr(0, 5) + " to "}
         {props.attendance.items[props.attendance.items.length-1].Time.substr(0, 11)}
       </Text>
     </View>
@@ -154,8 +157,8 @@ function AttendanceProgress(props) {
 }
 
 function RecentAttendance(props) {
-  var today = moment().startOf('week')
-  var endToday = moment().endOf('week')
+  var today = moment().startOf('isoweek')
+  var endToday = moment().endOf('isoweek')
   var todayItems = []
   var items = props.attendance.items
   for (var i = 0; i < items.length; i++) {
@@ -180,10 +183,7 @@ function RecentAttendance(props) {
 
 class AttendanceItem extends React.Component {
   constructor(props) {
-    super(props);
-    this.state = {
-      expanded: false
-    }
+    super(props)
     this.showInfo = this.showInfo.bind(this)
   }
 
@@ -199,22 +199,20 @@ class AttendanceItem extends React.Component {
     return (
       <View>
         <TouchableHighlight onPress={this.showInfo}>
-          <View
-            style={{width: 30,
-              height: 30,
-              backgroundColor: item.Color,
-              borderWidth: 1
-            }}
-          />
+          <View style={{width: 45,
+            height: 40,
+            backgroundColor: item.Color,
+            borderWidth: 1,
+            justifyContent: 'center'
+          }}>
+            <Text style={{
+              textAlign: 'center',
+              fontSize: 8,
+              color: 'black'
+            }}>{item.Title}</Text>
+          </View>
         </TouchableHighlight>
       </View>
     )
   }
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    margin: 8,
-  }
-});

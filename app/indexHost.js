@@ -1,6 +1,6 @@
 // The component rendered when logged in. Provides react-navigation for all screens.
 
-import React, { Component } from 'react';
+import React, { Component } from 'react'
 import {
   View,
   Text,
@@ -10,7 +10,7 @@ import {
   TouchableOpacity,
 } from 'react-native';
 
-import { StackNavigator, DrawerNavigator, NavigationActions, DrawerItems } from 'react-navigation';
+import { StackNavigator, DrawerNavigator, NavigationActions, DrawerItems } from 'react-navigation'
 
 import BannerAd from './adComponent.js'
 
@@ -24,6 +24,8 @@ import StudentNoticesScreen from './screens/notices.js'
 //import AttendanceScreen from './screens/attendance.js'
 import IntranetScreen from './screens/intranet.js'
 import SettingsScreen from './screens/settings.js'
+import AboutScreen from './screens/about.js'
+
 import GrimeScreen from './screens/grime.js'
 
 const WelcomeNavigator = StackNavigator({
@@ -44,6 +46,7 @@ const Drawer = DrawerNavigator({
 //  map: {screen: MapScreen},
   intranet: {screen: IntranetScreen},
   settings: {screen: SettingsScreen},
+  about: {screen: AboutScreen},
 }, {
   contentComponent: props => (<ScrollView><DrawerItems {...props} /></ScrollView>),
   contentOptions: {
@@ -71,7 +74,7 @@ const MenuButton = function (props) {
           }}/>
       </TouchableOpacity>
     </View>
-  );
+  )
 }
 
 const DrawerHost = StackNavigator({

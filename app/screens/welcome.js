@@ -14,11 +14,20 @@ import WhosFreeNow from '../whosFreeNowComponent.js'
 import Summary from '../summaryComponent.js'
 import AttendanceScreen from './attendance.js'
 import PrintingStatusComponent from '../printingStatusComponent.js'
+
+import { commonStyles } from '../commonComponents.js'
+
 import ExpoNoticeComponent from '../expoNoticeComponent.js'
 
 export default class WelcomeScreen extends Component {
   static navigationOptions = {
-    drawerLabel: 'Welcome'
+    drawerLabel: 'Welcome',
+    drawerIcon: ({ tintColor }) => (
+      <Image
+        source={require('../images/menuIcons/welcome.png')}
+        style={{width: 20, height: 20, tintColor: tintColor}}
+      />
+    )
   }
 
   constructor() {
@@ -44,7 +53,7 @@ export default class WelcomeScreen extends Component {
   render() {
     return (
       <ScrollView>
-        <View style={styles.container}>
+        <View style={commonStyles.screenContainer}>
           <View style={{flex: 1,
             flexDirection: 'column',
             justifyContent: 'center',
@@ -75,10 +84,3 @@ export default class WelcomeScreen extends Component {
     )
   }
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    margin: 8
-  },
-});

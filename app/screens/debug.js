@@ -1,11 +1,13 @@
-import React, { Component } from 'react';
+import React, { Component } from 'react'
 import {
   View,
   TextInput,
   AsyncStorage,
   StyleSheet,
   Button,
-} from 'react-native';
+} from 'react-native'
+
+import { commonStyles } from '../commonComponents.js'
 
 export default class DebugScreen extends Component {
   static navigationOptions = {
@@ -47,7 +49,7 @@ export default class DebugScreen extends Component {
 
   render() {
     var tokens = this.state.tokens;
-    return (<View style={styles.container}>{tokens.map(function (item) {
+    return (<View style={commonStyles.screenContainer}>{tokens.map(function (item) {
       return (<TextInput key={tokens.indexOf(item)} value={item} />)
     })}
     <TextInput defaultValue={this.state.pinAndKey}
@@ -56,10 +58,3 @@ export default class DebugScreen extends Component {
     </View>)
   }
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    margin: 8
-  },
-});

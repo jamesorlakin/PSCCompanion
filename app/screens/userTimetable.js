@@ -1,21 +1,28 @@
-import React, { Component } from 'react';
+import React, { Component } from 'react'
 import {
   View,
   Text,
   AsyncStorage,
   Button,
   StyleSheet,
-} from 'react-native';
+  Image,
+} from 'react-native'
 
 import api from '../api.js'
 import Timetable from '../timetableComponents/timetableHost.js'
 import moment from 'moment'
-import { Fetching } from '../commonComponents.js'
+import { Fetching, commonStyles } from '../commonComponents.js'
 import localTimetableCache from '../timetableComponents/localTimetableCache.js'
 
 export default class UserTimetableScreen extends Component {
   static navigationOptions = {
-    drawerLabel: 'My Timetable'
+    drawerLabel: 'My Timetable',
+    drawerIcon: ({ tintColor }) => (
+      <Image
+        source={require('../images/menuIcons/userTimetable.png')}
+        style={{width: 20, height: 20, tintColor: tintColor}}
+      />
+    )
   }
 
   constructor() {
@@ -26,7 +33,7 @@ export default class UserTimetableScreen extends Component {
       week: 0,
       error: null
     }
-    this.switchWeek = this.switchWeek.bind(this);
+    this.switchWeek = this.switchWeek.bind(this)
   }
 
   async loadTimetable() {
@@ -48,7 +55,7 @@ export default class UserTimetableScreen extends Component {
     var self = this;
     this.setState({loaded: false, week: this.state.week+week}, function () {
         self.loadTimetable();
-    });
+    })
   }
 
   componentDidMount() {
@@ -57,7 +64,7 @@ export default class UserTimetableScreen extends Component {
 
   render() {
     return (
-      <View style={styles.container}>
+      <View style={commonStyles.screenContainer}>
         <View style={{flexDirection: "row", justifyContent: "space-between"}}>
           <Button onPress={() => {this.switchWeek(-1)}}
             color="gray"
@@ -78,10 +85,3 @@ export default class UserTimetableScreen extends Component {
 
   }
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    margin: 8
-  },
-});

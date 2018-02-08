@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { Component } from 'react'
 import {
   View,
   Text,
@@ -7,21 +7,28 @@ import {
   Picker,
   Dimensions,
   StyleSheet,
-} from 'react-native';
+  Image,
+} from 'react-native'
 
-import Timetable from '../timetableComponents/timetableHost.js';
-import TimetableDayProgress from '../timetableComponents/timetableDayProgress.js';
-import moment from 'moment';
-import sharedApi from '../sharedApi.js';
-import { dayWidth } from '../timetableComponents/constants.js';
-import { Fetching } from '../commonComponents.js';
+import Timetable from '../timetableComponents/timetableHost.js'
+import TimetableDayProgress from '../timetableComponents/timetableDayProgress.js'
+import moment from 'moment'
+import sharedApi from '../sharedApi.js'
+import { dayWidth } from '../timetableComponents/constants.js'
+import { Fetching, commonStyles } from '../commonComponents.js'
 
-var day = moment().isoWeekday()-1;
-if (day > 4) day = 0;
+var day = moment().isoWeekday()-1
+if (day > 4) day = 0
 
 export default class SharedTimetableScreen extends Component {
   static navigationOptions = {
-    drawerLabel: 'Shared Timetable'
+    drawerLabel: 'Shared Timetable',
+    drawerIcon: ({ tintColor }) => (
+      <Image
+        source={require('../images/menuIcons/sharedTimetable.png')}
+        style={{width: 20, height: 20, tintColor: tintColor}}
+      />
+    )
   }
 
   constructor() {
@@ -61,7 +68,7 @@ export default class SharedTimetableScreen extends Component {
   render() {
     var self = this;
     if (this.state.enrolled) return (
-      <View style={styles.container}>
+      <View style={commonStyles.screenContainer}>
         <View style={{flexDirection: 'row'}}>
           <Text style={{marginTop: 15, color: 'black'}}>Day:</Text>
           <Picker style={{flex: 1}}
@@ -108,10 +115,10 @@ export default class SharedTimetableScreen extends Component {
           </View>
         </ScrollView>
       </View>
-    );
+    )
 
     return (
-      <View style={styles.container}>
+      <View style={commonStyles.screenContainer}>
         <Text style={{fontSize: 18}}>You can now share your timetable with others!</Text>
         <Text>At present you are not currently enrolled, but may do so in the
           settings menu. This is a one click process that will give you a PIN
@@ -119,7 +126,7 @@ export default class SharedTimetableScreen extends Component {
           for this function to work somewhat efficiently and without compromising
           your college tokens.</Text>
       </View>
-    );
+    )
   }
 }
 
@@ -145,7 +152,7 @@ class ExternalTimetable extends Component {
   render() {
     if (this.state.loaded && this.state.data === undefined) {
       return (
-        <View style={styles.container}>
+        <View style={commonStyles.screenContainer}>
           <Text style={{width: dayWidth}}>No timetable
             data was returned after executing a network request for this user.</Text>
         </View>
@@ -166,13 +173,6 @@ class ExternalTimetable extends Component {
           : <Fetching style={{width: dayWidth}} />}
         {this.state.error && <Text>{this.state.error.toString()}</Text>}
       </View>
-    );
+    )
   }
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    margin: 8
-  },
-});
