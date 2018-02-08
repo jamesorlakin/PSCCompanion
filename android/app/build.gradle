@@ -97,8 +97,8 @@ android {
         applicationId "com.psccompanion"
         minSdkVersion 16
         targetSdkVersion 22
-        versionCode 74
-        versionName "0.74 Project Attend in More Detail"
+        versionCode 75
+        versionName "0.75 Operation Icon Me Up"
         ndk {
             abiFilters "armeabi-v7a", "x86"
         }
