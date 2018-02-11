@@ -4,7 +4,8 @@
 	"private": true,
 	"scripts": {
 		"start": "node node_modules/react-native/local-cli/cli.js start",
-		"test": "jest"
+		"test": "jest",
+		"standard": "standard --verbose | snazzy"
 	},
 	"dependencies": {
 		"babel-plugin-transform-remove-console": "^6.8.5",
@@ -22,12 +23,18 @@
 		"react-navigation": "^1.0.0-beta.19"
 	},
 	"devDependencies": {
+		"babel-eslint": "^8.2.1",
 		"babel-jest": "21.0.0",
 		"babel-preset-react-native": "3.0.2",
 		"jest": "21.0.1",
-		"react-test-renderer": "16.0.0-alpha.12"
+		"react-test-renderer": "16.0.0-alpha.12",
+		"snazzy": "^7.0.0",
+		"standard": "^10.0.3"
 	},
 	"jest": {
 		"preset": "react-native"
-	}
+	},
+	"standard": {
+    "parser": "babel-eslint"
+  }
 }
