@@ -13,6 +13,7 @@ import {
 import moment from 'moment';
 import TimetableDay from './timetableDay.js';
 import { dayWidth } from './constants.js';
+import TimetableStats from './timetableStats.js';
 
 export default class Timetable extends Component {
   constructor(props) {
@@ -87,6 +88,7 @@ export default class Timetable extends Component {
             <View style={{flexDirection: 'row'}}>
               {timetableColumns}
             </View>
+            <TimetableStats timetable={this.props.data.timetable}/>
           </ScrollView>
         </View>
       </ScrollView>
