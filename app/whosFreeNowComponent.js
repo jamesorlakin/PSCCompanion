@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { Component } from 'react'
 import {
   View,
   Text,
@@ -6,7 +6,7 @@ import {
   ActivityIndicator,
   Picker,
   StyleSheet,
-} from 'react-native';
+} from 'react-native'
 
 import moment from 'moment'
 import sharedApi from './sharedApi.js'
@@ -14,7 +14,7 @@ import { WelcomeBox } from './commonComponents.js'
 
 export default class WhosFreeNow extends Component {
   constructor() {
-    super();
+    super()
     this.state = {
       enrolled: false,
       savedPins: [],
@@ -39,16 +39,16 @@ export default class WhosFreeNow extends Component {
   ]
 
   componentDidMount() {
-    var self = this;
+    var self = this
     AsyncStorage.getItem('sharedPinAndKey').then(function (data) {
       if (data === null) {
         self.setState({enrolled: false})
       } else {
-        var data = JSON.parse(data);
+        var data = JSON.parse(data)
         self.setState({enrolled: true, pinAndKey: data})
         AsyncStorage.getItem('sharedSavedPins').then(function (pinData) {
           if (pinData !== null) {
-            var pins = JSON.parse(pinData);
+            var pins = JSON.parse(pinData)
             pins.unshift({name: "Me", pin: data.pin})
             self.setState({savedPins: pins})
           }
@@ -90,7 +90,7 @@ export default class WhosFreeNow extends Component {
           return (<Individual key={pin.pin} now={self.periodTimes[self.state.period]} pin={pin} />)
         })}
       </WelcomeBox>
-    );
+    )
   }
 }
 
@@ -104,14 +104,14 @@ class Individual extends Component {
   }
 
   componentDidMount() {
-    var self = this;
+    var self = this
     sharedApi.fetchCachedShared(this.props.pin.pin).then(function (result) {
       self.setState({loaded: true, data: result})
     })
   }
 
   render() {
-    var currentEvent = false;
+    var currentEvent = false
 
     if (this.state.data !== null) {
       try {
@@ -124,13 +124,13 @@ class Individual extends Component {
           - moment.unix(timetable[0].Start).startOf('day').startOf('isoweek').unix()
 
         for (var i = 0; i < timetable.length; i++) {
-          timetable[i].Start += addTime;
-          timetable[i].End += addTime;
+          timetable[i].Start += addTime
+          timetable[i].End += addTime
 
           if (now.isAfter(moment.unix(timetable[i].Start))
             && now.isBefore(moment.unix(timetable[i].End))) {
-              currentEvent = timetable[i];
-              break;
+              currentEvent = timetable[i]
+              break
             }
         }
 
@@ -144,9 +144,9 @@ class Individual extends Component {
               : <Occupied event={currentEvent}/>)
               : <ActivityIndicator style={{flex: 1}} />}
           </View>
-        );
+        )
       } catch (e) {
-        console.log(e);
+        console.log(e)
         return (
           <View style={{flexDirection: 'row', borderWidth: 1, padding: 2}}>
             <Text style={{flex: 1}}>{this.props.pin.name}</Text>
@@ -192,4 +192,4 @@ const styles = StyleSheet.create({
     padding: 4,
     marginBottom: 20
   },
-});
+})
