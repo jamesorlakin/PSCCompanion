@@ -6,6 +6,7 @@ import {
   ActivityIndicator,
   Picker,
   StyleSheet,
+  Button
 } from 'react-native'
 
 import moment from 'moment'
@@ -58,6 +59,7 @@ export default class WhosFreeNow extends Component {
   }
 
   changePeriod(index, value) {
+    if (value < 0 || value > 10) return
     this.setState({period: value})
   }
 
@@ -68,6 +70,11 @@ export default class WhosFreeNow extends Component {
     return (
       <WelcomeBox title="Who's free?">
         <View style={{flexDirection: 'row'}}>
+          <View style={{paddingBottom: 10, paddingTop: 10, marginRight: 5}}>
+            <Button onPress={() => {this.changePeriod(null, this.state.period-1)}}
+              color="gray"
+              title="<" />
+          </View>
           <Text style={{marginTop: 15, color: 'black'}}>Time:</Text>
           <Picker style={{flex: 1}}
             selectedValue={this.state.period}
@@ -85,6 +92,11 @@ export default class WhosFreeNow extends Component {
             <Picker.Item label="Lesson 7 - 14:45 - 15:40" value={9} />
             <Picker.Item label="Lesson 8 - 15:40 - 16:35" value={10} />
           </Picker>
+          <View style={{paddingBottom: 10, paddingTop: 10}}>
+            <Button onPress={() => {this.changePeriod(null, this.state.period+1)}}
+              color="gray"
+              title=">" />
+          </View>
         </View>
         {this.state.savedPins.map(function (pin) {
           return (<Individual key={pin.pin} now={self.periodTimes[self.state.period]} pin={pin} />)
