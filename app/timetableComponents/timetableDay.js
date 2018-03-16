@@ -81,7 +81,7 @@ const styles = StyleSheet.create({
   }
 });
 
-function EventElement(props) {
+export function EventElement(props) {
   var staff = props.item.Staff;
   if (staff === "Paul Watson") staff = <Text style={{fontWeight: 'bold', fontSize: 25}}>Uncle Paul</Text>
   if (staff === "Nick Johnston") staff = <Text>Nick <Text style={{fontWeight: 'bold'}}>"Get out of my desk"</Text> Johnston</Text>
@@ -92,6 +92,7 @@ function EventElement(props) {
     borderWidth: 0.5,
     borderColor: '#c5c6c9',
     height: height,
+    width: dayWidth,
     flexDirection: 'row'
   }
 

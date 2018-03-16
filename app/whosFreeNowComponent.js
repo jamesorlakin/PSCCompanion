@@ -6,12 +6,14 @@ import {
   ActivityIndicator,
   Picker,
   StyleSheet,
-  Button
+  Button,
+  TouchableOpacity,
 } from 'react-native'
 
 import moment from 'moment'
 import sharedApi from './sharedApi.js'
 import { WelcomeBox } from './commonComponents.js'
+import { EventElement } from './timetableComponents/timetableDay.js'
 
 export default class WhosFreeNow extends Component {
   constructor() {
@@ -64,7 +66,7 @@ export default class WhosFreeNow extends Component {
   }
 
   render() {
-    var self = this;
+    var self = this
     if (!this.state.enrolled || this.state.savedPins.length === 0) return (<View />)
 
     return (
@@ -151,7 +153,7 @@ class Individual extends Component {
             <Text style={{flex: 1}}>{this.props.pin.name}</Text>
             {this.state.loaded &&
               ((this.state.data.startOfWeek !== moment().startOf('day').startOf('isoweek').unix())
-              && <Text style={{flex: 1}}>Outdated</Text>)}
+              && <Text style={{flex: 1}}>Old</Text>)}
             {this.state.loaded ? (currentEvent === false ? <Free />
               : <Occupied event={currentEvent}/>)
               : <ActivityIndicator style={{flex: 1}} />}
@@ -162,7 +164,7 @@ class Individual extends Component {
         return (
           <View style={{flexDirection: 'row', borderWidth: 1, padding: 2}}>
             <Text style={{flex: 1}}>{this.props.pin.name}</Text>
-            <Text>Error parsing for this user.</Text>
+            <Text>?</Text>
           </View>
         )
       }
@@ -177,23 +179,37 @@ function Free() {
   )
 }
 
-function Occupied(props) {
-  if (props.event.IsCancelled) {
+class Occupied extends Component {
+  constructor() {
+    super()
+    this.state = {
+      expanded: false
+    }
+  }
+
+  render() {
+    if (this.state.expanded) return (<EventElement item={this.props.event}/>)
+
+    if (this.props.event.IsCancelled) {
+      return (
+        <View>
+          <Free />
+          <Text style={{color: 'red', fontStyle: 'italic', textAlign: 'right'}}>(Lesson cancelled)</Text>
+        </View>
+      )
+    }
+
     return (
-      <View>
-        <Free />
-        <Text style={{color: 'red', fontStyle: 'italic', textAlign: 'right'}}>(Lesson cancelled)</Text>
-      </View>
+      <TouchableOpacity onPress={() => {this.setState({expanded: true})}}>
+        <Text style={{color: 'red', textAlign: 'right'}}>
+          Busy
+          {this.props.event.Type === "activity" && " (activity)"}
+          {this.props.event.Title.indexOf('Lecture') > -1 && " (Lecture Programme)"}
+          {this.props.event.Title.indexOf('Workshop') > -1 && " (workshop)"}
+        </Text>
+      </TouchableOpacity>
     )
   }
-  return (
-    <Text style={{color: 'red', textAlign: 'right'}}>
-      Busy
-      {props.event.Type === "activity" && " (activity)"}
-      {props.event.Title.indexOf('Lecture') > -1 && " (Lecture Programme)"}
-      {props.event.Title.indexOf('Workshop') > -1 && " (workshop)"}
-    </Text>
-  )
 }
 
 const styles = StyleSheet.create({
