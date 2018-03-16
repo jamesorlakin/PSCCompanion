@@ -26,6 +26,7 @@ export default class PrintingStatusComponent extends Component {
     else return
     credentials = JSON.parse(credentials)
 
+    // Reset session status
     await (await fetch('https://iprint.psc.ac.uk/app?service=restart')).text()
 
     var requestBody = 'service=direct%2F1%2FHome%2F%24Form%240&sp=S0&Form0=%24Hidden%240%2C%24Hidden%241%2CinputUsername%2CinputPassword%2C%24PropertySelection%240%2C%24Submit%240&%24Hidden%240=true&%24Hidden%241=X&%24PropertySelection%240=en&%24Submit%240=Log+in' +
@@ -43,22 +44,23 @@ export default class PrintingStatusComponent extends Component {
     var printStatusPage = cheerio.load(result)
 
     var credit = printStatusPage("div[class='widget stat-bal'] > div").text()
-    credit = credit.substr(2).substr(0, credit.length - 4)
+    credit = credit.substr(2).substr(0, credit.length - 5)
 
     var pages = printStatusPage("div[class='widget stat-pages'] > div").text()
 
-    this.setState({loaded: true, credit: credit, pages: pages})
-    //fetch()
+    var trees = printStatusPage("li[class='trees']").text()
+    trees = trees.slice(3, -1)
+
+    this.setState({loaded: true, credit: credit, pages: pages, trees: trees})
   }
 
   render() {
     if (!this.state.configured) return null
     return (
       <WelcomeBox title="Current printing credit:" loading={!this.state.loaded}>
-        <View style={{alignItems: 'center'}}>
-          <Text style={{fontSize: 40}}>{this.state.credit}</Text>
-        </View>
-        <Text>Total pages printed: {this.state.pages}</Text>
+        <Text style={{fontSize: 40, textAlign: 'center'}}>{this.state.credit}</Text>
+        <Text style={{fontSize: 30, textAlign: 'center'}}>{this.state.pages} pages</Text>
+        <Text style={{fontSize: 20, textAlign: 'center'}}>({this.state.trees})</Text>
       </WelcomeBox>
     )
   }
