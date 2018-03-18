@@ -97,7 +97,7 @@ export default function IndexHost(props) {
   return (
     <View style={styles.container}>
       <DrawerHost />
-      {__DEV__ ? <Text>Debug Copy</Text> : <BannerAd />}
+      {__DEV__ ? <Text style={{textAlign: 'center'}}>Development Build</Text> : <BannerAd />}
     </View>
   )
 }
