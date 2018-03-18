@@ -29,6 +29,7 @@
     "react-native-htmlview": "^0.12.1",
     "react-navigation": "^1.0.0-beta.19",
     "react-native-timeline-listview": "^0.2.2",
-    "react-native-progress-circle": "^2.0.0"
+    "react-native-progress-circle": "^2.0.0",
+		"react-native-app-intro-slider": "^0.2.4"
   }
 }

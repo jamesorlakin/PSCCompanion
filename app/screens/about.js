@@ -72,6 +72,10 @@ export default class AboutScreen extends Component {
             Creative Commons Attribution 3.0 (CC BY 3.0). Learn more at
             Glyphicons.com</Text>
 
+          <Breaker/>
+
+          <Text>Icons [the key in the app intro] made by Freepik from www.flaticon.com is licensed by CC 3.0 BY</Text>
+
         </View>
       </ScrollView>
     )

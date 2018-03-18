@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { Component } from 'react'
 import {
   View,
   Text,
@@ -6,15 +6,18 @@ import {
   ActivityIndicator,
   Picker,
   StyleSheet,
-} from 'react-native';
+  Button,
+  TouchableOpacity,
+} from 'react-native'
 
 import moment from 'moment'
 import sharedApi from './sharedApi.js'
 import { WelcomeBox } from './commonComponents.js'
+import { EventElement } from './timetableComponents/timetableDay.js'
 
 export default class WhosFreeNow extends Component {
   constructor() {
-    super();
+    super()
     this.state = {
       enrolled: false,
       savedPins: [],
@@ -39,16 +42,16 @@ export default class WhosFreeNow extends Component {
   ]
 
   componentDidMount() {
-    var self = this;
+    var self = this
     AsyncStorage.getItem('sharedPinAndKey').then(function (data) {
       if (data === null) {
         self.setState({enrolled: false})
       } else {
-        var data = JSON.parse(data);
+        var data = JSON.parse(data)
         self.setState({enrolled: true, pinAndKey: data})
         AsyncStorage.getItem('sharedSavedPins').then(function (pinData) {
           if (pinData !== null) {
-            var pins = JSON.parse(pinData);
+            var pins = JSON.parse(pinData)
             pins.unshift({name: "Me", pin: data.pin})
             self.setState({savedPins: pins})
           }
@@ -58,16 +61,22 @@ export default class WhosFreeNow extends Component {
   }
 
   changePeriod(index, value) {
+    if (value < 0 || value > 10) return
     this.setState({period: value})
   }
 
   render() {
-    var self = this;
+    var self = this
     if (!this.state.enrolled || this.state.savedPins.length === 0) return (<View />)
 
     return (
       <WelcomeBox title="Who's free?">
         <View style={{flexDirection: 'row'}}>
+          <View style={{paddingBottom: 10, paddingTop: 10, marginRight: 5}}>
+            <Button onPress={() => {this.changePeriod(null, this.state.period-1)}}
+              color="gray"
+              title="<" />
+          </View>
           <Text style={{marginTop: 15, color: 'black'}}>Time:</Text>
           <Picker style={{flex: 1}}
             selectedValue={this.state.period}
@@ -85,12 +94,17 @@ export default class WhosFreeNow extends Component {
             <Picker.Item label="Lesson 7 - 14:45 - 15:40" value={9} />
             <Picker.Item label="Lesson 8 - 15:40 - 16:35" value={10} />
           </Picker>
+          <View style={{paddingBottom: 10, paddingTop: 10}}>
+            <Button onPress={() => {this.changePeriod(null, this.state.period+1)}}
+              color="gray"
+              title=">" />
+          </View>
         </View>
         {this.state.savedPins.map(function (pin) {
           return (<Individual key={pin.pin} now={self.periodTimes[self.state.period]} pin={pin} />)
         })}
       </WelcomeBox>
-    );
+    )
   }
 }
 
@@ -104,14 +118,14 @@ class Individual extends Component {
   }
 
   componentDidMount() {
-    var self = this;
+    var self = this
     sharedApi.fetchCachedShared(this.props.pin.pin).then(function (result) {
       self.setState({loaded: true, data: result})
     })
   }
 
   render() {
-    var currentEvent = false;
+    var currentEvent = false
 
     if (this.state.data !== null) {
       try {
@@ -124,13 +138,13 @@ class Individual extends Component {
           - moment.unix(timetable[0].Start).startOf('day').startOf('isoweek').unix()
 
         for (var i = 0; i < timetable.length; i++) {
-          timetable[i].Start += addTime;
-          timetable[i].End += addTime;
+          timetable[i].Start += addTime
+          timetable[i].End += addTime
 
           if (now.isAfter(moment.unix(timetable[i].Start))
             && now.isBefore(moment.unix(timetable[i].End))) {
-              currentEvent = timetable[i];
-              break;
+              currentEvent = timetable[i]
+              break
             }
         }
 
@@ -139,18 +153,18 @@ class Individual extends Component {
             <Text style={{flex: 1}}>{this.props.pin.name}</Text>
             {this.state.loaded &&
               ((this.state.data.startOfWeek !== moment().startOf('day').startOf('isoweek').unix())
-              && <Text style={{flex: 1}}>Outdated</Text>)}
+              && <Text style={{flex: 1}}>Old</Text>)}
             {this.state.loaded ? (currentEvent === false ? <Free />
               : <Occupied event={currentEvent}/>)
               : <ActivityIndicator style={{flex: 1}} />}
           </View>
-        );
+        )
       } catch (e) {
-        console.log(e);
+        console.log(e)
         return (
           <View style={{flexDirection: 'row', borderWidth: 1, padding: 2}}>
             <Text style={{flex: 1}}>{this.props.pin.name}</Text>
-            <Text>Error parsing for this user.</Text>
+            <Text>?</Text>
           </View>
         )
       }
@@ -165,23 +179,37 @@ function Free() {
   )
 }
 
-function Occupied(props) {
-  if (props.event.IsCancelled) {
+class Occupied extends Component {
+  constructor() {
+    super()
+    this.state = {
+      expanded: false
+    }
+  }
+
+  render() {
+    if (this.state.expanded) return (<EventElement item={this.props.event}/>)
+
+    if (this.props.event.IsCancelled) {
+      return (
+        <View>
+          <Free />
+          <Text style={{color: 'red', fontStyle: 'italic', textAlign: 'right'}}>(Lesson cancelled)</Text>
+        </View>
+      )
+    }
+
     return (
-      <View>
-        <Free />
-        <Text style={{color: 'red', fontStyle: 'italic', textAlign: 'right'}}>(Lesson cancelled)</Text>
-      </View>
+      <TouchableOpacity onPress={() => {this.setState({expanded: true})}}>
+        <Text style={{color: 'red', textAlign: 'right'}}>
+          Busy
+          {this.props.event.Type === "activity" && " (activity)"}
+          {this.props.event.Title.indexOf('Lecture') > -1 && " (Lecture Programme)"}
+          {this.props.event.Title.indexOf('Workshop') > -1 && " (workshop)"}
+        </Text>
+      </TouchableOpacity>
     )
   }
-  return (
-    <Text style={{color: 'red', textAlign: 'right'}}>
-      Busy
-      {props.event.Type === "activity" && " (activity)"}
-      {props.event.Title.indexOf('Lecture') > -1 && " (Lecture Programme)"}
-      {props.event.Title.indexOf('Workshop') > -1 && " (workshop)"}
-    </Text>
-  )
 }
 
 const styles = StyleSheet.create({
@@ -192,4 +220,4 @@ const styles = StyleSheet.create({
     padding: 4,
     marginBottom: 20
   },
-});
+})
