@@ -1,22 +1,21 @@
-import React, { Component } from 'react';
+import React, { Component } from 'react'
 import {
   View,
   WebView,
   Text,
-  AsyncStorage,
-  StyleSheet,
-} from 'react-native';
+  AsyncStorage
+} from 'react-native'
 
-import IndexHost from './indexHost.js';
+import IndexHost from '../../indexHost.js'
 
 export default class LoginScreen extends Component {
 
   constructor() {
-    super();
+    super()
     this.state = {
       exchanging: false,
       done: false
-    };
+    }
   }
 
   handleLoad(e) {
@@ -47,24 +46,16 @@ export default class LoginScreen extends Component {
 
   render() {
     if (this.state.done) return (<IndexHost />)
-    if (this.state.exchanging) return (<Text style={styles.welcome}>Exchanging tokens with PSC, hang fire.</Text>)
+    if (this.state.exchanging) return (
+      <View>
+        <Text>Exchanging tokens with PSC, hang fire.</Text>
+      </View>
+    )
+
     return (
-      <View style={styles.container}>
-        <Text style={styles.welcome}>Welcome to PSC Companion! Before we can
-        communicate with college, please enter your login details below:</Text>
+      <View style={{flex: 1}}>
         <WebView onNavigationStateChange={this.handleLoad.bind(this)} source={{uri: "https://data.psc.ac.uk/oauth/v2/auth?client_id=59_5np1cw1pak8w4gss080sgkgg8sc8s4kgkgg04go0k448scckog&response_type=code&redirect_uri=app://localhost"}} />
       </View>
     );
   }
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-  },
-  welcome: {
-    fontSize: 20,
-    textAlign: 'center',
-    margin: 10,
-  }
-});

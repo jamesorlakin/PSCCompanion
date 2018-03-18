@@ -93,7 +93,7 @@ const DrawerHost = StackNavigator({
   }
 })
 
-const IndexHost = function (props) {
+export default function IndexHost(props) {
   return (
     <View style={styles.container}>
       <DrawerHost />
@@ -107,5 +107,3 @@ const styles = StyleSheet.create({
     flex: 1
   },
 });
-
-module.exports = IndexHost
