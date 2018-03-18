@@ -46,7 +46,7 @@ export default class LoginScreen extends Component {
 
   render() {
     if (this.state.done) return <IndexHost />
-    if (!this.state.exchanging) return (
+    if (this.state.exchanging) return (
       <View>
         <Text style={{textAlign: 'center'}}>PSC Companion is exchanging tokens.
           Hang fire, this should only take a moment.</Text>
