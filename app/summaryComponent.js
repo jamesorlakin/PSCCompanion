@@ -1,10 +1,10 @@
-import React, { Component } from 'react';
+import React, { Component } from 'react'
 import {
   View,
   Text,
-  AsyncStorage,
   ActivityIndicator,
-} from 'react-native';
+  LayoutAnimation
+} from 'react-native'
 
 import moment from 'moment'
 import api from './api.js'
@@ -15,15 +15,15 @@ import { WelcomeBox } from './commonComponents.js'
 
 export default class Summary extends Component {
   constructor() {
-    super();
+    super()
     this.state = {
       loaded: false,
       data: null,
-    };
+    }
   }
 
   componentDidMount() {
-    var self = this;
+    var self = this
     localTimetableCache.getCache().then(function (result) {
       self.setState({loaded: true, data: result})
     })
@@ -33,6 +33,7 @@ export default class Summary extends Component {
       {key: "start", value: moment().startOf('day').startOf('isoweek').unix()},
       {key: "end", value: moment().endOf('day').endOf('isoweek').unix()}
     ]).then(function (result) {
+      LayoutAnimation.configureNext(LayoutAnimation.Presets.spring)
       self.setState({loaded: true, data: result})
       sharedApi.updateCurrentShared(result)
       localTimetableCache.saveCache(result)
@@ -42,26 +43,26 @@ export default class Summary extends Component {
   }
 
   render() {
-    if (!this.state.loaded) return (<View />)
+    if (!this.state.loaded) return null
 
-    var nextEvent = {Type: "unknown"};
+    var nextEvent = {Type: "unknown"}
 
     var timetable = this.state.data.timetable
-    if (timetable.length === 0) return (<View />)
+    if (timetable.length === 0) return null
 
     var now = moment()
 
     for (var i = 0; i < timetable.length; i++) {
       if (now.isBefore(moment.unix(timetable[i].Start)) && !timetable[i].IsCancelled) {
-        nextEvent = timetable[i];
-        break;
+        nextEvent = timetable[i]
+        break
       }
 
       if (i+1 === timetable.length) {
         // Use the first event and add a week
-        timetable[0].Start += 604800;
-        timetable[0].End += 604800;
-        nextEvent = timetable[0];
+        timetable[0].Start += 604800
+        timetable[0].End += 604800
+        nextEvent = timetable[0]
       }
     }
 
@@ -129,7 +130,7 @@ function TodayTimeline(props) {
     return false;
   })
 
-  if (events.length === 0) return (<View/>)
+  if (events.length === 0) return null
 
   events = events.map(function (event) {
     return {

@@ -8,6 +8,7 @@ import {
   StyleSheet,
   Button,
   TouchableOpacity,
+  LayoutAnimation,
 } from 'react-native'
 
 import moment from 'moment'
@@ -67,7 +68,7 @@ export default class WhosFreeNow extends Component {
 
   render() {
     var self = this
-    if (!this.state.enrolled || this.state.savedPins.length === 0) return (<View />)
+    if (!this.state.enrolled || this.state.savedPins.length === 0) return null
 
     return (
       <WelcomeBox title="Who's free?">
@@ -110,7 +111,7 @@ export default class WhosFreeNow extends Component {
 
 class Individual extends Component {
   constructor() {
-    super();
+    super()
     this.state = {
       loaded: false,
       data: null
@@ -155,7 +156,7 @@ class Individual extends Component {
               ((this.state.data.startOfWeek !== moment().startOf('day').startOf('isoweek').unix())
               && <Text style={{flex: 1}}>Old</Text>)}
             {this.state.loaded ? (currentEvent === false ? <Free />
-              : <Occupied event={currentEvent}/>)
+              : <Occupied key={currentEvent.Title} event={currentEvent}/>)
               : <ActivityIndicator style={{flex: 1}} />}
           </View>
         )
@@ -185,6 +186,12 @@ class Occupied extends Component {
     this.state = {
       expanded: false
     }
+    this.expand = this.expand.bind(this)
+  }
+
+  expand() {
+    LayoutAnimation.configureNext(LayoutAnimation.Presets.spring);
+    this.setState({expanded: true})
   }
 
   render() {
@@ -200,7 +207,7 @@ class Occupied extends Component {
     }
 
     return (
-      <TouchableOpacity onPress={() => {this.setState({expanded: true})}}>
+      <TouchableOpacity onPress={this.expand}>
         <Text style={{color: 'red', textAlign: 'right'}}>
           Busy
           {this.props.event.Type === "activity" && " (activity)"}

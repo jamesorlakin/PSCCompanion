@@ -1,9 +1,11 @@
+// A completely useless easter egg!
 import React, { Component } from 'react'
 import {
   View,
   Text,
   StyleSheet,
   Button,
+  LayoutAnimation
 } from 'react-native'
 import ProgressCircle from 'react-native-progress-circle'
 
@@ -24,6 +26,7 @@ export default class GrimeScreen extends Component {
   }
 
   increase() {
+    LayoutAnimation.configureNext(LayoutAnimation.Presets.spring)
     if (this.state.percent >= 100) {
       clearInterval(this.timer)
       this.setState({running: false})

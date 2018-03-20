@@ -4,8 +4,11 @@ import React, { Component } from 'react'
 import {
   AppRegistry,
   AsyncStorage,
+  UIManager,
+  Platform
 } from 'react-native'
 
+if (Platform.OS === 'android') UIManager.setLayoutAnimationEnabledExperimental(true)
 
 import IndexHost from './indexHost.js'
 import Intro from './screens/login/intro.js'

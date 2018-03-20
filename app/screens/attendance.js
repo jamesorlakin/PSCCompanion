@@ -2,13 +2,11 @@ import React, { Component } from 'react';
 import {
   View,
   Text,
-  StyleSheet,
-  Button,
   ScrollView,
-  AsyncStorage,
   InteractionManager,
   TouchableHighlight,
   Alert,
+  LayoutAnimation
 } from 'react-native';
 
 import cheerio from 'react-native-cheerio'
@@ -92,6 +90,7 @@ export default class AttendanceScreen extends Component {
       console.log(attendance.percentage)
 
       if (attendance.items.length === 0) return false
+      LayoutAnimation.configureNext(LayoutAnimation.Presets.spring)
       this.setState({attendance: attendance, loaded: true})
     } catch (e) {
       this.setState({error: e})
