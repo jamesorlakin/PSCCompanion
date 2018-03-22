@@ -8,9 +8,9 @@ import {
   StyleSheet,
   ScrollView,
   TouchableOpacity,
-} from 'react-native';
+} from 'react-native'
 
-import { StackNavigator, DrawerNavigator, NavigationActions, DrawerItems } from 'react-navigation'
+import { StackNavigator, DrawerNavigator, DrawerItems } from 'react-navigation'
 
 import BannerAd from './adComponent.js'
 
