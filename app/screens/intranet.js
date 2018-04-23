@@ -6,7 +6,7 @@ import {
   Text,
   AsyncStorage,
   StyleSheet,
-  Image,
+  Image
 } from 'react-native'
 
 export default class IntranetScreen extends Component {
@@ -20,53 +20,53 @@ export default class IntranetScreen extends Component {
     )
   }
 
-  constructor(props) {
-    super(props);
+  constructor (props) {
+    super(props)
     this.state = {
       shouldRender: false,
       credentials: null
-    };
+    }
     this.goBack = this.goBack.bind(this)
   }
 
-  componentDidMount() {
+  componentDidMount () {
     BackHandler.addEventListener('hardwareBackPress', this.goBack)
-    var self = this;
+    var self = this
     AsyncStorage.getItem('credentials').then(function (data) {
       var credentials = null
-      if (typeof data === "string") credentials = JSON.parse(data)
+      if (typeof data === 'string') credentials = JSON.parse(data)
       self.setState({shouldRender: true, credentials: credentials})
     })
   }
 
-  componentWillUnmount(){
-    BackHandler.removeEventListener('hardwareBackPress', this.goBack);
+  componentWillUnmount () {
+    BackHandler.removeEventListener('hardwareBackPress', this.goBack)
   }
 
-  goBack() {
-    this.refs["WEBVIEW"].goBack();
-    return true;
+  goBack () {
+    this.refs['WEBVIEW'].goBack()
+    return true
   }
 
-  render() {
+  render () {
     if (this.state.shouldRender) {
-      var injection = "";
+      var injection = ''
       if (this.state.credentials !== null) {
         injection = "if (window.location.toString().indexOf('login.php')>-1) {" +
           "  document.getElementById('username').value = '" + this.state.credentials.username + "';" +
           "  document.getElementById('password').value = '" + this.state.credentials.password + "';" +
           "  document.getElementById('signin').click();" +
-          "}";
-        if (this.state.credentials.username === null || this.state.credentials.password === null) injection = "";
+          '}'
+        if (this.state.credentials.username === null || this.state.credentials.password === null) injection = ''
       }
 
       return (
         <View style={{flex: 1}}>
-          <WebView source={{uri: "https://intranet.psc.ac.uk"}}
-            ref="WEBVIEW"
-            injectedJavaScript={injection}/>
+          <WebView source={{uri: 'https://intranet.psc.ac.uk'}}
+            ref='WEBVIEW'
+            injectedJavaScript={injection} />
         </View>
-      );
+      )
     }
 
     return null

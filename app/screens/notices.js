@@ -6,8 +6,8 @@ import {
   ScrollView,
   StyleSheet,
   InteractionManager,
-  Image,
-} from 'react-native';
+  Image
+} from 'react-native'
 
 import cheerio from 'react-native-cheerio'
 import HTMLView from 'react-native-htmlview'
@@ -25,40 +25,40 @@ export default class StudentNoticesScreen extends Component {
     )
   }
 
-  constructor(props) {
-    super(props);
+  constructor (props) {
+    super(props)
     this.state = {
       notices: []
     }
     this.fetchNotices = this.fetchNotices.bind(this)
   }
 
-  componentDidMount() {
+  componentDidMount () {
     InteractionManager.runAfterInteractions(this.fetchNotices)
   }
 
-  async fetchNotices() {
-    var page = await (await fetch("https://intranet.psc.ac.uk/news/browser.php")).text();
-    var document = cheerio.load(page);
-    var notices = [];
+  async fetchNotices () {
+    var page = await (await fetch('https://intranet.psc.ac.uk/news/browser.php')).text()
+    var document = cheerio.load(page)
+    var notices = []
 
-    document("div[id='report-wide'] > ul > li").each(function(item) {
+    document("div[id='report-wide'] > ul > li").each(function (item) {
       var newNotice = {}
-      newNotice.title = document(this).find("h4").text()
-      newNotice.date = moment(document(this).find(".posted").text().substr(8), "DD/MM/YY HH:mm")
+      newNotice.title = document(this).find('h4').text()
+      newNotice.date = moment(document(this).find('.posted').text().substr(8), 'DD/MM/YY HH:mm')
 
-      document(document(this).find("h4")).remove()
-      document(document(this).find(".posted")).remove()
+      document(document(this).find('h4')).remove()
+      document(document(this).find('.posted')).remove()
       newNotice.body = document(this).html()
       newNotice.body = newNotice.body.substr(16, newNotice.body.length)
 
       notices.push(newNotice)
-    });
+    })
 
-    this.setState({notices: notices});
+    this.setState({notices: notices})
   }
 
-  render() {
+  render () {
     return (
       <View style={commonStyles.screenContainer}>
         <Text style={{fontSize: 30, textDecorationLine: 'underline'}}>Student notices:</Text>
@@ -69,11 +69,11 @@ export default class StudentNoticesScreen extends Component {
           })}
         </ScrollView>
       </View>
-    );
+    )
   }
 }
 
-function NoticeElement(props) {
+function NoticeElement (props) {
   return (
     <View>
       <View style={{backgroundColor: '#36648B', height: 3}} />

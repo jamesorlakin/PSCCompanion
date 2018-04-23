@@ -5,7 +5,7 @@ import {
   AsyncStorage,
   Button,
   StyleSheet,
-  Image,
+  Image
 } from 'react-native'
 
 import api from '../api.js'
@@ -25,8 +25,8 @@ export default class UserTimetableScreen extends Component {
     )
   }
 
-  constructor() {
-    super();
+  constructor () {
+    super()
     this.state = {
       loaded: false,
       data: null,
@@ -36,12 +36,12 @@ export default class UserTimetableScreen extends Component {
     this.switchWeek = this.switchWeek.bind(this)
   }
 
-  async loadTimetable() {
+  async loadTimetable () {
     try {
       var timetable = await api('timetable', [
-        {key: "includeBlanks", value: "false"},
-        {key: "start", value: moment().startOf('day').startOf('isoweek').add(this.state.week, 'weeks').unix()},
-        {key: "end", value: moment().endOf('day').endOf('isoweek').add(this.state.week, 'weeks').unix()}
+        {key: 'includeBlanks', value: 'false'},
+        {key: 'start', value: moment().startOf('day').startOf('isoweek').add(this.state.week, 'weeks').unix()},
+        {key: 'end', value: moment().endOf('day').endOf('isoweek').add(this.state.week, 'weeks').unix()}
       ])
       this.setState({loaded: true, data: timetable})
     } catch (e) {
@@ -50,38 +50,37 @@ export default class UserTimetableScreen extends Component {
     }
   }
 
-  switchWeek(week) {
+  switchWeek (week) {
     if (!this.state.loaded && this.state.error === null) return false
-    var self = this;
-    this.setState({loaded: false, week: this.state.week+week}, function () {
-        self.loadTimetable();
+    var self = this
+    this.setState({loaded: false, week: this.state.week + week}, function () {
+      self.loadTimetable()
     })
   }
 
-  componentDidMount() {
+  componentDidMount () {
     this.loadTimetable()
   }
 
-  render() {
+  render () {
     return (
       <View style={commonStyles.screenContainer}>
-        <View style={{flexDirection: "row", justifyContent: "space-between"}}>
-          <Button onPress={() => {this.switchWeek(-1)}}
-            color="gray"
+        <View style={{flexDirection: 'row', justifyContent: 'space-between'}}>
+          <Button onPress={() => { this.switchWeek(-1) }}
+            color='gray'
             style={{width: 50}}
-            title="<" />
+            title='<' />
           <Text style={{marginTop: 6}}>Week Commencing
-            {" "+ moment().startOf('isoweek').add(this.state.week, 'weeks').format('Do MMMM')}</Text>
-          <Button onPress={() => {this.switchWeek(1)}}
-            color="gray"
-            style={{width: 50, backgroundColor: "black"}}
-            title=">" />
+            {' ' + moment().startOf('isoweek').add(this.state.week, 'weeks').format('Do MMMM')}</Text>
+          <Button onPress={() => { this.switchWeek(1) }}
+            color='gray'
+            style={{width: 50, backgroundColor: 'black'}}
+            title='>' />
         </View>
         {(this.state.error && <Text>Error fetching timetable:
           {' ' + this.state.error.toString()}. Using this week's cached copy!</Text>)}
         {(this.state.loaded ? <Timetable data={this.state.data} week={this.state.week} /> : <Fetching />)}
       </View>
     )
-
   }
 }

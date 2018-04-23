@@ -4,7 +4,7 @@ import {
   Text,
   TextInput,
   StyleSheet,
-  Image,
+  Image
 } from 'react-native'
 
 import api from '../api.js'
@@ -23,8 +23,8 @@ export default class RoomTimetableScreen extends Component {
     )
   }
 
-  constructor() {
-    super();
+  constructor () {
+    super()
     this.state = {
       loaded: false,
       submitted: false,
@@ -36,13 +36,13 @@ export default class RoomTimetableScreen extends Component {
     this.loadTimetable = this.loadTimetable.bind(this)
   }
 
-  loadTimetable() {
+  loadTimetable () {
     this.setState({submitted: true, loaded: false})
-    var self = this;
+    var self = this
     api('roomtimetable/' + this.state.room, [
-      {key: "includeBlanks", value: "true"},
-      {key: "start", value: moment(this.state.day).startOf('day').startOf('isoweek').unix()},
-      {key: "end", value: moment(this.state.day).endOf('day').endOf('isoweek').unix()}
+      {key: 'includeBlanks', value: 'true'},
+      {key: 'start', value: moment(this.state.day).startOf('day').startOf('isoweek').unix()},
+      {key: 'end', value: moment(this.state.day).endOf('day').endOf('isoweek').unix()}
     ]).then(function (data) {
       self.setState({loaded: true, data: data})
     }).catch(function (error) {
@@ -50,25 +50,25 @@ export default class RoomTimetableScreen extends Component {
     })
   }
 
-  switchRoom(room) {
-    console.log(room);
+  switchRoom (room) {
+    console.log(room)
     this.setState({room: room})
   }
 
-  render() {
+  render () {
     return (
       <View style={commonStyles.screenContainer}>
         <Text>Enter a room identifier: </Text>
         <TextInput onSubmitEditing={this.loadTimetable}
-          placeholder="e.g VY101"
-          onChangeText={this.switchRoom}/>
-        {(this.state.loaded ?
-          (typeof this.state.data.error === "string" ?
-            <Text>Error: {this.state.data.error}</Text>
+          placeholder='e.g VY101'
+          onChangeText={this.switchRoom} />
+        {(this.state.loaded
+          ? (typeof this.state.data.error === 'string'
+            ? <Text>Error: {this.state.data.error}</Text>
             : <Timetable data={this.state.data} />)
           : (this.state.submitted && <Fetching />))}
         {(this.state.error && <Text>Error: {this.state.error.toString()}</Text>)}
       </View>
-    );
+    )
   }
 }

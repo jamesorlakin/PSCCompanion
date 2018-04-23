@@ -7,7 +7,7 @@ import {
   Picker,
   Dimensions,
   StyleSheet,
-  Image,
+  Image
 } from 'react-native'
 
 import Timetable from '../timetableComponents/timetableHost.js'
@@ -17,7 +17,7 @@ import sharedApi from '../sharedApi.js'
 import { dayWidth } from '../timetableComponents/constants.js'
 import { Fetching, commonStyles } from '../commonComponents.js'
 
-var day = moment().isoWeekday()-1
+var day = moment().isoWeekday() - 1
 if (day > 4) day = 0
 
 export default class SharedTimetableScreen extends Component {
@@ -31,29 +31,29 @@ export default class SharedTimetableScreen extends Component {
     )
   }
 
-  constructor() {
-    super();
+  constructor () {
+    super()
     this.state = {
       enrolled: false,
       savedPins: [],
       day: day,
-      pinAndKey: null,
+      pinAndKey: null
     }
     this.changeDay = this.changeDay.bind(this)
   }
 
-  componentDidMount() {
-    var self = this;
+  componentDidMount () {
+    var self = this
     AsyncStorage.getItem('sharedPinAndKey').then(function (data) {
       if (data === null) {
         self.setState({enrolled: false})
       } else {
-        var data = JSON.parse(data);
+        var data = JSON.parse(data)
         AsyncStorage.getItem('sharedSavedPins').then(function (pinData) {
           self.setState({enrolled: true, pinAndKey: data})
           if (pinData !== null) {
-            var pins = JSON.parse(pinData);
-            pins.unshift({name: "Me", pin: data.pin})
+            var pins = JSON.parse(pinData)
+            pins.unshift({name: 'Me', pin: data.pin})
             self.setState({savedPins: pins})
           }
         })
@@ -61,61 +61,63 @@ export default class SharedTimetableScreen extends Component {
     })
   }
 
-  changeDay(index, value) {
+  changeDay (index, value) {
     this.setState({day: value})
   }
 
-  render() {
-    var self = this;
-    if (this.state.enrolled) return (
-      <View style={commonStyles.screenContainer}>
-        <View style={{flexDirection: 'row'}}>
-          <Text style={{marginTop: 15, color: 'black'}}>Day:</Text>
-          <Picker style={{flex: 1}}
-            selectedValue={this.state.day}
-            onValueChange={this.changeDay}
-            mode="dropdown">
-            <Picker.Item label="Monday" value={0} />
-            <Picker.Item label="Tuesday" value={1} />
-            <Picker.Item label="Wednesday" value={2} />
-            <Picker.Item label="Thursday" value={3} />
-            <Picker.Item label="Friday" value={4} />
-          </Picker>
-        </View>
+  render () {
+    var self = this
+    if (this.state.enrolled) {
+      return (
+        <View style={commonStyles.screenContainer}>
+          <View style={{flexDirection: 'row'}}>
+            <Text style={{marginTop: 15, color: 'black'}}>Day:</Text>
+            <Picker style={{flex: 1}}
+              selectedValue={this.state.day}
+              onValueChange={this.changeDay}
+              mode='dropdown'>
+              <Picker.Item label='Monday' value={0} />
+              <Picker.Item label='Tuesday' value={1} />
+              <Picker.Item label='Wednesday' value={2} />
+              <Picker.Item label='Thursday' value={3} />
+              <Picker.Item label='Friday' value={4} />
+            </Picker>
+          </View>
 
-        {this.state.savedPins.length === 0 && <Text style={{width: 100}}>Feeling lonely?
+          {this.state.savedPins.length === 0 && <Text style={{width: 100}}>Feeling lonely?
           You can add PINs in the settings menu to see other timetables.</Text>}
 
-        <ScrollView horizontal={true}>
-          <View style={{flex: 1}}>
-            <View style={{flexDirection: 'row'}}>
-              <TimetableDayProgress blank />
-              {this.state.savedPins.map(function (pin) {
-                return (<Text
-                  key={pin.pin}
-                  style={{fontSize: 17,
-                    textDecorationLine: 'underline',
-                    textAlign: 'center',
-                    fontWeight: 'bold',
-                    width: dayWidth
-                  }}>{pin.name}</Text>)
-              })}
-            </View>
-
-            <ScrollView>
+          <ScrollView horizontal>
+            <View style={{flex: 1}}>
               <View style={{flexDirection: 'row'}}>
-                <TimetableDayProgress topGap={19}/>
+                <TimetableDayProgress blank />
                 {this.state.savedPins.map(function (pin) {
-                  return (<ExternalTimetable pin={pin}
+                  return (<Text
                     key={pin.pin}
-                    day={self.state.day} />)
+                    style={{fontSize: 17,
+                      textDecorationLine: 'underline',
+                      textAlign: 'center',
+                      fontWeight: 'bold',
+                      width: dayWidth
+                    }}>{pin.name}</Text>)
                 })}
               </View>
-            </ScrollView>
-          </View>
-        </ScrollView>
-      </View>
-    )
+
+              <ScrollView>
+                <View style={{flexDirection: 'row'}}>
+                  <TimetableDayProgress topGap={19} />
+                  {this.state.savedPins.map(function (pin) {
+                    return (<ExternalTimetable pin={pin}
+                      key={pin.pin}
+                      day={self.state.day} />)
+                  })}
+                </View>
+              </ScrollView>
+            </View>
+          </ScrollView>
+        </View>
+      )
+    }
 
     return (
       <View style={commonStyles.screenContainer}>
@@ -131,17 +133,17 @@ export default class SharedTimetableScreen extends Component {
 }
 
 class ExternalTimetable extends Component {
-  constructor(props) {
-    super(props);
+  constructor (props) {
+    super(props)
     this.state = {
       loaded: false,
       data: {},
-      error: null,
+      error: null
     }
   }
 
-  componentDidMount() {
-    var self = this;
+  componentDidMount () {
+    var self = this
     sharedApi.fetchCurrentShared(this.props.pin.pin).then(function (result) {
       self.setState({loaded: true, data: result})
     }).catch(function (error) {
@@ -149,7 +151,7 @@ class ExternalTimetable extends Component {
     })
   }
 
-  render() {
+  render () {
     if (this.state.loaded && this.state.data === undefined) {
       return (
         <View style={commonStyles.screenContainer}>
@@ -161,13 +163,13 @@ class ExternalTimetable extends Component {
 
     return (
       <View style={{width: dayWidth}}>
-        {this.state.loaded && (this.state.data.isCached ?
-          <Text style={{textAlign: 'center'}}>Warning - Using an offline version</Text>
+        {this.state.loaded && (this.state.data.isCached
+          ? <Text style={{textAlign: 'center'}}>Warning - Using an offline version</Text>
           : <Text style={{textAlign: 'center'}}>
-          {(this.state.data.startOfWeek !== moment().startOf('day').startOf('isoweek').unix())
-          ? "Outdated - Using " + moment.unix(this.state.data.startOfWeek)
-            .format('Do MMM') : "Up-to-date - Current week"}
-        </Text>)}
+            {(this.state.data.startOfWeek !== moment().startOf('day').startOf('isoweek').unix())
+              ? 'Outdated - Using ' + moment.unix(this.state.data.startOfWeek)
+                .format('Do MMM') : 'Up-to-date - Current week'}
+          </Text>)}
         {this.state.loaded ? <Timetable data={JSON.parse(JSON.parse(this.state.data.data))}
           day={this.props.day} />
           : <Fetching style={{width: dayWidth}} />}

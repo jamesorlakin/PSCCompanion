@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { Component } from 'react'
 import {
   View,
   Text,
@@ -6,8 +6,8 @@ import {
   AsyncStorage,
   ScrollView,
   StyleSheet,
-  TouchableWithoutFeedback,
-} from 'react-native';
+  TouchableWithoutFeedback
+} from 'react-native'
 
 import api from '../api.js'
 import WhosFreeNow from '../whosFreeNowComponent.js'
@@ -27,27 +27,29 @@ export default class WelcomeScreen extends Component {
     )
   }
 
-  constructor() {
-    super();
+  constructor () {
+    super()
     this.state = {
       loaded: false,
       data: {}
     }
   }
 
-  componentDidMount() {
-    var self = this;
+  componentDidMount () {
+    var self = this
     AsyncStorage.getItem('user').then(function (data) {
-      if (typeof data === "string") self.setState({loaded: true, data: JSON.parse(data)})
-      if (Math.floor(Math.random()*100) == 0 || typeof data !== "string") api('user').then(function (userInfo) {
-        userInfo.fetchedTime = new Date();
-        self.setState({loaded: true, data: userInfo});
-        AsyncStorage.setItem('user', JSON.stringify(userInfo));
-      })
+      if (typeof data === 'string') self.setState({loaded: true, data: JSON.parse(data)})
+      if (Math.floor(Math.random() * 100) == 0 || typeof data !== 'string') {
+        api('user').then(function (userInfo) {
+          userInfo.fetchedTime = new Date()
+          self.setState({loaded: true, data: userInfo})
+          AsyncStorage.setItem('user', JSON.stringify(userInfo))
+        })
+      }
     })
   }
 
-  render() {
+  render () {
     return (
       <ScrollView>
         <View style={commonStyles.screenContainer}>
@@ -60,16 +62,16 @@ export default class WelcomeScreen extends Component {
             <TouchableWithoutFeedback onPress={() => this.props.navigation.navigate('grime')}>
               <Image source={require('../images/userIcon.png')} />
             </TouchableWithoutFeedback>
-            <Text style={{fontSize: 20}}>Welcome, {this.state.data.Name || "user"}</Text>
+            <Text style={{fontSize: 20}}>Welcome, {this.state.data.Name || 'user'}</Text>
           </View>
 
-          <Summary/>
+          <Summary />
 
-          <WhosFreeNow/>
+          <WhosFreeNow />
 
-          <AttendanceScreen welcome/>
+          <AttendanceScreen welcome />
 
-          <PrintingStatusComponent/>
+          <PrintingStatusComponent />
 
           <Text style={{fontSize: 16}}>Note that this application is very new.
             Bugs are to be expected now and again, and please report any you find

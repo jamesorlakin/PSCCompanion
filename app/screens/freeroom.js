@@ -6,7 +6,7 @@ import {
   Picker,
   Button,
   StyleSheet,
-  Image,
+  Image
 } from 'react-native'
 
 import api from '../api.js'
@@ -40,8 +40,8 @@ export default class FreeRoomScreen extends Component {
     moment().hour(15).minute(45)
   ]
 
-  constructor() {
-    super();
+  constructor () {
+    super()
     this.state = {
       rooms: false,
       period: 0
@@ -50,46 +50,48 @@ export default class FreeRoomScreen extends Component {
     this.loadRooms = this.loadRooms.bind(this)
   }
 
-  componentDidMount() {
+  componentDidMount () {
     this.loadRooms()
   }
 
-  loadRooms() {
-    var self = this;
+  loadRooms () {
+    var self = this
     api('find/freeroom', [
-      {key: "start", value: this.periodTimes[this.state.period].unix()+1},
-      {key: "end", value: this.periodTimes[this.state.period].unix()+300}
+      {key: 'start', value: this.periodTimes[this.state.period].unix() + 1},
+      {key: 'end', value: this.periodTimes[this.state.period].unix() + 300}
     ]).then(function (rooms) {
       for (var i = 0; i < rooms.length; i++) {
         rooms[i].key = rooms[i].Name
       }
       rooms = rooms.filter(function (item) {
-        if (item.Site === "ACE" || !item.Timetable) return false;
-        return true;
+        if (item.Site === 'ACE' || !item.Timetable) return false
+        return true
       })
-      self.setState({rooms: rooms});
+      self.setState({rooms: rooms})
     }).catch(function (error) {
       self.setState({
-        rooms: [{Name: "Error - " + error}]
+        rooms: [{Name: 'Error - ' + error}]
       })
     })
   }
 
-  changePeriod(index, value) {
-    var self = this;
-    console.log(moment.unix(this.periodTimes[value]).toString());
+  changePeriod (index, value) {
+    var self = this
+    console.log(moment.unix(this.periodTimes[value]).toString())
     this.setState({rooms: false, period: value}, function () {
       self.loadRooms()
     })
   }
 
-  render() {
-    if (this.state.rooms === false) return (
-      <View style={commonStyles.screenContainer, {alignItems: 'center'}}>
-        <Text>This may take some time to load.</Text>
-        <Fetching />
-      </View>
-    );
+  render () {
+    if (this.state.rooms === false) {
+      return (
+        <View style={commonStyles.screenContainer, {alignItems: 'center'}}>
+          <Text>This may take some time to load.</Text>
+          <Fetching />
+        </View>
+      )
+    }
 
     return (
       <View style={commonStyles.screenContainer}>
@@ -98,28 +100,28 @@ export default class FreeRoomScreen extends Component {
           <Picker style={{flex: 1}}
             selectedValue={this.state.period}
             onValueChange={this.changePeriod}
-            mode="dropdown">
-            <Picker.Item label={"Now - " + this.periodTimes[0].format('HH:mm')} value={0} />
-            <Picker.Item label="Lesson 1 - 8:30 - 9:25" value={1} />
-            <Picker.Item label="Lesson 2 - 9:25 - 10:20" value={2} />
-            <Picker.Item label="Break - 10:20 - 10:40" value={3} />
-            <Picker.Item label="Lesson 3 - 10:40 - 11:35" value={4} />
-            <Picker.Item label="Lesson 4 - 11:35 - 12:30" value={5} />
-            <Picker.Item label="Tutor - 12:30 - 13:00" value={6} />
-            <Picker.Item label="Lunch - 13:00 - 13:50" value={7} />
-            <Picker.Item label="Lesson 6 - 13:50 - 14:45" value={8} />
-            <Picker.Item label="Lesson 7 - 14:45 - 15:40" value={9} />
-            <Picker.Item label="Lesson 8 - 15:40 - 16:35" value={10} />
+            mode='dropdown'>
+            <Picker.Item label={'Now - ' + this.periodTimes[0].format('HH:mm')} value={0} />
+            <Picker.Item label='Lesson 1 - 8:30 - 9:25' value={1} />
+            <Picker.Item label='Lesson 2 - 9:25 - 10:20' value={2} />
+            <Picker.Item label='Break - 10:20 - 10:40' value={3} />
+            <Picker.Item label='Lesson 3 - 10:40 - 11:35' value={4} />
+            <Picker.Item label='Lesson 4 - 11:35 - 12:30' value={5} />
+            <Picker.Item label='Tutor - 12:30 - 13:00' value={6} />
+            <Picker.Item label='Lunch - 13:00 - 13:50' value={7} />
+            <Picker.Item label='Lesson 6 - 13:50 - 14:45' value={8} />
+            <Picker.Item label='Lesson 7 - 14:45 - 15:40' value={9} />
+            <Picker.Item label='Lesson 8 - 15:40 - 16:35' value={10} />
           </Picker>
         </View>
         <FlatList data={this.state.rooms} renderItem={({item}) => <Room item={item} />} />
       </View>
-    );
+    )
   }
 }
 
 class Room extends Component {
-  constructor() {
+  constructor () {
     super()
     this.state = {
       expanded: true
@@ -127,11 +129,11 @@ class Room extends Component {
     this.toggleExpansion = this.toggleExpansion.bind(this)
   }
 
-  toggleExpansion() {
+  toggleExpansion () {
     this.setState({expanded: !this.state.expanded})
   }
 
-  render() {
+  render () {
     return (
       <View>
         <View style={{height: 2, backgroundColor: 'gray'}} />

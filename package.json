@@ -36,6 +36,9 @@
 		"preset": "react-native"
 	},
 	"standard": {
-		"parser": "babel-eslint"
+		"parser": "babel-eslint",
+		"globals": [
+			"fetch"
+		]
 	}
 }

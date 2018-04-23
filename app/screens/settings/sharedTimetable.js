@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { Component } from 'react'
 import {
   View,
   Text,
@@ -6,12 +6,12 @@ import {
   Button,
   ActivityIndicator,
   TextInput,
-  StyleSheet,
-} from 'react-native';
+  StyleSheet
+} from 'react-native'
 
 export default class SettingSharedTimetable extends Component {
-  constructor() {
-    super();
+  constructor () {
+    super()
     this.state = {
       enrolled: false,
       enrolling: false,
@@ -20,8 +20,8 @@ export default class SettingSharedTimetable extends Component {
     this.enroll = this.enroll.bind(this)
   }
 
-  componentDidMount() {
-    var self = this;
+  componentDidMount () {
+    var self = this
     AsyncStorage.getItem('sharedPinAndKey').then(function (data) {
       if (data === null) {
         self.setState({enrolled: false})
@@ -36,16 +36,16 @@ export default class SettingSharedTimetable extends Component {
     })
   }
 
-  enroll() {
-    var self = this;
+  enroll () {
+    var self = this
     this.setState({enrolling: true})
     AsyncStorage.getItem('user').then(function (userData) {
-      fetch("https://gateway.jameslakin.co.uk/psc/api/enroll", {
-        method: "POST",
-        headers: {'Content-Type':'application/json'},
+      fetch('https://gateway.jameslakin.co.uk/psc/api/enroll', {
+        method: 'POST',
+        headers: {'Content-Type': 'application/json'},
         body: JSON.stringify({fullName: JSON.parse(userData).Name})
       }).then(function (data) {
-        return data.json();
+        return data.json()
       }).then(function (result) {
         AsyncStorage.setItem('sharedPinAndKey', JSON.stringify(result))
         self.setState({enrolled: true, enrolling: false, pinAndKey: result})
@@ -53,7 +53,7 @@ export default class SettingSharedTimetable extends Component {
     })
   }
 
-  render() {
+  render () {
     return (
       <View style={styles.container}>
         <Text>Timetable Sharing:</Text>
@@ -62,13 +62,13 @@ export default class SettingSharedTimetable extends Component {
           by default, as it requires your timetable data to be stored externally
           in a database I host. At this moment in time you cannot "un-enroll".</Text>
         {!this.state.enrolled && !this.state.enrolling &&
-          <Button onPress={this.enroll} title="Enroll" />}
+          <Button onPress={this.enroll} title='Enroll' />}
         {this.state.enrolling && <ActivityIndicator />}
         {this.state.enrolled &&
           <Text style={{fontSize: 18}}>Your PIN is {this.state.pinAndKey.pin}.</Text>}
         {this.state.enrolled && <SharedPinManager />}
       </View>
-    );
+    )
   }
 }
 
@@ -76,12 +76,12 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     marginBottom: 30
-  },
-});
+  }
+})
 
 class SharedPinManager extends Component {
-  constructor() {
-    super();
+  constructor () {
+    super()
     this.state = {
       savedPins: [],
       newPin: null,
@@ -92,8 +92,8 @@ class SharedPinManager extends Component {
     this.addPin = this.addPin.bind(this)
   }
 
-  componentDidMount() {
-    var self = this;
+  componentDidMount () {
+    var self = this
     AsyncStorage.getItem('sharedSavedPins').then(function (data) {
       if (data !== null) {
         self.setState({savedPins: JSON.parse(data)})
@@ -101,78 +101,78 @@ class SharedPinManager extends Component {
     })
   }
 
-  addPin() {
-    var self = this;
+  addPin () {
+    var self = this
 
-    if (this.state.newPin === "") {
-      this.setState({error: "Enter a PIN."})
-      return false;
+    if (this.state.newPin === '') {
+      this.setState({error: 'Enter a PIN.'})
+      return false
     }
 
     for (var i = 0; i < this.state.savedPins.length; i++) {
       if (self.state.newPin === self.state.savedPins[i].pin) {
-        self.setState({error: "Pin " + self.state.newPin + " already exists."})
-        return false;
+        self.setState({error: 'Pin ' + self.state.newPin + ' already exists.'})
+        return false
       }
     }
 
-    self.setState({adding: true});
-    fetch("https://gateway.jameslakin.co.uk/psc/api/lookup/" + this.state.newPin).then(function (data) {
+    self.setState({adding: true})
+    fetch('https://gateway.jameslakin.co.uk/psc/api/lookup/' + this.state.newPin).then(function (data) {
       return data.json()
     }).then(function (result) {
-      var pins = self.state.savedPins;
-      pins.push({pin: self.state.newPin, name: result.fullName});
-      self.setState({savedPins: pins, newPin: null});
-      AsyncStorage.setItem('sharedSavedPins', JSON.stringify(pins));
-      self.setState({adding: false});
+      var pins = self.state.savedPins
+      pins.push({pin: self.state.newPin, name: result.fullName})
+      self.setState({savedPins: pins, newPin: null})
+      AsyncStorage.setItem('sharedSavedPins', JSON.stringify(pins))
+      self.setState({adding: false})
     }).catch(function (error) {
-      self.setState({error: "No person found for pin " + self.state.newPin});
-      self.setState({adding: false});
+      self.setState({error: 'No person found for pin ' + self.state.newPin})
+      self.setState({adding: false})
     })
   }
 
-  removePin(pin) {
-    var pins = this.state.savedPins;
-    pins.splice(pins.indexOf(pin), 1);
-    this.setState({savedPins: pins});
-    AsyncStorage.setItem('sharedSavedPins', JSON.stringify(pins));
+  removePin (pin) {
+    var pins = this.state.savedPins
+    pins.splice(pins.indexOf(pin), 1)
+    this.setState({savedPins: pins})
+    AsyncStorage.setItem('sharedSavedPins', JSON.stringify(pins))
   }
 
-  render() {
-    var self = this;
+  render () {
+    var self = this
     return (
       <View>
-        <View style={{flexDirection: "row"}}>
+        <View style={{flexDirection: 'row'}}>
           <TextInput
-            placeholder="Enter a foreign PIN"
-            keyboardType="numeric"
+            placeholder='Enter a foreign PIN'
+            keyboardType='numeric'
             defaultValue={this.state.newPin}
-            onChangeText={(pin) => {this.setState({newPin: pin})}}
+            onChangeText={(pin) => { this.setState({newPin: pin}) }}
             onSubmitEditing={this.addPin}
             style={{flex: 2}} />
           <View style={{padding: 4}}>
-            <Button title="Add" onPress={this.addPin} />
+            <Button title='Add' onPress={this.addPin} />
           </View>
           {this.state.adding && <ActivityIndicator />}
         </View>
-        
+
         {this.state.error && <Text>{this.state.error.toString()}</Text>}
 
         {this.state.savedPins.map(function (pin) {
           return (
-            <PINView key={pin.pin} pin={pin} remove={() => {self.removePin(pin)}} />
+            <PINView key={pin.pin} pin={pin} remove={() => { self.removePin(pin) }} />
           )
         })}
       </View>
-    );
+    )
   }
 }
 
-function PINView(props) {
+function PINView (props) {
   return (
-    <View style={{flexDirection: "row", justifyContent: "space-between", marginBottom: 4}}>
+    <View style={{flexDirection: 'row', justifyContent: 'space-between', marginBottom: 4}}>
       <Text style={{fontSize: 16, marginTop: 8}}>{props.pin.pin} - {props.pin.name}</Text>
-      <Button title="Remove" color="#E80909" onPress={props.remove} />
+      <Button title='Remove' color='#E80909' onPress={props.remove} />
     </View>
-  );
+  )
 }

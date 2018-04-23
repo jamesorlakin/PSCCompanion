@@ -4,7 +4,7 @@ import {
   TextInput,
   AsyncStorage,
   StyleSheet,
-  Button,
+  Button
 } from 'react-native'
 
 import { commonStyles } from '../commonComponents.js'
@@ -14,28 +14,28 @@ export default class DebugScreen extends Component {
     drawerLabel: 'Debug'
   }
 
-  constructor() {
-    super();
+  constructor () {
+    super()
     this.state = {
       tokens: ['Loading...'],
       pinAndKey: null,
       newPinAndKey: null
-    };
+    }
     this.savePinAndKey = this.savePinAndKey.bind(this)
   }
 
-  componentDidMount() {
-    var self = this;
+  componentDidMount () {
+    var self = this
     AsyncStorage.getItem('tokens').then(function (value) {
       var state = []
-      var tokens = JSON.parse(value);
+      var tokens = JSON.parse(value)
       for (var thing in tokens) {
         if (tokens.hasOwnProperty(thing)) {
-          state.push(thing + " - " + tokens[thing])
+          state.push(thing + ' - ' + tokens[thing])
         }
       }
 
-      self.setState({tokens: state});
+      self.setState({tokens: state})
     })
 
     AsyncStorage.getItem('sharedPinAndKey').then(function (result) {
@@ -43,18 +43,18 @@ export default class DebugScreen extends Component {
     })
   }
 
-  savePinAndKey() {
+  savePinAndKey () {
     AsyncStorage.setItem('sharedPinAndKey', this.state.newPinAndKey)
   }
 
-  render() {
-    var tokens = this.state.tokens;
+  render () {
+    var tokens = this.state.tokens
     return (<View style={commonStyles.screenContainer}>{tokens.map(function (item) {
       return (<TextInput key={tokens.indexOf(item)}>{item}</TextInput>)
     })}
     <TextInput defaultValue={this.state.pinAndKey}
-      onChangeText={(value) => {this.setState({newPinAndKey: value})}} />
-    <Button onPress={this.savePinAndKey} title="Save PinAndKey" />
+        onChangeText={(value) => { this.setState({newPinAndKey: value}) }} />
+    <Button onPress={this.savePinAndKey} title='Save PinAndKey' />
     </View>)
   }
 }

@@ -7,7 +7,7 @@ import {
   Image,
   StyleSheet,
   ScrollView,
-  TouchableOpacity,
+  TouchableOpacity
 } from 'react-native'
 
 import { StackNavigator, DrawerNavigator, DrawerItems } from 'react-navigation'
@@ -21,7 +21,7 @@ import RoomTimetableScreen from './screens/roomTimetable.js'
 import SharedTimetableScreen from './screens/sharedTimetable.js'
 import StudentNoticesScreen from './screens/notices.js'
 import MapScreen from './screens/map.js'
-//import AttendanceScreen from './screens/attendance.js'
+// import AttendanceScreen from './screens/attendance.js'
 import IntranetScreen from './screens/intranet.js'
 import SettingsScreen from './screens/settings.js'
 import AboutScreen from './screens/about.js'
@@ -38,7 +38,7 @@ const WelcomeNavigator = StackNavigator({
 const Drawer = DrawerNavigator({
   welcome: {screen: WelcomeNavigator},
   freeroom: {screen: FreeRoomScreen},
-//  attendance: {screen: AttendanceScreen},
+  //  attendance: {screen: AttendanceScreen},
   userTimetable: {screen: UserTimetableScreen},
   roomTimetable: {screen: RoomTimetableScreen},
   sharedTimetable: {screen: SharedTimetableScreen},
@@ -46,13 +46,13 @@ const Drawer = DrawerNavigator({
   map: {screen: MapScreen},
   intranet: {screen: IntranetScreen},
   settings: {screen: SettingsScreen},
-  about: {screen: AboutScreen},
+  about: {screen: AboutScreen}
 }, {
   contentComponent: props => (<ScrollView><DrawerItems {...props} /></ScrollView>),
   contentOptions: {
     activeTintColor: '#36648B',
     style: {
-      marginVertical: 0,
+      marginVertical: 0
     }
   }
 })
@@ -61,9 +61,10 @@ const MenuButton = function (props) {
   return (
     <View>
       <TouchableOpacity onPress={() => {
-        props.navigation.state.index === 1 ?
-          props.navigation.navigate('DrawerClose')
-          : props.navigation.navigate('DrawerOpen')}}
+        props.navigation.state.index === 1
+          ? props.navigation.navigate('DrawerClose')
+          : props.navigation.navigate('DrawerOpen')
+      }}
       >
         <Image source={require('./images/hamburgerIcon.png')}
           style={{
@@ -71,7 +72,7 @@ const MenuButton = function (props) {
             height: 64,
             marginLeft: 0,
             marginTop: 3
-          }}/>
+          }} />
       </TouchableOpacity>
     </View>
   )
@@ -93,7 +94,7 @@ const DrawerHost = StackNavigator({
   }
 })
 
-export default function IndexHost(props) {
+export default function IndexHost (props) {
   return (
     <View style={styles.container}>
       <DrawerHost />
@@ -105,5 +106,5 @@ export default function IndexHost(props) {
 const styles = StyleSheet.create({
   container: {
     flex: 1
-  },
-});
+  }
+})

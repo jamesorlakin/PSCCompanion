@@ -3,15 +3,15 @@ import {
   View,
   Text,
   StyleSheet,
-  AsyncStorage,
+  AsyncStorage
 } from 'react-native'
 
 import cheerio from 'react-native-cheerio'
 import { Fetching, WelcomeBox } from './commonComponents.js'
 
 export default class PrintingStatusComponent extends Component {
-  constructor(props) {
-    super(props);
+  constructor (props) {
+    super(props)
     this.state = {
       loaded: false,
       configured: false,
@@ -20,9 +20,9 @@ export default class PrintingStatusComponent extends Component {
     }
   }
 
-  async componentDidMount() {
+  async componentDidMount () {
     var credentials = await AsyncStorage.getItem('credentials')
-    if (typeof credentials === "string") this.setState({configured: true})
+    if (typeof credentials === 'string') this.setState({configured: true})
     else return
     credentials = JSON.parse(credentials)
 
@@ -54,10 +54,10 @@ export default class PrintingStatusComponent extends Component {
     this.setState({loaded: true, credit: credit, pages: pages, trees: trees})
   }
 
-  render() {
+  render () {
     if (!this.state.configured) return null
     return (
-      <WelcomeBox title="Current printing credit:" loading={!this.state.loaded}>
+      <WelcomeBox title='Current printing credit:' loading={!this.state.loaded}>
         <Text style={{fontSize: 40, textAlign: 'center'}}>{this.state.credit}</Text>
         <Text style={{fontSize: 30, textAlign: 'center'}}>{this.state.pages} pages</Text>
         <Text style={{fontSize: 20, textAlign: 'center'}}>({this.state.trees})</Text>

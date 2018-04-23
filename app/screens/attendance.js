@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { Component } from 'react'
 import {
   View,
   Text,
@@ -7,7 +7,7 @@ import {
   TouchableHighlight,
   Alert,
   LayoutAnimation
-} from 'react-native';
+} from 'react-native'
 
 import cheerio from 'react-native-cheerio'
 import ProgressCircle from 'react-native-progress-circle'
@@ -19,8 +19,8 @@ export default class AttendanceScreen extends Component {
     drawerLabel: 'Attendance'
   }
 
-  constructor(props) {
-    super(props);
+  constructor (props) {
+    super(props)
     this.state = {
       loaded: false,
       error: false,
@@ -32,52 +32,52 @@ export default class AttendanceScreen extends Component {
     this.fetchData = this.fetchData.bind(this)
   }
 
-  componentDidMount() {
+  componentDidMount () {
     InteractionManager.runAfterInteractions(this.fetchData)
   }
 
-  async fetchData() {
+  async fetchData () {
     try {
       var request = await fetch('https://intranet.psc.ac.uk/records/student/attendance/marks.php', {
         credentials: 'include'
       })
       var response = await request.text()
-      var document = cheerio.load(response);
+      var document = cheerio.load(response)
       var attendance = {
         items: []
       }
 
-      document("table[id='MarksGrid'] > tbody > tr > td > a > span").each(function(item) {
+      document("table[id='MarksGrid'] > tbody > tr > td > a > span").each(function (item) {
         try {
           var newItem = {}
 
           var tableCell = document(this).html()
           cell = tableCell.replace('<strong>', '').replace('</strong>', '').split(/<br>/)
-          if (tableCell.indexOf('<strong>')===0) cell.unshift('Unknown')
+          if (tableCell.indexOf('<strong>') === 0) cell.unshift('Unknown')
 
           newItem.State = cell[0]
           switch (newItem.State) {
             case 'Present':
               newItem.Color = 'green'
-              break;
+              break
             case 'Unknown':
               newItem.Color = 'gray'
-              break;
+              break
             case 'Not Required':
               newItem.Color = 'blue'
-              break;
+              break
             case 'Lesson Cancelled':
               newItem.Color = 'blue'
-              break;
+              break
             case 'Late':
               newItem.Color = 'yellow'
-              break;
+              break
             default:
               newItem.Color = 'red'
           }
           newItem.Title = cell[1]
           newItem.Staff = cell[2]
-          newItem.Time = cell[3] + " " + cell[4].split(" to ")[0]
+          newItem.Time = cell[3] + ' ' + cell[4].split(' to ')[0]
           newItem.moment = moment(newItem.Time, 'DD MMM YYYY h:mma')
 
           attendance.items.push(newItem)
@@ -85,7 +85,7 @@ export default class AttendanceScreen extends Component {
           // If the cell has an unexpected markup, catch the error.
           console.log(e)
         }
-      });
+      })
       attendance.percentage = document("table[id='MarksGrid'] > tbody > tr > td[class='bold percentage']").text()
       console.log(attendance.percentage)
 
@@ -97,21 +97,23 @@ export default class AttendanceScreen extends Component {
     }
   }
 
-  render() {
-    if (this.props.welcome) return (
-      <WelcomeBox title="Recent attendance percentage:">
-        {this.state.loaded ? <View>
+  render () {
+    if (this.props.welcome) {
+      return (
+        <WelcomeBox title='Recent attendance percentage:'>
+          {this.state.loaded ? <View>
             <AttendanceProgress attendance={this.state.attendance} />
             <RecentAttendance attendance={this.state.attendance} />
           </View>
-          : !this.state.error && <Fetching />}
-        {this.state.error && <Text>For the attendance feature to work,
+            : !this.state.error && <Fetching />}
+          {this.state.error && <Text>For the attendance feature to work,
           you must sign into the Student Intranet within the app. This relies
           upon scraping the Intranet, and so might not work perfectly. If you
           configure your college username and password in the settings menu,
           you'll be able to see print credit below too.</Text>}
-      </WelcomeBox>
-    )
+        </WelcomeBox>
+      )
+    }
 
     if (!this.state.loaded) return (<Fetching style={commonStyles.screenContainer} />)
 
@@ -126,36 +128,36 @@ export default class AttendanceScreen extends Component {
           <AttendanceProgress attendance={this.state.attendance} />
           <View style={{flexDirection: 'row', flexWrap: 'wrap', justifyContent: 'space-between'}}>
             {this.state.attendance.items.map(function (item) {
-              return <AttendanceItem key={item.Time} item={item}/>
+              return <AttendanceItem key={item.Time} item={item} />
             })}
           </View>
         </View>
       </ScrollView>
-    );
+    )
   }
 }
 
-function AttendanceProgress(props) {
+function AttendanceProgress (props) {
   return (
     <View style={{alignItems: 'center'}}>
       <ProgressCircle
         percent={parseInt(props.attendance.percentage)}
         radius={50}
         borderWidth={8}
-        color="#1CAD4A"
-        shadowColor="#E83131"
-        bgColor="#fff"
+        color='#1CAD4A'
+        shadowColor='#E83131'
+        bgColor='#fff'
       >
         <Text style={{fontSize: 18}}>{props.attendance.percentage}%</Text>
       </ProgressCircle>
-      <Text>From {props.attendance.items[0].Time.substr(0, 5) + " to "}
-        {props.attendance.items[props.attendance.items.length-1].Time.substr(0, 11)}
+      <Text>From {props.attendance.items[0].Time.substr(0, 5) + ' to '}
+        {props.attendance.items[props.attendance.items.length - 1].Time.substr(0, 11)}
       </Text>
     </View>
   )
 }
 
-function RecentAttendance(props) {
+function RecentAttendance (props) {
   var today = moment().startOf('isoweek')
   var endToday = moment().endOf('isoweek')
   var todayItems = []
@@ -181,19 +183,19 @@ function RecentAttendance(props) {
 }
 
 class AttendanceItem extends React.Component {
-  constructor(props) {
+  constructor (props) {
     super(props)
     this.showInfo = this.showInfo.bind(this)
   }
 
-  showInfo() {
-    var text = this.props.item.State + "\n" +
-      this.props.item.Staff + "\n" +
+  showInfo () {
+    var text = this.props.item.State + '\n' +
+      this.props.item.Staff + '\n' +
       this.props.item.moment.format('lll')
     Alert.alert(this.props.item.Title, text)
   }
 
-  render() {
+  render () {
     var item = this.props.item
     return (
       <View>

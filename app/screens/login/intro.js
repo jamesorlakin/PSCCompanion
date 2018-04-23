@@ -4,7 +4,7 @@ import AppIntroSlider from 'react-native-app-intro-slider'
 import LoginScreen from './login.js'
 
 export default class Intro extends Component {
-  constructor(props) {
+  constructor (props) {
     super(props)
     this.state = {
       showLogin: false
@@ -12,19 +12,19 @@ export default class Intro extends Component {
     this.showLogin = this.showLogin.bind(this)
   }
 
-  showLogin() {
+  showLogin () {
     this.setState({showLogin: true})
   }
 
-  render() {
-    if (this.state.showLogin) return <LoginScreen/>
+  render () {
+    if (this.state.showLogin) return <LoginScreen />
     return (
       <AppIntroSlider
         slides={slides}
         onDone={this.showLogin}
         onSkip={this.showLogin}
-        showSkipButton={true}
-        showPrevButton={true}
+        showSkipButton
+        showPrevButton
       />
     )
   }

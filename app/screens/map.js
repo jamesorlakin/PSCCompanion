@@ -4,7 +4,7 @@ import {
   Text,
   Dimensions,
   StyleSheet,
-  Image,
+  Image
 } from 'react-native'
 
 import PhotoView from 'react-native-photo-view'
@@ -21,14 +21,14 @@ export default class MapScreen extends Component {
     )
   }
 
-  render() {
+  render () {
     return (
       <View style={commonStyles.screenContainer}>
         <Text>Learn to navigate.</Text>
         <PhotoView source={require('../images/pscmap.png')}
           minimumZoomScale={1.1}
           maximumZoomScale={3}
-          style={{width: Dimensions.get('window').width-16, height: Dimensions.get('window').width-16}}/>
+          style={{width: Dimensions.get('window').width - 16, height: Dimensions.get('window').width - 16}} />
       </View>
     )
   }

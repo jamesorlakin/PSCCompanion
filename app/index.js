@@ -14,20 +14,20 @@ import IndexHost from './indexHost.js'
 import Intro from './screens/login/intro.js'
 
 export default class PSCCompanion extends Component {
-  constructor() {
+  constructor () {
     super()
     this.state = {setup: '?'}
   }
 
-  componentDidMount() {
+  componentDidMount () {
     var self = this
     AsyncStorage.getItem('tokens').then(function (data) {
       // If it exists we get a string back.
-      self.setState({setup: (typeof data === "string")})
+      self.setState({setup: (typeof data === 'string')})
     }).done()
   }
 
-  render() {
+  render () {
     if (this.state.setup === '?') return null
     if (this.state.setup) return (<IndexHost />)
     return (<Intro />)

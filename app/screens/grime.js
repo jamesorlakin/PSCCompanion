@@ -10,7 +10,7 @@ import {
 import ProgressCircle from 'react-native-progress-circle'
 
 export default class GrimeScreen extends Component {
-  constructor() {
+  constructor () {
     super()
     this.state = {
       percent: 0,
@@ -20,22 +20,22 @@ export default class GrimeScreen extends Component {
     this.increase = this.increase.bind(this)
   }
 
-  scan() {
+  scan () {
     this.setState({running: true, percent: 0})
     this.timer = setInterval(this.increase, 15)
   }
 
-  increase() {
+  increase () {
     LayoutAnimation.configureNext(LayoutAnimation.Presets.spring)
     if (this.state.percent >= 100) {
       clearInterval(this.timer)
       this.setState({running: false})
     } else {
-      this.setState({percent: this.state.percent+1})
+      this.setState({percent: this.state.percent + 1})
     }
   }
 
-  render() {
+  render () {
     return (
       <View style={styles.container}>
         <Text style={{fontSize: 20, textDecorationLine: 'underline'}}>Is this grime?</Text>
@@ -43,32 +43,34 @@ export default class GrimeScreen extends Component {
           percent={this.state.percent}
           radius={80}
           borderWidth={8}
-          color="#1CAD4A"
-          shadowColor="#E83131"
-          bgColor="#fff"
+          color='#1CAD4A'
+          shadowColor='#E83131'
+          bgColor='#fff'
         >
           <Text style={{fontSize: 25}}>{this.state.percent}%</Text>
         </ProgressCircle>
         <View style={{height: 5}} />
-        <Button title={this.state.running ? "Scanning" : "Scan"}
+        <Button title={this.state.running ? 'Scanning' : 'Scan'}
           onPress={this.scan}
           disabled={this.state.running}
         />
-        <View style={{height: 10}}/>
+        <View style={{height: 10}} />
         {this.state.percent === 100 && !this.state.running && <GrimeResult />}
       </View>
     )
   }
 }
 
-function GrimeResult() {
-  var isGrime = Math.floor(Math.random()*2) === 0
-  if (isGrime) return (
-    <View style={{alignItems: 'center'}}>
-      <Text style={{fontSize: 30, color: 'red'}}>Warning! Grime detected!</Text>
-      <Text>You know grime means filth, right?</Text>
-    </View>
-  )
+function GrimeResult () {
+  var isGrime = Math.floor(Math.random() * 2) === 0
+  if (isGrime) {
+    return (
+      <View style={{alignItems: 'center'}}>
+        <Text style={{fontSize: 30, color: 'red'}}>Warning! Grime detected!</Text>
+        <Text>You know grime means filth, right?</Text>
+      </View>
+    )
+  }
   return (
     <View style={{alignItems: 'center'}}>
       <Text style={{fontSize: 35}}>All clear.</Text>
@@ -82,5 +84,5 @@ const styles = StyleSheet.create({
     flex: 1,
     margin: 8,
     alignItems: 'center'
-  },
-});
+  }
+})

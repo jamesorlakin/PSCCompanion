@@ -5,7 +5,7 @@ import {
   AsyncStorage,
   StyleSheet,
   ScrollView,
-  Image,
+  Image
 } from 'react-native'
 
 import { commonStyles } from '../commonComponents.js'
@@ -27,13 +27,13 @@ export default class SettingsScreen extends Component {
     )
   }
 
-  render() {
+  render () {
     return (
       <View style={commonStyles.screenContainer}>
         <ScrollView>
-          <SettingsResetTokens/>
-          <SettingsCredentials/>
-          <SettingsAdFree/>
+          <SettingsResetTokens />
+          <SettingsCredentials />
+          <SettingsAdFree />
           <SettingsSharedTimetable />
           <Text>Privacy Policy:</Text>
           <Text>PSC Companion does not transmit personal data to any servers outside of college (unless you have enrolled into timetable sharing).
@@ -45,7 +45,7 @@ export default class SettingsScreen extends Component {
           In addition, Flurry analytics is now used to see anonymised app usage statistics.</Text>
           <Text>About:</Text>
           <Text>PSC Companion Alpha, an app by James Lakin.</Text>
-          {__DEV__ && <DebugScreen/>}
+          {__DEV__ && <DebugScreen />}
         </ScrollView>
       </View>
     )
