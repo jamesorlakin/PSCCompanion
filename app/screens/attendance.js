@@ -2,23 +2,18 @@ import React, { Component } from 'react'
 import {
   View,
   Text,
-  ScrollView,
   InteractionManager,
   TouchableHighlight,
   Alert,
-  LayoutAnimation
+  TouchableOpacity
 } from 'react-native'
 
 import cheerio from 'react-native-cheerio'
 import ProgressCircle from 'react-native-progress-circle'
 import moment from 'moment'
-import { Fetching, WelcomeBox, commonStyles } from '../commonComponents.js'
+import { Fetching, WelcomeBox } from '../commonComponents.js'
 
 export default class AttendanceScreen extends Component {
-  static navigationOptions = {
-    drawerLabel: 'Attendance'
-  }
-
   constructor (props) {
     super(props)
     this.state = {
@@ -44,7 +39,9 @@ export default class AttendanceScreen extends Component {
       var response = await request.text()
       var document = cheerio.load(response)
       var attendance = {
-        items: []
+        weeks: [],
+        items: [],
+        percentage: 0
       }
 
       document("table[id='MarksGrid'] > tbody > tr > td > a > span").each(function (item) {
@@ -52,7 +49,7 @@ export default class AttendanceScreen extends Component {
           var newItem = {}
 
           var tableCell = document(this).html()
-          cell = tableCell.replace('<strong>', '').replace('</strong>', '').split(/<br>/)
+          var cell = tableCell.replace('<strong>', '').replace('</strong>', '').split(/<br>/)
           if (tableCell.indexOf('<strong>') === 0) cell.unshift('Unknown')
 
           newItem.State = cell[0]
@@ -64,10 +61,10 @@ export default class AttendanceScreen extends Component {
               newItem.Color = 'gray'
               break
             case 'Not Required':
-              newItem.Color = 'blue'
+              newItem.Color = 'cornflowerblue'
               break
             case 'Lesson Cancelled':
-              newItem.Color = 'blue'
+              newItem.Color = 'cornflowerblue'
               break
             case 'Late':
               newItem.Color = 'yellow'
@@ -81,15 +78,25 @@ export default class AttendanceScreen extends Component {
           newItem.moment = moment(newItem.Time, 'DD MMM YYYY h:mma')
 
           attendance.items.push(newItem)
+
+          var newItemWeek = newItem.moment.isoWeek()
+          if (attendance.weeks[newItemWeek] === undefined) {
+            attendance.weeks[newItemWeek] = {
+              weekNumber: newItemWeek,
+              startOfWeek: newItem.moment.clone().startOf('isoweek').format('Do MMMM YYYY'),
+              items: []
+            }
+          }
+          attendance.weeks[newItemWeek].items.push(newItem)
         } catch (e) {
           // If the cell has an unexpected markup, catch the error.
-          console.log(e)
+          console.warn(e)
         }
       })
-      attendance.percentage = document("table[id='MarksGrid'] > tbody > tr > td[class='bold percentage']").text()
-      console.log(attendance.percentage)
 
-      if (attendance.items.length === 0) return false
+      attendance.percentage = document("table[id='MarksGrid'] > tbody > tr > td[class='bold percentage']").text()
+
+      if (attendance.items.length === 0) throw new Error('No items')
       this.setState({attendance: attendance, loaded: true})
     } catch (e) {
       this.setState({error: e})
@@ -97,41 +104,45 @@ export default class AttendanceScreen extends Component {
   }
 
   render () {
-    if (this.props.welcome) {
-      return (
-        <WelcomeBox title='Recent attendance percentage:'>
-          {this.state.loaded ? <View>
-            <AttendanceProgress attendance={this.state.attendance} />
-            <RecentAttendance attendance={this.state.attendance} />
-          </View>
-            : !this.state.error && <Fetching />}
-          {this.state.error && <Text>For the attendance feature to work,
-          you must sign into the Student Intranet within the app. This relies
-          upon scraping the Intranet, and so might not work perfectly. If you
-          configure your college username and password in the settings menu,
-          you'll be able to see print credit below too.</Text>}
-        </WelcomeBox>
-      )
-    }
-
-    if (!this.state.loaded) return (<Fetching style={commonStyles.screenContainer} />)
-
     return (
-      <ScrollView>
-        <View style={commonStyles.screenContainer}>
-          <Text>Heads up! This feature is largely undeveloped and won't really be
-            improved further. It uses hacky web scraping from the intranet and is
-            a pain to build. Feel free to improve on attendance.js and
-            send me a pull request if you're keen for this to work better.
-          </Text>
+      <WelcomeBox title='Recent attendance percentage:'>
+        {this.state.loaded ? <View>
           <AttendanceProgress attendance={this.state.attendance} />
-          <View style={{flexDirection: 'row', flexWrap: 'wrap', justifyContent: 'space-between'}}>
-            {this.state.attendance.items.map(function (item) {
-              return <AttendanceItem key={item.Time} item={item} />
-            })}
-          </View>
+          <AttendanceSelector attendance={this.state.attendance} />
         </View>
-      </ScrollView>
+          : !this.state.error && <Fetching />}
+        {this.state.error && <Text>For the attendance feature to work,
+        you must sign into the Student Intranet within the app. This relies
+        upon scraping the Intranet, and so might not work perfectly. If you
+        configure your college username and password in the settings menu,
+        you'll be able to see print credit below too.</Text>}
+      </WelcomeBox>
+    )
+  }
+}
+
+class AttendanceSelector extends Component {
+  constructor (props) {
+    super(props)
+    this.state = {
+      showAllWeeks: false
+    }
+    this.toggleShow = this.toggleShow.bind(this)
+  }
+
+  toggleShow () {
+    this.setState({showAllWeeks: true})
+  }
+
+  render () {
+    return (
+      <View>
+        <Text style={{fontWeight: 'bold'}}>{this.state.showAllWeeks ? 'Recent attendance:' : 'This week\'s events:'}</Text>
+        {this.state.showAllWeeks ? <AllWeeks attendance={this.props.attendance} /> : <RecentAttendance attendance={this.props.attendance} />}
+        {!this.state.showAllWeeks && <TouchableOpacity onPress={this.toggleShow} style={{flex: 1}} >
+          <Text style={{color: 'blue', textAlign: 'center'}}>Show more</Text>
+        </TouchableOpacity>}
+      </View>
     )
   }
 }
@@ -149,9 +160,6 @@ function AttendanceProgress (props) {
       >
         <Text style={{fontSize: 18}}>{props.attendance.percentage}%</Text>
       </ProgressCircle>
-      <Text>From {props.attendance.items[0].Time.substr(0, 5) + ' to '}
-        {props.attendance.items[props.attendance.items.length - 1].Time.substr(0, 11)}
-      </Text>
     </View>
   )
 }
@@ -168,13 +176,39 @@ function RecentAttendance (props) {
   if (todayItems.length === 0) return null
   return (
     <View>
-      <Text style={{fontWeight: 'bold'}}>This week's events:</Text>
       <View style={{flexDirection: 'row',
         justifyContent: 'center',
         flexWrap: 'wrap'
       }}>
         {todayItems.map(function (item) {
           return <AttendanceItem item={item} key={item.Time} />
+        })}
+      </View>
+    </View>
+  )
+}
+
+function AllWeeks (props) {
+  return (
+    <View>
+      {props.attendance.weeks.map(function (week) {
+        return <Week key={week.weekNumber} week={week} />
+      })}
+    </View>
+  )
+}
+
+function Week (props) {
+  return (
+    <View>
+      <Text>Week beginning {props.week.startOfWeek}</Text>
+      <View style={{
+        flexDirection: 'row',
+        justifyContent: 'center',
+        flexWrap: 'wrap'
+      }}>
+        {props.week.items.map(function (item) {
+          return <AttendanceItem key={item.Time} item={item} />
         })}
       </View>
     </View>
