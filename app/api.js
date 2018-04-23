@@ -34,7 +34,7 @@ export default async function api (path, params) {
 
   if (path.indexOf('timetable') > -1) {
     for (var i = 0; i < result.timetable.length; i++) {
-      if (result.timetable[i].Title === 'BTEC Diploma in  IT') { result.timetable[i].Title = 'Computing & IT Diploma' }
+      if (result.timetable[i].Title === 'BTEC Diploma in  Information Technology') { result.timetable[i].Title = 'Computing & IT Diploma' }
 
       result.timetable[i].Color = randomColor({
         seed: result.timetable[i].Title + 'hedgehog',
