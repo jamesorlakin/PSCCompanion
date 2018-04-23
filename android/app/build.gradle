@@ -97,8 +97,8 @@ android {
         applicationId "com.psccompanion"
         minSdkVersion 16
         targetSdkVersion 22
-        versionCode 79
-        versionName "0.79 Operation Key Revamp R2 and Animate"
+        versionCode 80
+        versionName "0.80 Project Upgrade and Expand"
         ndk {
             abiFilters "armeabi-v7a", "x86"
         }
