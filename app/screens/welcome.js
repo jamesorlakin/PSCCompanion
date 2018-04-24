@@ -5,7 +5,6 @@ import {
   Image,
   AsyncStorage,
   ScrollView,
-  StyleSheet,
   TouchableWithoutFeedback
 } from 'react-native'
 
@@ -39,7 +38,7 @@ export default class WelcomeScreen extends Component {
     var self = this
     AsyncStorage.getItem('user').then(function (data) {
       if (typeof data === 'string') self.setState({loaded: true, data: JSON.parse(data)})
-      if (Math.floor(Math.random() * 100) == 0 || typeof data !== 'string') {
+      if (Math.floor(Math.random() * 100) === 0 || typeof data !== 'string') {
         api('user').then(function (userInfo) {
           userInfo.fetchedTime = new Date()
           self.setState({loaded: true, data: userInfo})
@@ -69,7 +68,7 @@ export default class WelcomeScreen extends Component {
 
           <WhosFreeNow />
 
-          <AttendanceScreen welcome />
+          <AttendanceScreen />
 
           <PrintingStatusComponent />
 

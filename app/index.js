@@ -8,10 +8,10 @@ import {
   Platform
 } from 'react-native'
 
-if (Platform.OS === 'android') UIManager.setLayoutAnimationEnabledExperimental(true)
-
 import IndexHost from './indexHost.js'
 import Intro from './screens/login/intro.js'
+
+if (Platform.OS === 'android') UIManager.setLayoutAnimationEnabledExperimental(true)
 
 export default class PSCCompanion extends Component {
   constructor () {
