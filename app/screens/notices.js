@@ -2,17 +2,14 @@ import React, { Component } from 'react'
 import {
   View,
   Text,
-  Dimensions,
   ScrollView,
-  StyleSheet,
   InteractionManager,
   Image
 } from 'react-native'
 
-import cheerio from 'react-native-cheerio'
 import HTMLView from 'react-native-htmlview'
-import moment from 'moment'
 import { Fetching, commonStyles } from '../commonComponents.js'
+import fetchNotices from '../studentNoticesApi.js'
 
 export default class StudentNoticesScreen extends Component {
   static navigationOptions = {
@@ -38,23 +35,7 @@ export default class StudentNoticesScreen extends Component {
   }
 
   async fetchNotices () {
-    var page = await (await fetch('https://intranet.psc.ac.uk/news/browser.php')).text()
-    var document = cheerio.load(page)
-    var notices = []
-
-    document("div[id='report-wide'] > ul > li").each(function (item) {
-      var newNotice = {}
-      newNotice.title = document(this).find('h4').text()
-      newNotice.date = moment(document(this).find('.posted').text().substr(8), 'DD/MM/YY HH:mm')
-
-      document(document(this).find('h4')).remove()
-      document(document(this).find('.posted')).remove()
-      newNotice.body = document(this).html()
-      newNotice.body = newNotice.body.substr(16, newNotice.body.length)
-
-      notices.push(newNotice)
-    })
-
+    var notices = await fetchNotices()
     this.setState({notices: notices})
   }
 
