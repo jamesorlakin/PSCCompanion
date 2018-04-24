@@ -2,8 +2,6 @@ import React, { Component } from 'react'
 import {
   View,
   Text,
-  AsyncStorage,
-  StyleSheet,
   ScrollView,
   Image
 } from 'react-native'
@@ -15,6 +13,7 @@ import SettingsCredentials from './settings/credentials.js'
 import SettingsAdFree from './settings/adFree.js'
 import SettingsSharedTimetable from './settings/sharedTimetable.js'
 import SettingsResetTokens from './settings/resetTokens.js'
+import SettingsNotices from './settings/notices.js'
 
 export default class SettingsScreen extends Component {
   static navigationOptions = {
@@ -31,10 +30,11 @@ export default class SettingsScreen extends Component {
     return (
       <View style={commonStyles.screenContainer}>
         <ScrollView>
-          <SettingsResetTokens />
-          <SettingsCredentials />
-          <SettingsAdFree />
           <SettingsSharedTimetable />
+          <SettingsCredentials />
+          <SettingsNotices />
+          <SettingsResetTokens />
+          <SettingsAdFree />
           <Text>Privacy Policy:</Text>
           <Text>PSC Companion does not transmit personal data to any servers outside of college (unless you have enrolled into timetable sharing).
           Advertising (AdMob) is used in this application, however it may be switched off in the settings menu.
