@@ -30,7 +30,8 @@ public class MainApplication extends Application implements ReactApplication {
           new MainReactPackage(),
             new RNSharedPreferencesReactPackage(),
             new RNAdMobPackage(),
-            new PhotoViewPackage()
+            new PhotoViewPackage(),
+            new JSNotificationPackage()
       );
     }
   };
