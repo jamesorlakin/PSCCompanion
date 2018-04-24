@@ -60,7 +60,11 @@
 
         <receiver android:name=".UpdateTimetableUtils$StartServiceReceiver" />
 
-        <receiver android:name=".UpdateTimetableUtils$SetAlarmOnBootReceiver">
+        <service android:name=".StudentNoticesService" />
+
+        <receiver android:name=".StudentNoticesUtils$StartServiceReceiver" />
+
+        <receiver android:name=".BootReceiver">
             <intent-filter>
                 <action android:name="android.intent.action.BOOT_COMPLETED" />
             </intent-filter>

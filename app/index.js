@@ -35,4 +35,5 @@ export default class PSCCompanion extends Component {
 }
 
 AppRegistry.registerHeadlessTask('UpdateTimetableService', () => require('./updateTimetableService.js'))
+AppRegistry.registerHeadlessTask('StudentNoticesService', () => require('./studentNoticesService.js'))
 AppRegistry.registerComponent('PSCCompanion', () => PSCCompanion)

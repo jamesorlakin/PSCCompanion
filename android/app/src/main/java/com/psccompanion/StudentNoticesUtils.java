@@ -9,19 +9,19 @@ import android.os.Bundle;
 
 import java.util.Calendar;
 
-public class UpdateTimetableUtils {
+public class StudentNoticesUtils {
     static public void setAlarm(Context context) {
         Calendar cal = Calendar.getInstance();
-        if (cal.get(Calendar.HOUR_OF_DAY) >= 5) cal.add(Calendar.DAY_OF_WEEK, 1);
         cal.set(Calendar.HOUR_OF_DAY, 5);
-        long interval = 1000 * 60 * 60 * 24;
+        long interval = 1000 * 60 * 60 * 2;
 
         AlarmManager aManager = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
-        Intent serviceIntent = new Intent(context, UpdateTimetableUtils.StartServiceReceiver.class);
+        Intent serviceIntent = new Intent(context, StudentNoticesUtils.StartServiceReceiver.class);
         PendingIntent servicePendingIntent = PendingIntent.getBroadcast(context,
-            1,
-            serviceIntent,
-            PendingIntent.FLAG_CANCEL_CURRENT);
+                1,
+                serviceIntent,
+                PendingIntent.FLAG_CANCEL_CURRENT);
+
         aManager.setRepeating(
                 AlarmManager.RTC_WAKEUP,
                 cal.getTimeInMillis(),
@@ -34,12 +34,12 @@ public class UpdateTimetableUtils {
 
         @Override
         public void onReceive(Context context, Intent intent) {
-            Intent service = new Intent(context, UpdateTimetableService.class);
+            Intent service = new Intent(context, StudentNoticesService.class);
             Bundle bundle = new Bundle();
             bundle.putString("update", "true");
             service.putExtras(bundle);
 
-            UpdateTimetableService.acquireWakeLockNow(context.getApplicationContext());
+            StudentNoticesService.acquireWakeLockNow(context.getApplicationContext());
             context.getApplicationContext().startService(service);
         }
     }
