@@ -2,12 +2,11 @@ import React, { Component } from 'react'
 import {
   View,
   Text,
-  Dimensions,
-  StyleSheet,
   Button,
   Linking,
   ScrollView,
-  Image
+  Image,
+  Dimensions
 } from 'react-native'
 
 import { commonStyles } from '../commonComponents.js'
@@ -27,10 +26,6 @@ export default class AboutScreen extends Component {
     Linking.openURL('https://gateway.jameslakin.co.uk/git/james.lakin/PSCCompanion.git')
   }
 
-  openExpo () {
-    Linking.openURL('https://expo.io/@jamesorlakin/psc-companion-expo')
-  }
-
   mailMe () {
     Linking.openURL('mailto:jlakin16@students.psc.ac.uk')
   }
@@ -39,15 +34,8 @@ export default class AboutScreen extends Component {
     return (
       <ScrollView>
         <View style={commonStyles.screenContainer}>
+          <Image source={require('../images/pscCompanionLogo.png')} style={{width: 200, height: 200}} resizeMode='contain' />
           <Text style={{fontSize: 30, textDecorationLine: 'underline'}}>PSC Companion</Text>
-          <Text style={{fontSize: 25}}>PSC Companion is available on iOS!</Text>
-          <Text>Well... sort of. I don't have a Mac to develop iOS apps and publish
-            to the App Store. Instead you'll have to go through the Expo app, a
-            pre-built React Native runtime. It doesn't work as well, but core
-            functionality should work there fine, though dropdown boxes look really
-            strange in iOS. Updates will lag slightly behind Android releases.
-            Click the button below to visit PSC Companion on the Expo website.</Text>
-          <Button title='Learn more at Expo' onPress={this.openExpo} />
 
           <Breaker />
 
