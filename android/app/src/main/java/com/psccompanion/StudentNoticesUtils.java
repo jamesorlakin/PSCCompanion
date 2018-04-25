@@ -12,7 +12,6 @@ import java.util.Calendar;
 public class StudentNoticesUtils {
     static public void setAlarm(Context context) {
         Calendar cal = Calendar.getInstance();
-        cal.set(Calendar.HOUR_OF_DAY, 5);
         long interval = 1000 * 60 * 60 * 2;
 
         AlarmManager aManager = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);

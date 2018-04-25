@@ -1,4 +1,4 @@
-import { NativeModules, AsyncStorage, ToastAndroid } from 'react-native'
+import { NativeModules, AsyncStorage } from 'react-native'
 
 import fetchNotices from './studentNoticesApi.js'
 
@@ -13,21 +13,18 @@ async function isEnabled () {
   return false
 }
 
-export default async function () {
+module.exports = async function (data) {
   try {
-    showNotification('Service ' + new Date(), '')
     if (!await isEnabled()) {
       return false
     }
 
     var notices = await fetchNotices()
     var mostRecentTitle = await AsyncStorage.getItem('noticesLatest')
-    ToastAndroid.show(mostRecentTitle, ToastAndroid.LONG)
     if (typeof mostRecentTitle !== 'string') {
       // We don't have any notices, so we can assume this is the first time this service has executed.
       // We'll avoid bombarding them with every notification for now by marking the first notice as the latest.
       await AsyncStorage.setItem('noticesLatest', notices[0].title)
-      ToastAndroid.show(notices[0].title, ToastAndroid.LONG)
       return true
     }
 
@@ -39,7 +36,7 @@ export default async function () {
     }
     if (newNotices.length === 0) return true
 
-    mostRecentTitle = newNotices[newNotices.length - 1].title
+    mostRecentTitle = newNotices[0].title
     await AsyncStorage.setItem('noticesLatest', mostRecentTitle)
 
     for (var i = 0; i < newNotices.length; i++) {
