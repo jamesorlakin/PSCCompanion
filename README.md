@@ -1,4 +1,9 @@
-# This is a version of PSC Companion with minor tweaks to allow the use of Expo for a cheap (free!) and easy distribution method on iOS.
+# This is abandoned!
+Apple have updated their App Store review guidlines, forcing Expo to disallow the use of published third-party apps on their iOS client. This means this is no longer a viable workaround and development on this branch has been stopped.
+
+---
+
+## This is a version of PSC Companion with minor tweaks to allow the use of Expo for a cheap (free!) and easy distribution method on iOS.
 Use the `exp` command line tool and the publish command to update. Merge changes from master into this branch and remove native dependencies if necessary.
 
 ---
