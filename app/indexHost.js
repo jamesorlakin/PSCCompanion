@@ -25,12 +25,14 @@ import MapScreen from './screens/map.js'
 import IntranetScreen from './screens/intranet.js'
 import SettingsScreen from './screens/settings.js'
 import AboutScreen from './screens/about.js'
+import McDonaldsScreen from './screens/mcDonalds.js'
 
 import GrimeScreen from './screens/grime.js'
 
 const WelcomeNavigator = StackNavigator({
   welcome: {screen: WelcomeScreen, path: 'welcome'},
-  grime: {screen: GrimeScreen, path: 'grime'}
+  grime: {screen: GrimeScreen, path: 'grime'},
+  mcDonalds: {screen: McDonaldsScreen}
 }, {
   headerMode: 'none'
 })

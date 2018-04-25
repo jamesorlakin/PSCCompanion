@@ -5,7 +5,8 @@ import {
   Text,
   StyleSheet,
   Button,
-  LayoutAnimation
+  LayoutAnimation,
+  TouchableOpacity
 } from 'react-native'
 import ProgressCircle from 'react-native-progress-circle'
 
@@ -38,7 +39,9 @@ export default class GrimeScreen extends Component {
   render () {
     return (
       <View style={styles.container}>
-        <Text style={{fontSize: 20, textDecorationLine: 'underline'}}>Is this grime?</Text>
+        <TouchableOpacity onPress={() => {this.props.navigation.navigate('mcDonalds')}}>
+          <Text style={{ fontSize: 20, textDecorationLine: 'underline' }}>Is this grime?</Text>
+        </TouchableOpacity>
         <ProgressCircle
           percent={this.state.percent}
           radius={80}
@@ -47,7 +50,7 @@ export default class GrimeScreen extends Component {
           shadowColor='#E83131'
           bgColor='#fff'
         >
-          <Text style={{fontSize: 25}}>{this.state.percent}%</Text>
+          <Text style={{ fontSize: 25 }}>{this.state.percent}%</Text>
         </ProgressCircle>
         <View style={{height: 5}} />
         <Button title={this.state.running ? 'Scanning' : 'Scan'}
