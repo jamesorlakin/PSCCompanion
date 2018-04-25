@@ -3,7 +3,7 @@ A React Native based application for interfacing with [data.psc.ac.uk](https://d
 
 ----
 
-You're currently looking at the source code repository. After the app? It's available at [Google Play](https://play.google.com/store/apps/details?id=com.psccompanion) for Android or [Expo](https://expo.io/@jamesorlakin/psc-companion-expo) as a workaround for iOS.
+You're currently looking at the source code repository. After the app? It's available at [Google Play](https://play.google.com/store/apps/details?id=com.psccompanion).
 
 ## Structure
 
