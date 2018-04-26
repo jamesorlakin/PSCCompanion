@@ -4,10 +4,8 @@ import React, { Component } from 'react'
 import {
   View,
   Text,
-  FlatList,
   ScrollView,
   StyleSheet,
-  Dimensions
 } from 'react-native'
 
 import moment from 'moment'
@@ -22,7 +20,7 @@ export default class Timetable extends Component {
   }
 
   doWeekScroll (ref) {
-    if (this.props.week != 0) return true
+    if (this.props.week !== 0) return true
     var self = this
     if (!this.doneScroll) {
       setTimeout(function () {
