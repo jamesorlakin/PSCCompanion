@@ -4,7 +4,8 @@ import {
   Text,
   FlatList,
   Picker,
-  Button,
+  Share,
+  TouchableOpacity,
   StyleSheet,
   Image
 } from 'react-native'
@@ -86,7 +87,7 @@ export default class FreeRoomScreen extends Component {
   render () {
     if (this.state.rooms === false) {
       return (
-        <View style={commonStyles.screenContainer, {alignItems: 'center'}}>
+        <View style={[commonStyles.screenContainer, {alignItems: 'center'}]}>
           <Text>This may take some time to load.</Text>
           <Fetching />
         </View>
@@ -114,25 +115,13 @@ export default class FreeRoomScreen extends Component {
             <Picker.Item label='Lesson 8 - 15:40 - 16:35' value={10} />
           </Picker>
         </View>
-        <FlatList data={this.state.rooms} renderItem={({item}) => <Room item={item} />} />
+        <FlatList data={this.state.rooms} renderItem={({ item }) => <Room item={item} period={this.periodTimes[this.state.period]} />} />
       </View>
     )
   }
 }
 
 class Room extends Component {
-  constructor () {
-    super()
-    this.state = {
-      expanded: true
-    }
-    this.toggleExpansion = this.toggleExpansion.bind(this)
-  }
-
-  toggleExpansion () {
-    this.setState({expanded: !this.state.expanded})
-  }
-
   render () {
     return (
       <View>
@@ -143,11 +132,14 @@ class Room extends Component {
             width: 2,
             backgroundColor: randomColor({seed: this.props.item.Building})
           }} />
-          <View>
+          <View style={{flex: 1}}>
             <Text style={styles.bold}>{this.props.item.Name}</Text>
             <Text>{this.props.item.Building} - {this.props.item.Description}</Text>
             <Text>Type: {this.props.item.Type}</Text>
           </View>
+          <TouchableOpacity onPress={() => { Share.share({message: this.props.item.Name + ' is free at ' + this.props.period.format('HH:mm')}) }}>
+            <Image source={require('../images/shareIcon.png')} style={{width: 50, height: 50}} resizeMode='contain' />
+          </TouchableOpacity>
         </View>
       </View>
     )
