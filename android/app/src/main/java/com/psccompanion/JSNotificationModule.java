@@ -30,6 +30,7 @@ public class JSNotificationModule extends ReactContextBaseJavaModule {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR1) {
             nBuilder.setShowWhen(false);
         }
+        nBuilder.setAutoCancel(true);
         nBuilder.setSmallIcon(R.drawable.notification_icon);
         nBuilder.setStyle(new Notification.BigTextStyle().bigText(message));
         nBuilder.setContentIntent(PendingIntent.getActivity(mContext, 0, new Intent(mContext, MainActivity.class), PendingIntent.FLAG_UPDATE_CURRENT));
