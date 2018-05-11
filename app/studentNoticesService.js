@@ -39,8 +39,10 @@ module.exports = async function (data) {
     mostRecentTitle = newNotices[0].title
     await AsyncStorage.setItem('noticesLatest', mostRecentTitle)
 
+    if (newNotices.length > 6) return // If a notice was deleted, we incorrectly assume they're all new.
+
     for (var i = 0; i < newNotices.length; i++) {
-      var notice = notices[i]
+      var notice = newNotices[i]
       showNotification(notice.title, notice.rawText)
     }
   } catch (e) {
