@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
-import { StyleSheet } from 'react-native'
+import { StyleSheet, ScrollView, View, Text, Image, Button } from 'react-native'
 import AppIntroSlider from 'react-native-app-intro-slider'
-import LoginScreen from './login.js'
+import LoginScreen from './login'
 
 export default class Intro extends Component {
   constructor (props) {
@@ -19,13 +19,18 @@ export default class Intro extends Component {
   render () {
     if (this.state.showLogin) return <LoginScreen />
     return (
-      <AppIntroSlider
-        slides={slides}
-        onDone={this.showLogin}
-        onSkip={this.showLogin}
-        showSkipButton
-        showPrevButton
-      />
+      <ScrollView>
+        {slides.map(function (slide) {
+          return (
+            <View key={slide.key} style={{marginBottom: 20, backgroundColor: slide.backgroundColor}}>
+              <Image source={slide.image} style={styles.image} />
+              <Text style={{fontSize: 20}}>{slide.title}</Text>
+              <Text>{slide.text}</Text>
+            </View>
+          )
+        })}
+        <Button title='Okay.' onPress={this.showLogin} />
+      </ScrollView>
     )
   }
 }

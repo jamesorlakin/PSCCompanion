@@ -17,6 +17,7 @@
   "babel-jest": "20.0.3",
   "babel-loader": "7.1.2",
   "babel-plugin-transform-remove-console": "^6.8.5",
+  "babel-polyfill": "^6.26.0",
   "babel-preset-react-app": "^3.1.1",
   "babel-runtime": "6.26.0",
   "case-sensitive-paths-webpack-plugin": "2.1.1",
@@ -59,6 +60,7 @@
   "react-native-shared-preferences": "^1.0.0",
   "react-native-timeline-listview": "^0.2.2",
   "react-native-web": "^0.7.3",
+  "react-native-web-webview": "^0.2.5",
   "react-navigation": "^1.5.8",
   "resolve": "1.6.0",
   "style-loader": "0.19.0",
@@ -93,6 +95,9 @@
   ]
  },
  "eslintConfig": {
-  "extends": "react-app"
+  "extends": "react-app",
+  "globals": {
+   "__DEV__": true
+  }
  }
 }

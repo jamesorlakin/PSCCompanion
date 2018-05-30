@@ -5,10 +5,12 @@ import {
   AppRegistry,
   AsyncStorage,
   UIManager,
-  Platform,
-  View,
-  Text
+  Platform
 } from 'react-native'
+
+import IndexHost from './indexHost.js'
+import Intro from './screens/login/intro.js'
+import AsyncMan from './asyncman/index'
 
 if (Platform.OS === 'android') UIManager.setLayoutAnimationEnabledExperimental(true)
 
@@ -27,15 +29,18 @@ export default class PSCCompanion extends Component {
   }
 
   render () {
-    return (
-      <View>
-        <Text>Active.</Text>
-      </View>
-    )
+    if (this.state.setup === '?') return null
+    if (this.state.setup) return (<IndexHost />)
+    return (<AsyncMan/>)
+    return (<Intro />)
   }
 }
 
-//AppRegistry.registerHeadlessTask('UpdateTimetableService', () => require('./updateTimetableService.js'))
-//AppRegistry.registerHeadlessTask('StudentNoticesService', () => require('./studentNoticesService.js'))
 AppRegistry.registerComponent('PSCCompanion', () => PSCCompanion)
-AppRegistry.runApplication('PSCCompanion', { rootTag: document.getElementById('root') })
+
+if (Platform.OS === 'web') {
+  AppRegistry.runApplication('PSCCompanion', { rootTag: document.getElementById('root') })
+} else {
+  AppRegistry.registerHeadlessTask('UpdateTimetableService', () => require('./updateTimetableService.js'))
+  AppRegistry.registerHeadlessTask('StudentNoticesService', () => require('./studentNoticesService.js'))
+}

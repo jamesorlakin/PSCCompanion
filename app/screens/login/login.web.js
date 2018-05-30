@@ -1,13 +1,13 @@
 import React, { Component } from 'react'
 import {
   View,
-  WebView,
   Text,
   AsyncStorage,
   ActivityIndicator
 } from 'react-native'
 
 import IndexHost from '../../indexHost.js'
+import WebView from 'react-native-web-webview'
 
 export default class LoginScreen extends Component {
   constructor () {
