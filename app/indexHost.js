@@ -6,58 +6,12 @@ import {
   Text,
   Image,
   StyleSheet,
-  ScrollView,
   TouchableOpacity
 } from 'react-native'
 
-import { StackNavigator, DrawerNavigator, DrawerItems } from 'react-navigation'
-
+import { StackNavigator } from 'react-navigation'
 import BannerAd from './adComponent'
-
-import WelcomeScreen from './screens/welcome.js'
-import FreeRoomScreen from './screens/freeroom.js'
-import UserTimetableScreen from './screens/userTimetable.js'
-import RoomTimetableScreen from './screens/roomTimetable.js'
-import SharedTimetableScreen from './screens/sharedTimetable.js'
-import StudentNoticesScreen from './screens/notices.js'
-//import MapScreen from './screens/map.js'
-// import AttendanceScreen from './screens/attendance.js'
-import IntranetScreen from './screens/intranet.js'
-import SettingsScreen from './screens/settings.js'
-import AboutScreen from './screens/about.js'
-import McDonaldsScreen from './screens/mcDonalds.js'
-
-import GrimeScreen from './screens/grime.js'
-
-const WelcomeNavigator = StackNavigator({
-  welcome: {screen: WelcomeScreen, path: 'welcome'},
-  grime: {screen: GrimeScreen, path: 'grime'},
-  mcDonalds: {screen: McDonaldsScreen}
-}, {
-  headerMode: 'none'
-})
-
-const Drawer = DrawerNavigator({
-  welcome: {screen: WelcomeNavigator},
-  freeroom: {screen: FreeRoomScreen},
-  //  attendance: {screen: AttendanceScreen},
-  userTimetable: {screen: UserTimetableScreen},
-  roomTimetable: {screen: RoomTimetableScreen},
-  sharedTimetable: {screen: SharedTimetableScreen},
-  notices: {screen: StudentNoticesScreen},
-  //  map: {screen: MapScreen},
-  intranet: {screen: IntranetScreen},
-  settings: {screen: SettingsScreen},
-  about: {screen: AboutScreen}
-}, {
-  contentComponent: props => (<ScrollView><DrawerItems {...props} /></ScrollView>),
-  contentOptions: {
-    activeTintColor: '#36648B',
-    style: {
-      marginVertical: 0
-    }
-  }
-})
+import Drawer from './drawer'
 
 const MenuButton = function (props) {
   return (
@@ -99,7 +53,7 @@ const DrawerHost = StackNavigator({
 export default function IndexHost (props) {
   return (
     <View style={styles.container}>
-      <DrawerHost />
+      <Drawer />
       {__DEV__ ? <Text style={{textAlign: 'center'}}>Development Build</Text> : <BannerAd />}
     </View>
   )

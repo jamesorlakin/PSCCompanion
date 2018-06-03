@@ -6,7 +6,6 @@ import {
   Linking,
   ScrollView,
   Image,
-  Dimensions
 } from 'react-native'
 
 import { commonStyles } from '../commonComponents.js'

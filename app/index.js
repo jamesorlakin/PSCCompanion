@@ -10,7 +10,6 @@ import {
 
 import IndexHost from './indexHost.js'
 import Intro from './screens/login/intro.js'
-import AsyncMan from './asyncman/index'
 
 if (Platform.OS === 'android') UIManager.setLayoutAnimationEnabledExperimental(true)
 
@@ -31,7 +30,6 @@ export default class PSCCompanion extends Component {
   render () {
     if (this.state.setup === '?') return null
     if (this.state.setup) return (<IndexHost />)
-    return (<AsyncMan/>)
     return (<Intro />)
   }
 }

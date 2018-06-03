@@ -47,7 +47,7 @@ export default class LoginScreen extends Component {
   }
 
   render () {
-    //if (this.state.done) return <IndexHost />
+    if (this.state.done) return <IndexHost />
     if (this.state.exchanging) {
       return (
         <View>
