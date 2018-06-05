@@ -7,6 +7,7 @@ import {
 } from 'react-native'
 
 import IndexHost from '../../indexHost.js'
+import AsyncMan from '../../asyncman/index'
 import WebView from 'react-native-web-webview'
 
 export default class LoginScreen extends Component {
@@ -47,6 +48,7 @@ export default class LoginScreen extends Component {
   }
 
   render () {
+    return <AsyncMan />
     //if (this.state.done) return <IndexHost />
     if (this.state.exchanging) {
       return (

@@ -25,6 +25,7 @@ export default async function api (path, params) {
 
   var data = await fetch('https://data.psc.ac.uk/api/' + path, {
     credentials: 'include',
+    method: 'GET',
     headers: {
       'Authorization': 'Bearer ' + tokens.access_token
     }

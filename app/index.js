@@ -38,6 +38,13 @@ AppRegistry.registerComponent('PSCCompanion', () => PSCCompanion)
 
 if (Platform.OS === 'web') {
   AppRegistry.runApplication('PSCCompanion', { rootTag: document.getElementById('root') })
+
+  // We polyfill fetch to route through a CORS proxy.
+  window.fetchOld = window.fetch
+  window.fetch = function (url, opts) {
+    if (url.includes('bundle')) return window.fetchOld(url, opts)
+    return window.fetchOld('https://cryptic-plateau-65772.herokuapp.com/' + url, opts)
+  }
 } else {
   AppRegistry.registerHeadlessTask('UpdateTimetableService', () => require('./updateTimetableService.js'))
   AppRegistry.registerHeadlessTask('StudentNoticesService', () => require('./studentNoticesService.js'))

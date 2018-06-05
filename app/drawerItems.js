@@ -22,7 +22,10 @@ const WelcomeNavigator = StackNavigator({
   grime: {screen: GrimeScreen, path: 'grime'},
   mcDonalds: {screen: McDonaldsScreen}
 }, {
-  headerMode: 'none'
+  headerMode: 'none',
+  cardStyle: {
+    flex: 1
+  }
 })
 
 const screens = {

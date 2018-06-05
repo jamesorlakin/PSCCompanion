@@ -51,7 +51,6 @@ export default class RoomTimetableScreen extends Component {
   }
 
   switchRoom (room) {
-    console.log(room)
     this.setState({room: room})
   }
 

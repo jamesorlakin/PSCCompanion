@@ -59,7 +59,7 @@ export default class WelcomeScreen extends Component {
             marginBottom: 15
           }}>
             <TouchableWithoutFeedback onPress={() => this.props.navigation.navigate('grime')}>
-              <Image source={require('../images/userIcon.png')} />
+              <Image style={{width: 100, height: 100}} source={require('../images/userIcon.png')} />
             </TouchableWithoutFeedback>
             <Text style={{fontSize: 20}}>Welcome, {this.state.data.Name || 'user'}</Text>
           </View>

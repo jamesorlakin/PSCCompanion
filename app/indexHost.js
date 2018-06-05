@@ -6,7 +6,8 @@ import {
   Text,
   Image,
   StyleSheet,
-  TouchableOpacity
+  TouchableOpacity,
+  Platform
 } from 'react-native'
 
 import { StackNavigator } from 'react-navigation'
@@ -53,7 +54,7 @@ const DrawerHost = StackNavigator({
 export default function IndexHost (props) {
   return (
     <View style={styles.container}>
-      <Drawer />
+      {Platform.OS === 'web' ? <Drawer /> : <DrawerHost />}
       {__DEV__ ? <Text style={{textAlign: 'center'}}>Development Build</Text> : <BannerAd />}
     </View>
   )
@@ -61,6 +62,7 @@ export default function IndexHost (props) {
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1
+    flex: 1,
+    height: Platform.OS === 'web' ? '90vh' : undefined
   }
 })

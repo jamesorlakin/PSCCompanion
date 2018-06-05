@@ -88,7 +88,7 @@ module.exports = {
     // https://github.com/facebookincubator/create-react-app/issues/290
     // `web` extension prefixes have been added for better support
     // for React Native Web.
-    extensions: ['.web.js', '.mjs', '.js', '.json', '.web.jsx', '.jsx'],
+    extensions: ['.web.js', '.mjs', '.js', '.json', '.web.jsx', '.jsx', '.android.js'],
     alias: {
       
       // Support React Native Web
@@ -101,7 +101,7 @@ module.exports = {
       // To fix this, we prevent you from importing files out of src/ -- if you'd like to,
       // please link the files into your node_modules/ and let module-resolution kick in.
       // Make sure your source files are compiled, as they will not be processed in any way.
-      new ModuleScopePlugin(paths.appSrc, [paths.appPackageJson]),
+      // new ModuleScopePlugin(paths.appSrc, [paths.appPackageJson]),
     ],
   },
   module: {
@@ -121,12 +121,11 @@ module.exports = {
             options: {
               formatter: eslintFormatter,
               eslintPath: require.resolve('eslint'),
-              
             },
             loader: require.resolve('eslint-loader'),
           },
         ],
-        include: paths.appSrc,
+        include: [paths.appSrc, paths.appNodeModules],
       },
       {
         // "oneOf" will traverse all following loaders until one will
@@ -146,11 +145,20 @@ module.exports = {
           // Process JS with Babel.
           {
             test: /\.(js|jsx|mjs)$/,
-            include: paths.appSrc,
+            include: [paths.appSrc, paths.appNodeModules],
             loader: require.resolve('babel-loader'),
             options: {
               
               compact: true,
+            },
+          },
+          {
+            test: /postMock.html$/,
+            use: {
+              loader: 'file-loader',
+              options: {
+                name: '[name].[ext]',
+              },
             },
           },
           // The notation here is somewhat confusing.
@@ -261,6 +269,9 @@ module.exports = {
     // if (process.env.NODE_ENV === 'production') { ... }. See `./env.js`.
     // It is absolutely essential that NODE_ENV was set to production here.
     // Otherwise React will be compiled in the very slow development mode.
+    new webpack.DefinePlugin({
+      __DEV__: false
+    }),
     new webpack.DefinePlugin(env.stringified),
     // Minify the code.
     new webpack.optimize.UglifyJsPlugin({
