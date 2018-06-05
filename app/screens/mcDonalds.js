@@ -37,9 +37,10 @@ export default class McDonaldsScreen extends Component {
 
 function Offer (props) {
   return (
-    <View style={{marginTop: 20, marginBottom: 20}}>
+    <View style={{marginTop: 100, marginBottom: 100}}>
       <Text style={{fontSize: 18}}>{props.offer.offer}</Text>
       <Barcode value={props.offer.barcode} format='EAN8' flat />
+      <Text style={{textAlign: 'center'}}>{props.offer.barcode}</Text>
       <Breaker />
     </View>
   )
