@@ -7,8 +7,7 @@
   "test": "jest",
   "standard": "standard --verbose | snazzy",
   "web:start": "node web/scripts/start.js",
-  "web:build": "node web/scripts/build.js",
-  "web:test": "node web/scripts/test.js --env=jsdom"
+  "web:build": "node web/scripts/build.js"
  },
  "dependencies": {
   "autoprefixer": "7.1.6",
