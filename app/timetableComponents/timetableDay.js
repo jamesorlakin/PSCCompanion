@@ -2,8 +2,6 @@ import React, { Component } from 'react'
 import {
   View,
   Text,
-  FlatList,
-  ScrollView,
   StyleSheet
 } from 'react-native'
 
@@ -13,6 +11,15 @@ import { dayWidth } from './constants.js'
 export default class TimetableDay extends Component {
   render () {
     var events = this.props.data
+    if (events.length === 0) {
+      return (<View style={{width: dayWidth,
+        borderRadius: 4,
+        borderWidth: 0.5,
+        borderColor: '#c5c6c9'}}>
+        <Text>No events found for this day.</Text>
+      </View>)
+    }
+
     var rows = []
 
     for (var i = 0; i < events.length; i++) {

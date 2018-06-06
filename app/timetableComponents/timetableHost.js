@@ -1,11 +1,11 @@
-// Sorts data by day, and returns a horizontal scrollview containing timetableDay
+// Sorts data by day, and returns a horizontal ScrollView containing TimetableDay
 
 import React, { Component } from 'react'
 import {
   View,
   Text,
   ScrollView,
-  StyleSheet,
+  StyleSheet
 } from 'react-native'
 
 import moment from 'moment'
@@ -20,6 +20,7 @@ export default class Timetable extends Component {
   }
 
   doWeekScroll (ref) {
+    // If this isn't showing the current week, don't scroll to the current day.
     if (this.props.week !== 0) return true
     var self = this
     if (!this.doneScroll) {
@@ -38,46 +39,50 @@ export default class Timetable extends Component {
   render () {
     if (this.props.data.timetable.length === 0) { return (<Text>No timetable events returned.</Text>) }
 
-    var self = this
-    var dayTimetables = {}
+    var startOfWeek = moment.unix(this.props.data.timetable[0].Start).startOf('isoweek')
 
+    // Let's define 5 blank days. Each day is an array of events.
+    var dayTimetables = []
+    for (var i = 0; i < 5; i++) {
+      dayTimetables[i] = []
+    }
+
+    // For each of our events, let's find out what day of the week it is and add it
+    // to the corresponding dayTimetables array.
     for (var i = 0; i < this.props.data.timetable.length; i++) {
       this.props.data.timetable[i].key = this.props.data.timetable[i].Start
-      var day = moment.unix(this.props.data.timetable[i].Start).startOf('day').unix()
-      if (dayTimetables[day] === undefined) dayTimetables[day] = []
+      var day = moment.unix(this.props.data.timetable[i].Start).isoWeekday()
+      if (dayTimetables[day] === undefined) dayTimetables[day] = [] // What if there's a Saturday thing?! Poor students.
       dayTimetables[day].push(this.props.data.timetable[i])
     }
 
+    // Let's turn each day array into a TimetableDay component to be rendered.
     var timetableColumns = []
-    Object.keys(dayTimetables).forEach(function (key) {
+    for (var i = 1; i < dayTimetables.length; i++) {
       timetableColumns.push(<TimetableDay
-        key={key}
-        data={dayTimetables[key]} />)
-    })
-
-    if (typeof this.props.day === 'number') {
-      if (timetableColumns[this.props.day] === undefined) {
-        return (
-          <View style={{width: dayWidth,
-            borderRadius: 4,
-            borderWidth: 0.5,
-            borderColor: '#c5c6c9'}}>
-            <Text>No events found for this day.</Text>
-          </View>
-        )
-      }
-      return timetableColumns[this.props.day]
+        key={i}
+        data={dayTimetables[i]} />)
     }
 
+    // If it's a shared timetable, it'll request just one day as a prop.
+    // This is so the day splitting code above is shared.
+    if (typeof this.props.day === 'number') return timetableColumns[this.props.day]
+
+    // The top of each column has a header saying what day it is.
+    // We use the array index (day of week) and the calculated start of week to
+    // work out what day it is.
     var timetableHeaders = []
-    Object.keys(dayTimetables).forEach(function (key) {
+    for (var i = 1; i < dayTimetables.length; i++) {
       timetableHeaders.push(<Text
         style={[styles.boldTitleUnderline, {width: dayWidth}]}
-        key={key}>
-        {moment.unix(key).format('dddd - Do')}
+        key={i}>
+        {startOfWeek.clone().isoWeekday(i).format('dddd - Do')}
       </Text>)
-    })
+    }
 
+    // A horizontal ScrollView contains each day header next to one another.
+    // Under that is a vertical ScrollView containing all of the day components.
+    // This ensures day headers remain on the top of the screen, as they are not scrolled vertically.
     return (
       <ScrollView ref={this.doWeekScroll} horizontal>
         <View style={{flex: 1}}>
