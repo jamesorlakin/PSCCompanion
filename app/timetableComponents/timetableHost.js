@@ -43,7 +43,7 @@ export default class Timetable extends Component {
 
     // Let's define 5 blank days. Each day is an array of events.
     var dayTimetables = []
-    for (var i = 0; i < 5; i++) {
+    for (var i = 0; i < 6; i++) {
       dayTimetables[i] = []
     }
 
