@@ -129,6 +129,7 @@ export function EventElement (props) {
           {props.item.IsCancelled && <Text style={{color: 'red'}}>(Cancelled) </Text>}
           {props.item.Title}
         </Text>
+        {props.item.Subtitle !== '' && <Text style={styles.italic}>{props.item.Subtitle}</Text>}
         <Text>{moment.unix(props.item.Start).format('LT')} - {moment.unix(props.item.End).format('LT')} : {props.item.Room}</Text>
         {staff !== '' && <Text>{staff}</Text>}
       </View>
