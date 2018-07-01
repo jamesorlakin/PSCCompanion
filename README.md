@@ -7,9 +7,9 @@ You're currently looking at the source code repository. After the app? It's avai
 
 ## Structure
 
-Latest changes are on the master branch. Currently released versions are on the deployGooglePlay and iOSExpo branches. Development and releases are usually very close, so there won't be much difference between them.
+Latest changes are on the master branch. The currently released version is on the deployGooglePlay branch. Development and releases are usually very close, so there won't be much difference between them. A hacky web port is on the web branch.
 
-Relevant JS files are stored in `app/`. Screens seen in the app are stored in `app/screens/`, though a notable exception is the login screen. Additionally, screens may define more than one React component, but I'm intending to split this up further.
+Relevant JS files are stored in `app/`. Screens seen in the app are stored in `app/screens/`. Currently, screens may define more than one React component, but I'm intending to split this up further.
 
 ## Development
 
@@ -23,8 +23,9 @@ If you have any changes you wish to merge upstream, feel free to open a pull req
 
 - Tests! (not necessarily everything, but the hacky timetable calculations could do with a few)
 - Prettier UI
-- Improved session management for attendance scraping
+- Improved session management for attendance and printing scraping. Quite honestly, I'm not sure how the Intranet session exists to begin with. It's a mixed bag for each device.
 - A good tidy up...
+- Some smarter caching (I'm thinking more transparently, load the cache and present to the user while fetching new data)
 
 ## License
 
