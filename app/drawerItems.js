@@ -38,8 +38,9 @@ const screens = {
 //  map: {screen: MapScreen},
   intranet: {screen: IntranetScreen},
   settings: {screen: SettingsScreen},
-  about: {screen: AboutScreen},
-  asyncMan: {screen: AsyncMan}
+  about: {screen: AboutScreen}
 }
+
+if (__DEV__) screens.asyncMan = {screen: AsyncMan}
 
 export default screens
