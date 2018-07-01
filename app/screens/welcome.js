@@ -72,9 +72,12 @@ export default class WelcomeScreen extends Component {
 
           <PrintingStatusComponent />
 
-          <Text style={{fontSize: 16}}>Note that this application is very new.
-            Bugs are to be expected now and again, and please report any you find
-            so that I can fix them. Suggestions are also welcome.</Text>
+          <Text style={{fontSize: 24}}>All good things come to an end, I suppose.</Text>
+          <Text style={{fontSize: 16}}>I've now left college, but I'm not going to completely abandon this app.
+            However, as you might imagine, testing any functionality requires a working account which I will soon
+            no longer have access to. I therefore will be hesitant to make large changes.</Text>
+          <Text style={{fontSize: 16}}>If you're capable (or at the very least interested) in helping to maintain or further develop this app, I more than welcome you to email me.
+            It's been a good run and I'm fairly proud of how it's ended up, spare the buggy intranet and printing bits. Take a look in the About page for source code links.</Text>
         </View>
       </ScrollView>
     )

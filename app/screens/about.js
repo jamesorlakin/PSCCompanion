@@ -26,7 +26,7 @@ export default class AboutScreen extends Component {
   }
 
   mailMe () {
-    Linking.openURL('mailto:jlakin16@students.psc.ac.uk')
+    Linking.openURL('mailto:james@jameslakin.co.uk')
   }
 
   render () {
