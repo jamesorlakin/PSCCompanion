@@ -97,8 +97,8 @@ android {
         applicationId "com.psccompanion"
         minSdkVersion 16
         targetSdkVersion 22
-        versionCode 82
-        versionName "0.82 Project Notify R2"
+        versionCode 83
+        versionName "0.83 Operation Farewell"
         ndk {
             abiFilters "armeabi-v7a", "x86"
         }
